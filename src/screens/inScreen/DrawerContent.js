@@ -1,4 +1,4 @@
-  
+/*   
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Drawer } from "react-native-paper";
@@ -11,13 +11,7 @@ import { firebase } from '../../firebase/config'
 
 export function DrawerContent(props) {
 
-    const onLogoutPress = () => {
-        firebase
-            .auth()
-            .signOut()
-            .then( props.navigation.navigate('Login'))
-
-    }
+   
     return(
         <View style={{flex:1}} >
             <DrawerContentScrollView {...props}>
@@ -70,20 +64,7 @@ export function DrawerContent(props) {
                     </Drawer.Section>
 
                 </View>
-            </DrawerContentScrollView>
-            <Drawer.Section style={styles.bottomDrawerSection}>
-                <DrawerItem 
-                    icon={({color, size}) => (
-                        <Icon 
-                        name="exit-to-app" 
-                        color={color}
-                        size={size}
-                        />
-                    )}
-                    label="Sign Out"
-                    onPress={() => {onLogoutPress()}}
-                />
-            </Drawer.Section>            
+            </DrawerContentScrollView>        
 
         </View>
     )
@@ -102,3 +83,4 @@ const styles = StyleSheet.create({
         borderTopWidth: 1
     },
 })
+ */

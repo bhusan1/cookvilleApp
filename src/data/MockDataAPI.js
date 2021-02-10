@@ -4,7 +4,7 @@ import { recipes, categories} from './dataArrays';
 
 
 
-export function getCategoryName(categoryId) {
+/* export function getCategoryName(categoryId) {
   let name;
   categories.map(data => {
     if (data.id == categoryId) {
@@ -12,7 +12,7 @@ export function getCategoryName(categoryId) {
     }
   });
   return name;
-}
+} */
 
 export function getRecipes(categoryId) {
   const recipesArray = [];

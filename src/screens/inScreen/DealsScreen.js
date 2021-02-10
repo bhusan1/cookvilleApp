@@ -36,7 +36,7 @@ export default class DealsScreen extends React.Component {
           <Text style={styles.dateText}> Offer ends 1-22-2021 </Text>
           </TouchableOpacity>
           <View style={{ height: this.state.expanded ? null : 0, overflow: 'hidden' }}>
-            <Image source={require('../../../assets/barcode.png')} style={{ width: 300, height: 100 }}/>
+            <Image source={require('../../../assets/barcode.jpg')} style={{ width: 300, height: 100 }}/>
           </View>
         </View>
 
@@ -49,7 +49,7 @@ export default class DealsScreen extends React.Component {
           <Text style={styles.dateText}> Offer ends 1-22-2021 </Text>
           </TouchableOpacity>
           <View style={{ height: this.state.expanded ? null : 0, overflow: 'hidden' }}>
-            <Image source={require('../../../assets/barcode.png')} style={{ width: 300, height: 100 }}/>
+            <Image source={require('../../../assets/barcode.jpg')} style={{ width: 300, height: 100 }}/>
           </View>
         </View>
 
@@ -62,7 +62,7 @@ export default class DealsScreen extends React.Component {
           <Text style={styles.dateText}> Offer ends 1-22-2021 </Text>
           </TouchableOpacity>
           <View style={{ height: this.state.expanded ? null : 0, overflow: 'hidden' }}>
-            <Image source={require('../../../assets/barcode.png')} style={{ width: 300, height: 100 }}/>
+            <Image source={require('../../../assets/barcode.jpg')} style={{ width: 300, height: 100 }}/>
           </View>
         </View>
 

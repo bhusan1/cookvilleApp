@@ -1,27 +1,46 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
-const SettingScreen = () => {
+
+
+import { firebase } from '../../firebase/config'
+
+const SettingsScreen = ({navigation}) => {{
+
+  const onLogoutPress = () => {
+    firebase
+        .auth()
+        .signOut()
+        .then( navigation.navigate('Login'))
+
+    }
+
     return (
+      
       <View style={styles.container}>
-        <View>
-          <Text>This page is just for fun</Text>
-        </View>
-        <Text>Settings Screen</Text>
         <Button
-          title="Click Here"
-          onPress={() => alert('Button Clicked!')}
+          
+          title="Sign Out"
+          onPress={() => {onLogoutPress()}}
         />
+        <Text style={styles.sout}> Once signed out, requires password to login again</Text>
       </View>
+      
     );
 };
+};
 
-export default SettingScreen;
+
+export default SettingsScreen;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1, 
-    alignItems: 'center', 
-    justifyContent: 'center'
+    padding: 20,
   },
-});
+  sout:{
+    fontSize: 10,
+    textAlign: 'center'
+  }
+
+})

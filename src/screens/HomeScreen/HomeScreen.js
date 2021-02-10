@@ -1,11 +1,37 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet,  ScrollView  } from 'react-native';
+import React, { useState, useCallback} from 'react';
+import { View, Text, StyleSheet, Linking,Button, ScrollView } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Card } from 'react-native-elements';
+import MarqueeText from 'react-native-marquee';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
 /* import { firestore } from "@react-native-firebase/firestore"; */
+
+const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
+const latLng = `${33.18624068627443},${-94.86102794051021}`;
+const label = 'Custom Label';
+const url = Platform.select({
+  ios: `${scheme}${label}@${latLng}`,
+  android: `${scheme}${latLng}(${label})`
+});
+
+const OpenURLButton = ({ url, children }) => {
+  const handlePress = useCallback(async () => {
+    // Checking if the link is supported for links with custom URL scheme.
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  }, [url]);
+
+  return <Button title={children} onPress={handlePress} />;
+};
 
 
 const HomeScreen = ({navigation}) => {
@@ -20,16 +46,15 @@ const HomeScreen = ({navigation}) => {
         latitudeDelta: 0.01,
         longitudeDelta: 0.01
       });
-
-     
     /* firestore().collection('gasPrice') */
         
-   
     return(
       <ScrollView>
       <View style={styles.saCon}>
         <Text style={styles.gasText}>Store Address {"\n"} Cookville #1 Stop</Text>
+        
         <Text style={styles.dealsText}>  6262 US HWY 67 E Cookville, TX 75558 </Text>
+        <OpenURLButton url={url}>Open Maps</OpenURLButton>
       </View>
       
       <MapView
@@ -39,6 +64,23 @@ const HomeScreen = ({navigation}) => {
       onRegionChangeComplete={region => setRegion(region)}>
       <Marker coordinate={{ latitude: 33.18624068627443, longitude: -94.86102794051021 }} />
     </MapView>
+      
+    <View style={styles.divider}>
+    <MarqueeText 
+         style={{ fontSize: 24, color: '#bc245c' }}
+          duration={6000}
+          marqueeOnStart
+          loop={true}
+          marqueeDelay={1000}
+          marqueeResetDelay={500}
+    >
+    Find Deals on In-store Purchase and Deli and Save on Gas
+    </MarqueeText>
+
+    
+    {/* <Text style={styles.dealsText}>Find Deals on{"\n"}In-store Purchase{"\n"}Deli Food{"\n"}And SAVE on Gas{"\n"}with Fuel Rewards Deals</Text> */}
+        
+      </View>
 
       <View style={styles.gpCon}>
         <Text style={styles.gasText}>Gas Price</Text>
@@ -50,12 +92,12 @@ const HomeScreen = ({navigation}) => {
             <View style={styles.col1}>
                 <Card size="15" title="Regular" >
                 <Text style={styles.paragraph}>
-                        REGULAR {"\n"} 2.09/gal
+                        REGULAR {"\n"} 2.259/gal
                 </Text>
                 </Card>
                 <Card size="12" title="Plus">
                 <Text style={styles.paragraph}>
-                        PLUS {"\n"} 3.09/gal
+                        PLUS {"\n"} 2.4979/gal
                 </Text>
                 </Card>
             </View>
@@ -63,20 +105,17 @@ const HomeScreen = ({navigation}) => {
             <View style={styles.col1}>
                 <Card title="Super">
                 <Text style={styles.paragraph}>
-                        SUPER {"\n"} 3.59/gal
+                        SUPER {"\n"} 2.7983/gal
                 </Text>
                 </Card>
                 <Card title="Diesel">
                 <Text style={styles.paragraph}>
-                        DIESEL {"\n"}3.69/gal
+                        DIESEL {"\n"}2.4991/gal
                 </Text>
                 </Card>
             </View>  
         </View>
       
-      <View>
-        <Text style={styles.dealsText}>Find Deals on{"\n"}In-store Purchase{"\n"}Deli Food{"\n"}And SAVE on Gas{"\n"}with Fuel Rewards Deals</Text>
-      </View>
     </ScrollView>
     );
 };
@@ -92,6 +131,10 @@ const styles = StyleSheet.create({
     width: 400,
     height: 300
   },
+  divider:{
+    padding: 20,
+    backgroundColor: 'white'
+  },
   gasText: {
     fontSize: 20,
     fontWeight: "bold",
@@ -101,7 +144,7 @@ const styles = StyleSheet.create({
   },
   dealsText: {
     fontSize: 15,
-    color: '#6e012a',
+    color: '#bc245c',
     fontWeight: "bold",
     textAlign: "center",
     paddingTop: 20,

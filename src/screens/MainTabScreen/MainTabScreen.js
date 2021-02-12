@@ -72,59 +72,59 @@ const MainTabScreen = () => (
 export default MainTabScreen;
 
 const HomeStackScreen = ({}) => (
-<HomeStack.Navigator screenOptions={{
-        headerStyle: {
-        backgroundColor: '#6e012a',
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-        fontWeight: 'bold',
-        }
-    }}>
-        <HomeStack.Screen name="Home" component={HomeScreen} options={{
-        title:'Overview', headerTitleAlign: 'center'}} />
-</HomeStack.Navigator>
+      <HomeStack.Navigator screenOptions={{
+              headerStyle: {
+              backgroundColor: '#6e012a',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+              fontWeight: 'bold',
+              }
+          }}>
+              <HomeStack.Screen name="Home" component={HomeScreen} options={{
+              title:'Overview', headerTitleAlign: 'center'}} />
+      </HomeStack.Navigator>
 );
 
 const DealsStackScreen = ({}) => (
-<DealsStack.Navigator screenOptions={{
-        headerStyle: {
-        backgroundColor: '#6e012a',
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-        fontWeight: 'bold'
-        }
-    }}>
-        <DealsStack.Screen name="Deals" component={DealsScreen} options={{ headerTitleAlign: 'center',}} />
-</DealsStack.Navigator>
+        <DealsStack.Navigator screenOptions={{
+                headerStyle: {
+                backgroundColor: '#6e012a',
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                fontWeight: 'bold'
+                }
+            }}>
+                <DealsStack.Screen name="Deals" component={DealsScreen} options={{ headerTitleAlign: 'center',}} />
+        </DealsStack.Navigator>
 );
 
 const DeliStackScreen = ({}) => (
-    <DeliStack.Navigator screenOptions={{
-            headerStyle: {
-            backgroundColor: '#6e012a',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-            fontWeight: 'bold'
-            }
-        }}>
-            <DeliStack.Screen name="Deli" component={DeliScreen} options={{ headerTitleAlign: 'center' }} />
-    </DeliStack.Navigator>
-    );
+        <DeliStack.Navigator screenOptions={{
+                headerStyle: {
+                backgroundColor: '#6e012a',
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                fontWeight: 'bold'
+                }
+            }}>
+                <DeliStack.Screen name="Deli" component={DeliScreen} options={{ headerTitleAlign: 'center' }} />
+        </DeliStack.Navigator>
+);
 
 const SettingsStackScreen = ({}) => (
-    <SettingsStack.Navigator screenOptions={{
-            headerStyle: {
-            backgroundColor: '#6e012a',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-            fontWeight: 'bold'
-            }
-          }}>
-            <SettingsStack.Screen name="Settings" component={SettingsScreen} options={{ headerTitleAlign: 'center'}} />
-    </SettingsStack.Navigator>
-        );
+        <SettingsStack.Navigator screenOptions={{
+                headerStyle: {
+                backgroundColor: '#6e012a',
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                fontWeight: 'bold'
+                }
+              }}>
+                <SettingsStack.Screen name="Settings" component={SettingsScreen} options={{ headerTitleAlign: 'center'}} />
+        </SettingsStack.Navigator>
+);
 

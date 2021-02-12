@@ -11,7 +11,7 @@ const SettingsScreen = ({navigation}) => {{
     firebase
         .auth()
         .signOut()
-        .then( navigation.navigate('Login'))
+        .then( navigation.navigate('LoginScreen')) // was Login
 
     }
 

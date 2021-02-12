@@ -3,7 +3,7 @@ import { Image, Text, TextInput,TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
 import { firebase } from '../../firebase/config';
-import CheckBox from '@react-native-community/checkbox';
+/* import CheckBox from '@react-native-community/checkbox'; */
 
 export default function RegistrationScreen({navigation}) {
     const [fullName, setFullName] = useState('')
@@ -105,13 +105,13 @@ export default function RegistrationScreen({navigation}) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
-                <View style={styles.footerView}>
+                {/* <View style={styles.footerView}>
                 <CheckBox 
                         value={isSelected}
                         onValueChange={setSelection}
                         style={styles.checkbox}/>
                     <Text style={styles.footerText}>Allow Promotions</Text>
-                </View>
+                </View> */}
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => onRegisterPress()}>

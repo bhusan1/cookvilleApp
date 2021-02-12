@@ -44,18 +44,19 @@ export default function App() {
   if (!user) {
     return(
       <NavigationContainer>
-      <Stack.Navigator>
+        <Stack.Navigator>
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Registration" component={RegistrationScreen} />
           <Stack.Screen name="Reset Password" component={ResetPassword} />
-          </Stack.Navigator>
+          <Stack.Screen name="MainTabScreen" component={MainTabScreen}/>
+        </Stack.Navigator>
       </NavigationContainer>
     );
   }
 
   return(
     <NavigationContainer>
-        <MainTabScreen/>
+     <MainTabScreen/>
     </NavigationContainer>
   );
 }

@@ -71,7 +71,7 @@ const MainTabScreen = () => (
 
 export default MainTabScreen;
 
-const HomeStackScreen = ({navigation}) => (
+const HomeStackScreen = ({}) => (
 <HomeStack.Navigator screenOptions={{
         headerStyle: {
         backgroundColor: '#6e012a',
@@ -86,7 +86,7 @@ const HomeStackScreen = ({navigation}) => (
 </HomeStack.Navigator>
 );
 
-const DealsStackScreen = ({navigation}) => (
+const DealsStackScreen = ({}) => (
 <DealsStack.Navigator screenOptions={{
         headerStyle: {
         backgroundColor: '#6e012a',
@@ -100,7 +100,7 @@ const DealsStackScreen = ({navigation}) => (
 </DealsStack.Navigator>
 );
 
-const DeliStackScreen = ({navigation}) => (
+const DeliStackScreen = ({}) => (
     <DeliStack.Navigator screenOptions={{
             headerStyle: {
             backgroundColor: '#6e012a',
@@ -114,38 +114,17 @@ const DeliStackScreen = ({navigation}) => (
     </DeliStack.Navigator>
     );
 
-    const SettingsStackScreen = ({navigation}) => (
-        <SettingsStack.Navigator screenOptions={{
-                headerStyle: {
-                backgroundColor: '#6e012a',
-                },
-                headerTintColor: '#fff',
-                headerTitleStyle: {
-                fontWeight: 'bold'
-                }
-            }}>
-                <SettingsStack.Screen name="Settings" component={SettingsScreen} options={{ headerTitleAlign: 'center'}} />
-        </SettingsStack.Navigator>
+const SettingsStackScreen = ({}) => (
+    <SettingsStack.Navigator screenOptions={{
+            headerStyle: {
+            backgroundColor: '#6e012a',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+            fontWeight: 'bold'
+            }
+          }}>
+            <SettingsStack.Screen name="Settings" component={SettingsScreen} options={{ headerTitleAlign: 'center'}} />
+    </SettingsStack.Navigator>
         );
 
-
-
-
-
-       /*  const DeliStackScreen = ({navigation}) => (
-          <DeliStack.Navigator screenOptions={{
-                  headerStyle: {
-                  backgroundColor: '#6e012a',
-                  },
-                  headerTintColor: '#fff',
-                  headerTitleStyle: {
-                  fontWeight: 'bold'
-                  }
-              }}>
-                  <DeliStack.Screen name="Deli" component={DeliScreen} options={{ headerTitleAlign: 'center',
-                  headerLeft: () => (
-                      <Icon.Button name="ios-menu" size={25} backgroundColor="#6e012a" onPress={() => navigation.openDrawer()}></Icon.Button>
-                  )
-                  }} />
-          </DeliStack.Navigator>
-          ); */

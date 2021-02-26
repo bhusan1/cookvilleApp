@@ -5,10 +5,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import HomeScreen from '../HomeScreen/HomeScreen';
+import HomeScreen from './HomeScreen';
 import DealsScreen from '../inScreen/DealsScreen';
 import DeliScreen from '../inScreen/DeliScreen';
-import SettingsScreen from '../inScreen/SettingsScreen';
+import SettingsScreen from './SettingsScreen';
 
 const HomeStack = createStackNavigator();
 const DealsStack = createStackNavigator();

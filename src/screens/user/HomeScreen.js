@@ -34,7 +34,7 @@ const OpenURLButton = ({ url, children }) => {
 };
 
 
-const HomeScreen = ({navigation}) => {
+export const HomeScreen = ({navigation}) => {
 
     var date = new Date().getDate();
     var month = new Date().getMonth() + 1;
@@ -47,7 +47,7 @@ const HomeScreen = ({navigation}) => {
         longitudeDelta: 0.01
       });
     /* firestore().collection('gasPrice') */
-        
+
     return(
       <ScrollView>
       {/* <View style={styles.topImg}>
@@ -55,11 +55,11 @@ const HomeScreen = ({navigation}) => {
       </View> */}
       <View style={styles.saCon}>
         <Text style={styles.gasText}>Store Address {"\n"} Cookville #1 Stop</Text>
-        
+
         <Text style={styles.dealsText}>  6262 US HWY 67 E Cookville, TX 75558 </Text>
         <OpenURLButton url={url}>Open Maps</OpenURLButton>
       </View>
-      
+
       <MapView
       style={styles.mapFix}
       region={region}
@@ -67,9 +67,9 @@ const HomeScreen = ({navigation}) => {
       onRegionChangeComplete={region => setRegion(region)}>
       <Marker coordinate={{ latitude: 33.18624068627443, longitude: -94.86102794051021 }} />
     </MapView>
-      
+
     <View style={styles.divider}>
-    <MarqueeText 
+    <MarqueeText
          style={{ fontSize: 24, color: '#bc245c' }}
           duration={6000}
           marqueeOnStart
@@ -80,9 +80,9 @@ const HomeScreen = ({navigation}) => {
     Find Deals on In-store Purchase and Deli and Save on Gas
     </MarqueeText>
 
-    
+
     {/* <Text style={styles.dealsText}>Find Deals on{"\n"}In-store Purchase{"\n"}Deli Food{"\n"}And SAVE on Gas{"\n"}with Fuel Rewards Deals</Text> */}
-        
+
       </View>
 
       <View style={styles.gpCon}>
@@ -90,7 +90,7 @@ const HomeScreen = ({navigation}) => {
         <Icon name="color-fill" color='red' size={36} />
         <Text style={styles.dateText}>{month}-{date}-{year}</Text>
       </View>
-        
+
         <View style={styles.priceContainer}>
             <View style={styles.col1}>
                 <Card size="15" title="Regular" >
@@ -116,18 +116,16 @@ const HomeScreen = ({navigation}) => {
                         DIESEL {"\n"}2.4991/gal
                 </Text>
                 </Card>
-            </View>  
+            </View>
         </View>
-      
+
     </ScrollView>
     );
 };
 
-export default HomeScreen;
-
 const styles = StyleSheet.create({
   container: {
-    flex: 1,  
+    flex: 1,
     justifyContent: 'center'
   },
   topImg: {
@@ -168,7 +166,7 @@ const styles = StyleSheet.create({
   },
   gasPrice: {
     width: 250,
-    height: 50, 
+    height: 50,
   },
   saCon: {
     padding: 20,
@@ -181,7 +179,7 @@ const styles = StyleSheet.create({
   priceContainer: {
     backgroundColor: '#fff',
     alignItems:'center'
-      
+
   },
   paragraph: {
     fontSize: 16,

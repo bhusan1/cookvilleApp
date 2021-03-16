@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "599155764226",
+    "firebase_url": "https://cookville1stop-22333-default-rtdb.firebaseio.com",
+    "project_id": "cookville1stop-22333",
+    "storage_bucket": "cookville1stop-22333.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599155764226:android:1aab726cec28d303690b1b",
+        "android_client_info": {
+          "package_name": "com.ssp.cookville1stop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "599155764226-66ecoo1ae8ooja53uoda7rq8a3lmhi8f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ssp.cookville1stop",
+            "certificate_hash": "6710f02e2bc1e24b313664cf06e728bac95c38ac"
+          }
+        },
+        {
+          "client_id": "599155764226-j1lnoni38arjmqculpic9flghn27virh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPf_MxL1i8PPiADocz0wTMfiBauasso20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "599155764226-j1lnoni38arjmqculpic9flghn27virh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

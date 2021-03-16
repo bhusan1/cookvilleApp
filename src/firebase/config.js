@@ -3,13 +3,14 @@ import '@firebase/auth';
 import '@firebase/firestore';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyB19En55bfb7wyZFLl3SbwaAYG_jeCmuDo",
-    authDomain: "cookvilleapp.firebaseapp.com",
-    projectId: "cookvilleapp",
-    storageBucket: "cookvilleapp.appspot.com",
-    messagingSenderId: "807157153925",
-    appId: "1:807157153925:web:330a83680eda2fed8a69ec",
-    measurementId: "G-GX2KWFMT6K"
+    apiKey: "AIzaSyAWzsPglgq6rpHO_EuEtSVzWFcStAR9txM",
+    authDomain: "cookville1stop-22333.firebaseapp.com",
+    databaseURL: "https://cookville1stop-22333-default-rtdb.firebaseio.com",
+    projectId: "cookville1stop-22333",
+    storageBucket: "cookville1stop-22333.appspot.com",
+    messagingSenderId: "599155764226",
+    appId: "1:599155764226:web:1e0bb7087e57c801690b1b",
+    measurementId: "G-1PSV8G6840"
 };
 
 if (!firebase.apps.length) {

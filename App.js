@@ -2,21 +2,24 @@ import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react'
 import { firebase } from './src/firebase/config'
 
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
+import { NavigationContainer, StackActions } from '@react-navigation/native'
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import {createStackNavigator} from '@react-navigation/stack'
 
-
+import { DrawerContent } from './src/user/screens/DrawerContent';
 import MainTabScreen from './src/user/screens/MainTabScreen';
+import DealsScreen from './src/user/screens/DealsScreen';
+import SettingsScreen from './src/user/screens/SettingsScreen';
+import DeliScreen from './src/user/screens/DeliScreen';
 
-
-import { LoginScreen, HomeScreen, RegistrationScreen, ResetPassword } from './src/user/screens'
+import RootStackScreen from './src/RootStack/RootStackScreen';
 
 import {decode, encode} from 'base-64'
+
 if (!global.btoa) {  global.btoa = encode }
 if (!global.atob) { global.atob = decode }
 
-
-
+const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
 
 
@@ -40,19 +43,20 @@ export default function App() {
   if (!user) {
     return(
       <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Registration" component={RegistrationScreen} />
-          <Stack.Screen name="Reset Password" component={ResetPassword} />
-          <Stack.Screen name="MainTabScreen" component={MainTabScreen}/>
-        </Stack.Navigator>
+        <RootStackScreen/> 
       </NavigationContainer>
     );
   }
 
   return(
     <NavigationContainer>
-     <MainTabScreen/>
+      <Drawer.Navigator drawerContent={props => <DrawerContent {...props} />}>
+          <Drawer.Screen name="HomeDrawer" component={MainTabScreen} />
+          <Drawer.Screen name="DealsScreen" component={DealsScreen} />
+          <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
+          <Drawer.Screen name="DeliScreen" component={DeliScreen} />
+      </Drawer.Navigator>
+    
     </NavigationContainer>
   );
 }

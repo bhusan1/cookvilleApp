@@ -6,8 +6,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import HomeScreen from './HomeScreen';
-import DealsScreen from '../inScreen/DealsScreen';
-import DeliScreen from '../inScreen/DeliScreen';
+import DealsScreen from './DealsScreen';
+import DeliScreen from './DeliScreen';
 import SettingsScreen from './SettingsScreen';
 
 const HomeStack = createStackNavigator();
@@ -71,7 +71,7 @@ const MainTabScreen = () => (
 
 export default MainTabScreen;
 
-const HomeStackScreen = ({}) => (
+const HomeStackScreen = ({navigation}) => (
       <HomeStack.Navigator screenOptions={{
               headerStyle: {
               backgroundColor: '#6e012a',
@@ -82,11 +82,15 @@ const HomeStackScreen = ({}) => (
               }
           }}>
               <HomeStack.Screen name="Home" component={HomeScreen} options={{
-              title:'Overview', headerTitleAlign: 'center'}} />
+              title:'Overview', headerTitleAlign: 'center',
+              headerLeft: () => (
+            <Icon.Button name="ios-menu" size={25} backgroundColor="#6e012a" onPress={() => navigation.openDrawer()}></Icon.Button>
+        )
+        }} />
       </HomeStack.Navigator>
 );
 
-const DealsStackScreen = ({}) => (
+const DealsStackScreen = ({navigation}) => (
         <DealsStack.Navigator screenOptions={{
                 headerStyle: {
                 backgroundColor: '#6e012a',
@@ -96,11 +100,15 @@ const DealsStackScreen = ({}) => (
                 fontWeight: 'bold'
                 }
             }}>
-                <DealsStack.Screen name="Deals" component={DealsScreen} options={{ headerTitleAlign: 'center',}} />
+                <DealsStack.Screen name="Deals" component={DealsScreen} options={{ headerTitleAlign: 'center',
+                headerLeft: () => (
+            <Icon.Button name="ios-menu" size={25} backgroundColor="#6e012a" onPress={() => navigation.openDrawer()}></Icon.Button>
+        )
+        }} />
         </DealsStack.Navigator>
 );
 
-const DeliStackScreen = ({}) => (
+const DeliStackScreen = ({navigation}) => (
         <DeliStack.Navigator screenOptions={{
                 headerStyle: {
                 backgroundColor: '#6e012a',
@@ -110,11 +118,15 @@ const DeliStackScreen = ({}) => (
                 fontWeight: 'bold'
                 }
             }}>
-                <DeliStack.Screen name="Deli" component={DeliScreen} options={{ headerTitleAlign: 'center' }} />
+                <DeliStack.Screen name="Deli" component={DeliScreen} options={{ headerTitleAlign: 'center',
+                headerLeft: () => (
+            <Icon.Button name="ios-menu" size={25} backgroundColor="#6e012a" onPress={() => navigation.openDrawer()}></Icon.Button>
+        )
+        }} />
         </DeliStack.Navigator>
 );
 
-const SettingsStackScreen = ({}) => (
+const SettingsStackScreen = ({navigation}) => (
         <SettingsStack.Navigator screenOptions={{
                 headerStyle: {
                 backgroundColor: '#6e012a',
@@ -124,7 +136,11 @@ const SettingsStackScreen = ({}) => (
                 fontWeight: 'bold'
                 }
               }}>
-                <SettingsStack.Screen name="Settings" component={SettingsScreen} options={{ headerTitleAlign: 'center'}} />
+                <SettingsStack.Screen name="Settings" component={SettingsScreen} options={{ headerTitleAlign: 'center',
+                headerLeft: () => (
+            <Icon.Button name="ios-menu" size={25} backgroundColor="#6e012a" onPress={() => navigation.openDrawer()}></Icon.Button>
+        )
+        }} />
         </SettingsStack.Navigator>
 );
 

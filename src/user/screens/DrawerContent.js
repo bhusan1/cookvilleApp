@@ -1,4 +1,4 @@
-/*   
+  
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Drawer } from "react-native-paper";
@@ -7,7 +7,6 @@ import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { firebase } from '../../firebase/config'
 
 export function DrawerContent(props) {
 
@@ -83,4 +82,3 @@ const styles = StyleSheet.create({
         borderTopWidth: 1
     },
 })
- */

@@ -1,5 +1,5 @@
 import React, { useState, useCallback} from 'react';
-import { View, Text, StyleSheet, Linking,Button, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, Linking,Button, ScrollView } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Card } from 'react-native-elements';
 import MarqueeText from 'react-native-marquee';
@@ -50,6 +50,9 @@ const HomeScreen = ({navigation}) => {
         
     return(
       <ScrollView>
+      {/* <View style={styles.topImg}>
+      <Image source={require('../../../assets/nozzle.png')} style={{ width: 300, height: 200 }}/>
+      </View> */}
       <View style={styles.saCon}>
         <Text style={styles.gasText}>Store Address {"\n"} Cookville #1 Stop</Text>
         
@@ -126,6 +129,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,  
     justifyContent: 'center'
+  },
+  topImg: {
+    paddingTop:20,
+    width: 300,
+    height: 200,
+
   },
   mapFix:{
     width: 400,

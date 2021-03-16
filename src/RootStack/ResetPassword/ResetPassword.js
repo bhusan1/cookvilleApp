@@ -19,6 +19,10 @@ export default function ResetPassword({navigation}) {
             });
         }
 
+    const onFooterLinkPress = () => {
+        navigation.navigate('Login')
+        }
+
         return(
             <View style={styles.container}>
             <KeyboardAwareScrollView
@@ -38,6 +42,9 @@ export default function ResetPassword({navigation}) {
                     onPress={() => passwordReset()}>
                     <Text style={styles.buttonTitle}>Send Email</Text>
                 </TouchableOpacity>
+                <View style={styles.footerView}>
+                    <Text style={styles.footerText}>Already got an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Go Back</Text></Text>
+                </View>
                 </KeyboardAwareScrollView>
             </View>
         )

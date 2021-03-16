@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react'
-import { firebase } from './src/firebase/config'
+import { firebase } from './src/firebase/index.js'
 
 import { NavigationContainer, StackActions } from '@react-navigation/native'
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -43,7 +43,7 @@ export default function App() {
   if (!user) {
     return(
       <NavigationContainer>
-        <RootStackScreen/> 
+        <RootStackScreen/>
       </NavigationContainer>
     );
   }
@@ -56,7 +56,7 @@ export default function App() {
           <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
           <Drawer.Screen name="DeliScreen" component={DeliScreen} />
       </Drawer.Navigator>
-    
+
     </NavigationContainer>
   );
 }

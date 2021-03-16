@@ -15,5 +15,3 @@ export { default as DeliScreen } from './user/screens/DeliScreen'
 export { default as SettingsScreen } from './user/screens/SettingsScreen'
 
 
-
-

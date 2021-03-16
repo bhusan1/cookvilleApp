@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
-import { firebase } from '../../firebase/config';
+import { firebase } from '../../firebase/index.js';
 
 export default function ResetPassword({navigation}) {
     const[email, setEmail] =useState('')
-    
+
     const passwordReset = () => {
         firebase
                 .auth()
@@ -48,5 +48,5 @@ export default function ResetPassword({navigation}) {
                 </KeyboardAwareScrollView>
             </View>
         )
-   
+
 }

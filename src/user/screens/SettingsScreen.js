@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 
 
 
-import { firebase } from '../../firebase/config'
+import { firebase } from '../../firebase/index.js'
 
 const SettingsScreen = ({navigation}) => {{
 
@@ -16,16 +16,16 @@ const SettingsScreen = ({navigation}) => {{
     }
 
     return (
-      
+
       <View style={styles.container}>
         <Button
-          
+
           title="Sign Out"
           onPress={() => {onLogoutPress()}}
         />
         <Text style={styles.sout}> Once signed out, requires password to login again</Text>
       </View>
-      
+
     );
 };
 };
@@ -35,7 +35,7 @@ export default SettingsScreen;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
+    flex: 1,
     padding: 20,
   },
   sout:{

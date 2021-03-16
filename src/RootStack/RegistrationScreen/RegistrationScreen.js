@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Image, Text, TextInput,TouchableOpacity, View } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import styles from './styles';
-import { firebase } from '../../firebase/config';
+import { firebase } from '../../firebase/index.js';
 /* import CheckBox from '@react-native-community/checkbox'; */
 
 export default function RegistrationScreen({navigation}) {
@@ -21,7 +21,7 @@ export default function RegistrationScreen({navigation}) {
             alert("Passwords don't match.")
             return
         }
-    
+
         firebase
             .auth()
             .createUserWithEmailAndPassword(email.trim(), password)
@@ -106,7 +106,7 @@ export default function RegistrationScreen({navigation}) {
                     autoCapitalize="none"
                 />
                 {/* <View style={styles.footerView}>
-                <CheckBox 
+                <CheckBox
                         value={isSelected}
                         onValueChange={setSelection}
                         style={styles.checkbox}/>

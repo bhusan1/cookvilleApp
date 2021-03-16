@@ -3,7 +3,7 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 
 
 
-import { firebase } from '../../firebase/index.js'
+import { firebase } from '../../firebase'
 
 const SettingsScreen = ({navigation}) => {{
 

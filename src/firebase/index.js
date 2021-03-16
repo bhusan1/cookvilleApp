@@ -1,6 +1,11 @@
+/**
+ * Firebase Login
+ * Reactify comes with built in firebase login feature
+ * You Need To Add Your Firsebase App Account Details Here
+ */
+
 import * as firebase from 'firebase';
-import '@firebase/auth';
-import '@firebase/firestore';
+import 'firebase/firestore';
 
 const firebaseConfig = {
     apiKey: "AIzaSyB19En55bfb7wyZFLl3SbwaAYG_jeCmuDo",
@@ -12,8 +17,8 @@ const firebaseConfig = {
     measurementId: "G-GX2KWFMT6K"
 };
 
-if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-}
 
-export { firebase };
+firebase.initializeApp(firebaseConfig);
+firebase.firestore();
+
+export default firebase;

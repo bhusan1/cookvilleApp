@@ -4,14 +4,14 @@ export { default as RegistrationScreen } from './RootStack/RegistrationScreen/Re
 
 export { default as ResetPassword } from './RootStack/ResetPassword/ResetPassword'
 
-export { default as MainTabScreen } from './user/screens/MainTabScreen'
+export { default as MainTabScreen } from './screens/user/MainTabScreen'
 
-export { default as HomeScreen } from './user/screens/HomeScreen'
+export { default as HomeScreen } from './screens/user/HomeScreen'
 
-export { default as DealsScreen } from './user/screens/DealsScreen'
+export { default as DealsScreen } from './screens/user/DealsScreen'
 
-export { default as DeliScreen } from './user/screens/DeliScreen'
+export { default as DeliScreen } from './screens/user/DeliScreen'
 
-export { default as SettingsScreen } from './user/screens/SettingsScreen'
+export { default as SettingsScreen } from './screens/user/SettingsScreen'
 
 

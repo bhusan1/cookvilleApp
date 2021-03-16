@@ -34,19 +34,19 @@ const fontSizes = {
 };
 
 const fonts = {
-    black: isIos ? 'Roboto-Black' : 'RobotoBlack',
-    blackItalic: isIos ? 'Roboto-BlackItalic' : 'RobotoBlackItalic',
-    regular: isIos ? 'Roboto-Regular' : 'RobotoRegular',
-    italic: isIos ? 'Roboto-Italic' : 'RobotoItalic',
-    medium: isIos ? 'Roboto-Medium' : 'RobotoMedium',
-    bold: isIos ? 'Roboto-Bold' : 'RobotoBold',
-    boldItalic: isIos ? 'Roboto-BoldItalic' : 'RobotoBoldItalic',
-    semiBold: isIos ? 'Roboto-Medium' : 'RobotoMedium',
-    extraBold: isIos ? 'Roboto-Bold' : 'RobotoBold',
-    extraLight: isIos ? 'Roboto-BoldItalic' : 'RobotoBoldItalic',
-    light: isIos ? 'Roboto-Light' : 'RobotoLight',
-    lightItalic: isIos ? 'Roboto-LightItalic' : 'RobotoLightItalic',
-    thinItalic: isIos ? 'Roboto-ThinItalic' : 'RobotoThinItalic',
+    black: isIos ? 'OpenSans' : 'OpenSans',
+    blackItalic: isIos ? 'OpenSans' : 'OpenSans',
+    regular: isIos ? 'OpenSans' : 'OpenSans',
+    italic: isIos ? 'OpenSans' : 'OpenSans',
+    medium: isIos ? 'OpenSans' : 'OpenSans',
+    bold: isIos ? 'OpenSans' : 'OpenSans',
+    boldItalic: isIos ? 'OpenSans' : 'OpenSans',
+    semiBold: isIos ? 'OpenSans' : 'OpenSans',
+    extraBold: isIos ? 'OpenSans' : 'OpenSans',
+    extraLight: isIos ? 'OpenSans' : 'OpenSans',
+    light: isIos ? 'OpenSans' : 'OpenSans',
+    lightItalic: isIos ? 'OpenSans' : 'OpenSans',
+    thinItalic: isIos ? 'OpenSans' : 'OpenSans',
 };
 
 const borderRadius = {

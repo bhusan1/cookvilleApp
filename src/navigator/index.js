@@ -2,8 +2,10 @@ import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {} from './TabNavigator';
+
+import {TabNavigator} from './TabNavigator';
 import {
+    SignInScreen
 } from '../screens';
 import {useSelector} from 'react-redux';
 
@@ -25,8 +27,15 @@ export const AppNavigator = () => {
         <NavigationContainer ref={navigationRef}>
             <Stack.Navigator initialRouteName={initialScreen}>
                 <Stack.Screen
-                    name="Login"
-                    component={LoginScreen}
+                    name="SignIn"
+                    component={SignInScreen}
+                    options={{
+                        header: () => null,
+                    }}
+                />
+                <Stack.Screen
+                    name="UserBoard"
+                    component={TabNavigator}
                     options={{
                         header: () => null,
                     }}

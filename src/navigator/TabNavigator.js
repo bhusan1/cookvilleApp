@@ -3,8 +3,9 @@ import {useTheme} from 'react-native-paper';
 import {getFocusedRouteNameFromRoute, useRoute} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-import {HomeScreen} from "../screens";
+import Icon from 'react-native-vector-icons/Ionicons';
 
+import {HomeScreen} from "../screens";
 const Tab = createBottomTabNavigator();
 
 export const TabNavigator = () => {
@@ -14,17 +15,14 @@ export const TabNavigator = () => {
     const routeName = getFocusedRouteNameFromRoute(route);
     return (
         <Tab.Navigator
-            initialRouteName={initialRoute || 'Filter'}
+            initialRouteName={'Home'}
+            activeColor="#fff"
             tabBarOptions={{
                 activeTintColor: theme.colors.primary,
                 inactiveTintColor: theme.colors.default,
                 showLabel: true,
                 style: {
-                    borderTopWidth: 0,
-                    shadowColor: '#000',
-                    shadowOpacity: 0.1,
-                    shadowRadius: 20,
-                    shadowOffset: {width: 0, height: 0},
+                    backgroundColor:'#6e012a',
                 },
                 labelStyle: {
                     fontSize: 12,
@@ -40,23 +38,39 @@ export const TabNavigator = () => {
                 component={HomeScreen}
                 options={{
                     tabBarLabel: 'Home',
-                    tabBarIcon: ({color}) => (
-                        <Icon image={routeName === 'ClientProfile' ? iconUserActive : iconUser} size={18} />
+                    tabBarIcon: ({ color }) => (
+                        <Icon name="ios-home" color={color} size={26} />
                     ),
                 }}
             />
             <Tab.Screen
-                name="Filter"
+                name="Deals"
                 component={HomeScreen}
                 options={{
                     tabBarLabel: 'Deals',
+                    tabBarIcon: ({ color }) => (
+                        <Icon name="ios-notifications" color={color} size={26} />
+                    ),
                 }}
             />
             <Tab.Screen
-                name="ClientMessage"
+                name="Deli"
                 component={HomeScreen}
                 options={{
-                    tabBarLabel: 'Setting',
+                    tabBarLabel: 'Deli',
+                    tabBarIcon: ({ color }) => (
+                        <Icon name="fast-food" color={color} size={26} />
+                    ),
+                }}
+            />
+            <Tab.Screen
+                name="Settings"
+                component={HomeScreen}
+                options={{
+                    tabBarLabel: 'Settings',
+                    tabBarIcon: ({ color }) => (
+                        <Icon name="ios-aperture" color={color} size={26} />
+                    ),
                 }}
             />
         </Tab.Navigator>

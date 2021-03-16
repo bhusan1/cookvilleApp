@@ -3,15 +3,17 @@ import {Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch} from "react-redux";
 import {signUpUserInFirebase} from "../../store/actions/AuthAction";
+import {useTheme} from "react-native-paper";
 
 const INITIAL_STATE = {
     email: null,
     password: null,
 }
 
-export default function LoginScreen({navigation}) {
-
+export const SignInScreen = ({navigation}) => {
+    const theme = useTheme();
     const dispatch = useDispatch();
+    const styles = useStyles(theme);
     const [user, setUser] = useState(INITIAL_STATE)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')

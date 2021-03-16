@@ -15,12 +15,14 @@ export const navigationRef = React.createRef();
 
 export const AppNavigator = () => {
 
-    const profile = useSelector(state=>state.firebase.auth.profile);
+    const profile = useSelector(state=>state.firebase.profile);
 
-    const [initialScreen, setInitialScreen] = useState(null);
+    let  initialScreen = null;
 
-    if(!initialScreen){
+    if(!profile.isLoaded){
         return  null;
+    }else {
+        initialScreen = profile.isEmpty ? 'SignIn' : 'UserBoard';
     }
 
     return (

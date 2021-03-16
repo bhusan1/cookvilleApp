@@ -1,29 +1,19 @@
-import React, { useState } from 'react'
-import {Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native'
+import React, {useRef} from 'react'
+import {Image, StyleSheet, Text, View} from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import {useDispatch} from "react-redux";
-import {signUpUserInFirebase} from "../../store/actions/AuthAction";
 import {useTheme} from "react-native-paper";
 
-const INITIAL_STATE = {
-    email: null,
-    password: null,
-}
+import {imgIcon} from "../../commons/images";
+import {SignInForm} from "../../components/auth/SignInForm";
+import {Button} from "../../components";
 
 export const SignInScreen = ({navigation}) => {
     const theme = useTheme();
-    const dispatch = useDispatch();
     const styles = useStyles(theme);
-    const [user, setUser] = useState(INITIAL_STATE)
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const signInFormRef = useRef();
 
     const onFooterLinkPress = () => {
         navigation.navigate('Registration')
-    }
-
-    const onLoginPress = () => {
-        dispatch(signUpUserInFirebase(user))
     }
 
     const goToResetPassword = () => {navigation.navigate('Reset Password')}
@@ -31,43 +21,23 @@ export const SignInScreen = ({navigation}) => {
 
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView
-                style={{ flex: 1, width: '100%' }}
-                keyboardShouldPersistTaps="always">
-                <Image
-                    style={styles.logo}
-                    source={require('../../assets/icon.png')}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder='E-mail'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setEmail(text)}
-                    value={email}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholderTextColor="#aaaaaa"
-                    secureTextEntry
-                    placeholder='Password'
-                    onChangeText={(text) => setPassword(text)}
-                    value={password}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <View style={styles.footerView}>
-                    <Text onPress={goToResetPassword} style={styles.footerLink}>Forgot Password?</Text>
-                </View>
-
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => onLoginPress()}>
-                    <Text style={styles.buttonTitle}>Log in</Text>
-                </TouchableOpacity>
-                <View style={styles.footerView}>
-                    <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Sign up</Text></Text>
+            <KeyboardAwareScrollView  keyboardShouldPersistTaps="always">
+                <View style={styles.content}>
+                    <Image
+                        style={styles.logo}
+                        source={imgIcon}
+                    />
+                    <SignInForm ref={signInFormRef}/>
+                    <View style={styles.footerView}>
+                        <Text onPress={goToResetPassword} style={styles.footerLink}>Forgot Password?</Text>
+                    </View>
+                    <Button
+                        title={'Log In'}
+                        style={styles.button}
+                        onPress={signInFormRef.current?.submit}/>
+                    <View style={styles.footerView}>
+                        <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Sign up</Text></Text>
+                    </View>
                 </View>
             </KeyboardAwareScrollView>
         </View>
@@ -77,43 +47,25 @@ export const SignInScreen = ({navigation}) => {
 const useStyles = theme => StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center'
+        backgroundColor: 'white',
     },
-    title: {
-
+    content: {
+        flex: 1,
+        width:'90%',
+        alignItems: 'center',
+        alignSelf: 'center',
+        justifyContent:'center',
     },
     logo: {
-        flex: 1,
-        height: 120,
-        width: 90,
-        alignSelf: "center",
-        margin: 30
-    },
-    input: {
-        height: 48,
-        borderRadius: 5,
-        overflow: 'hidden',
-        backgroundColor: 'white',
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 30,
-        marginRight: 30,
-        paddingLeft: 16
+        height: theme.wp('40%'),
+        resizeMode:'contain',
+        alignSelf:'center',
+        marginTop: theme.hp('20%')
     },
     button: {
-        backgroundColor: '#788eec',
         marginLeft: 30,
         marginRight: 30,
         marginTop: 20,
-        height: 48,
-        borderRadius: 5,
-        alignItems: "center",
-        justifyContent: 'center'
-    },
-    buttonTitle: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: "bold"
     },
     footerView: {
         flex: 1,

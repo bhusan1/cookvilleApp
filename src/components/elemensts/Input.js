@@ -37,6 +37,6 @@ const useStyles = (theme) =>
             borderStyle: 'solid',
             borderWidth: 0.5,
             borderColor: theme.colors.border,
-            marginTop: theme.hp('3%'),
+            marginTop: theme.hp('1%'),
         },
     });

@@ -1,7 +1,12 @@
 import {showMessage} from 'react-native-flash-message';
+
+export const USER_LOG_OUT = 'USER_LOG_OUT';
+
 /**
  * Redux Action To Signup User In Firebase
  */
+
+let unsubscribes = [];
 export const signUpUserInFirebase = (user) => async (dispatch, getState, {getFirebase, getFirestore}) => {
     return new Promise((resolve) => {
         const firebase = getFirebase();
@@ -9,16 +14,17 @@ export const signUpUserInFirebase = (user) => async (dispatch, getState, {getFir
             .auth()
             .createUserWithEmailAndPassword(user.email, user.password)
             .then((success) => {
-                console.log(success);
                 const firestore = getFirestore();
-                firestore
+                const unsubscribe = firestore
                     .collection('users')
                     .doc(success.user.uid)
                     .set({
+                        fullName: user.fullName,
+                        phoneNumber: user.phoneNumber,
                         email: user.email,
-                        createdAt: firestore.FieldValue.serverTimestamp(),
-                        role: 'user',
+                        role: 'customer',
                         uid: success.user.uid,
+                        createdAt: firestore.FieldValue.serverTimestamp(),
                     })
                     .then(async () => {
                         showMessage({
@@ -28,6 +34,7 @@ export const signUpUserInFirebase = (user) => async (dispatch, getState, {getFir
                         });
                         resolve(true);
                     });
+                unsubscribes.push(unsubscribe);
             })
             .catch((error) => {
                 console.log(error);
@@ -39,4 +46,38 @@ export const signUpUserInFirebase = (user) => async (dispatch, getState, {getFir
                 resolve(false);
             });
     });
+};
+
+
+export const signInWithFirebase = (user) => (dispatch, getState, {getFirestore, getFirebase}) => {
+    return new Promise((resolve) => {
+        getFirebase()
+            .auth()
+            .signInWithEmailAndPassword(user.email, user.password)
+            .then(({user}) => {
+                showMessage({
+                    message: 'Sign In Success',
+                    description: 'You are logged in now',
+                    type: 'success',
+                });
+            })
+            .catch((error) => {
+                showMessage({
+                    message: 'Something went wrong',
+                    description: error.message,
+                    type: 'error',
+                });
+                console.log(error);
+                resolve(false);
+            });
+    });
+};
+
+export const userLogout = () => async (dispatch, getState, {getFirebase}) => {
+    const firebase = getFirebase();
+    await firebase.auth().signOut();
+    unsubscribes.forEach((unsubscribe) => {
+        unsubscribe();
+    });
+    getState().nav.reset({index: 0, routes: [{name: 'UserBoard'}]});
 };

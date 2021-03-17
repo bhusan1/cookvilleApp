@@ -3,15 +3,18 @@ import {View, StyleSheet, Text, TextInput} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import {Input} from "../elemensts";
 import {useDispatch} from "react-redux";
-import {signInWithFirebase} from "../../store/actions/AuthAction";
+import {signUpUserInFirebase} from "../../store/actions/AuthAction";
 
 
 const INITIAL_STATE = {
+    fullName: null,
+    phoneNumber: null,
     email: null,
     password: null,
+    confirmPassword: null,
 }
 
-export const SignInForm = forwardRef(() => {
+export const SignUpForm = forwardRef(() => {
     const theme = useTheme();
     const styles = useStyles(theme);
     const dispatch = useDispatch();
@@ -23,15 +26,27 @@ export const SignInForm = forwardRef(() => {
     }
 
     const submit = () => {
-        dispatch(signInWithFirebase(user));
+        dispatch(signUpUserInFirebase(user));
     }
 
     return (
         <View style={styles.root}>
             <Input
+                name={'fullName'}
+                value={user.fullName}
+                placeholder='Full Name'
+                onChangeText={handleChange}
+            />
+            <Input
                 name={'email'}
                 value={user.email}
                 placeholder='Email'
+                onChangeText={handleChange}
+            />
+            <Input
+                name={'phoneNumber'}
+                value={user.phoneNumber}
+                placeholder='Phone Number'
                 onChangeText={handleChange}
             />
             <Input
@@ -40,6 +55,13 @@ export const SignInForm = forwardRef(() => {
                 placeholder='Password'
                 onChangeText={handleChange}
                 value={user.password}
+            />
+            <Input
+                style={styles.input}
+                secureTextEntry
+                placeholder='Confirm Password'
+                onChangeText={handleChange}
+                value={user.confirmPassword}
             />
         </View>
     );

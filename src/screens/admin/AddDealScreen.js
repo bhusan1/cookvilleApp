@@ -4,11 +4,12 @@ import {useTheme} from 'react-native-paper';
 import {Button, Input } from "../../components";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import * as ImagePicker from 'expo-image-picker';
-import {useFirebase, useFirestore} from "react-redux-firebase";
+import {useFirebase, useFirestore, useFirestoreConnect} from "react-redux-firebase";
 import uuid from 'react-native-uuid';
 import Spinner from "react-native-loading-spinner-overlay";
 import {validate} from "../../commons/helper";
 import {showMessage} from 'react-native-flash-message';
+import {useSelector} from "react-redux";
 
 const INITIAL_SATE = {
     title: '',
@@ -16,22 +17,31 @@ const INITIAL_SATE = {
 };
 
 export const AddDealScreen = () => {
+    
+    useFirestoreConnect([{collection:'tokens'}]);
+    
     const theme = useTheme();
     const styles = useStyles(theme);
     const firebase = useFirebase();
     const firestore = useFirestore();
+    
+    const tokens = useSelector(state=>state.firestore.ordered.tokens || []);
+    
     const [deal, setDeal] = useState(INITIAL_SATE);
     const [progress, setProgress] = useState(0)
     const [loading, setLoading] = useState(false);
     
     const submit = () => {
         if(validate(deal,{title:'required', image: 'required'})){
-            firestore.collection('deals').add(deal).then(()=>{
+            setLoading(true);
+            firestore.collection('recipes').add(deal).then(async ()=>{
+                await sendPushNotification();
                 showMessage({
                     message: 'Success',
                     description: 'Deal created successfully!',
                     type: 'success',
                 });
+                setLoading(false);
             })
         }
     }
@@ -74,8 +84,26 @@ export const AddDealScreen = () => {
             }
         });
         
+    };
+    
+    const sendPushNotification = async () => {
+        const message = {
+            to: tokens,
+            sound: 'default',
+            title: 'Deal Created',
+            body: deal.title + 'added',
+        };
+        
+        await fetch('https://exp.host/--/api/v2/push/send', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Accept-encoding': 'gzip, deflate',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(message),
+        });
     }
-    ;
     
     return (
         <View style={styles.root} >
@@ -89,7 +117,7 @@ export const AddDealScreen = () => {
                 {
                     deal.image?
                         <View style={styles.imagePicker}>
-                            <Image source={{uri: deal.image}}/>
+                            <Image style={styles.image} source={{uri: deal.image}}/>
                         </View>:
                         <TouchableOpacity style={styles.imagePicker} onPress={openImagePickerAsync}>
                             <AntDesign name={'camera'} size={theme.wp('20%')} color={'white'} />
@@ -120,11 +148,12 @@ const useStyles = (theme) =>
             backgroundColor: '#8080809f',
             marginVertical: 20,
         },
-        buttonStyle:{
-            width: theme.wp('60%'),
-            marginVertical: theme.hp('1%')
-        },
-        textStyle:{
-            fontSize: 18,
+        image:{
+            width:'100%',
+            height:'100%',
+            resizeMode:'cover',
+            borderStyle:'solid',
+            borderColor: theme.colors.border,
+            borderWidth:0.5,
         }
     });

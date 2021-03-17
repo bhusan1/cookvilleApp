@@ -51,7 +51,7 @@ const useStyles = (theme) =>
             flexDirection:'column',
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: theme.hp('2%'),
+            marginVertical: theme.hp('1%'),
             width: '100%',
             padding: 0,
             height: 225,

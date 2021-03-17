@@ -69,7 +69,7 @@ export const AppNavigator = () => {
                     name="AddRecipe"
                     component={AddRecipeScreen}
                     options={{
-                        headerTitle: 'Create Recipe',
+                        headerTitle: 'Recipe',
                         headerBackTitle: 'Back',
                         headerTintColor: 'white',
                         headerStyle: {
@@ -81,7 +81,7 @@ export const AppNavigator = () => {
                     name="AddDeal"
                     component={AddDealScreen}
                     options={{
-                        headerTitle: 'Create Deal',
+                        headerTitle: 'Deal',
                         headerBackTitle: 'Back',
                         headerTintColor: 'white',
                         headerStyle: {

@@ -1,10 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
-    View,
     Text,
     StyleSheet,
     Image,
-    ScrollView,
     TouchableOpacity,
     SafeAreaView,
     StatusBar,
@@ -12,26 +10,59 @@ import {
 } from 'react-native';
 import {useFirestoreConnect} from "react-redux-firebase";
 import {useSelector} from "react-redux";
+import {AddButton, Paper} from "../../components";
+import {useTheme} from "react-native-paper";
+import ImageView from 'react-native-image-view';
 
 export const DealsScreen = ({navigation}) => {
     
     useFirestoreConnect([{collection:'deals'}]);
     
+    const theme = useTheme();
     const deals = useSelector(state=>state.firestore.ordered.deals || []);
+    const authUser = useSelector(state=>state.firebase.profile);
+    const [images, setImages] = useState([]);
     
-    const renderItem = () => {
+    const addDeal = () => {
+        navigation.navigate('AddDeal');
+    }
+    
+    const viewDeal = (deal) => {
+        if(authUser.role === 'admin'){
+            navigation.navigate('AddDeal', {deal})
+        }
+    }
+    
+    const handleClose = () => {
+        setImages([]);
+    }
+    
+    const handleBarcodeClick = (deal)=>{
+        setImages([
+            {
+                source: {
+                    uri: deal.barcode,
+                },
+                title: deal.title,
+                width: theme.wp('100%'),
+                height: theme.hp('100%'),
+            },
+        ])
+    }
+    
+    const renderItem = ({item}) => {
         
         return (
-            <View style={styles.saCon}>
-                <TouchableOpacity activeOpacity={0.8} style={styles.Btn}>
-                    <Text style={styles.gasText}>Buy $50 inside store</Text>
-                    <Text style={styles.dealsText}> Get 5% off on your total </Text>
-                    <Text style={styles.dateText}> Offer ends 1-22-2021 </Text>
+            <Paper style={styles.saCon}>
+                <TouchableOpacity activeOpacity={0.8} style={styles.Btn} onPress={()=>{viewDeal(item)}}>
+                    <Text style={styles.gasText}>{item.title}</Text>
+                    <Text style={styles.dealsText}> {item.description} </Text>
+                    <Text style={styles.dateText}> Offer ends {item.deadline} </Text>
                 </TouchableOpacity>
-                <View>
-                    <Image source={require('../../assets/barcode.jpg')} style={{width: 300, height: 100}} />
-                </View>
-            </View>
+                <TouchableOpacity style={{width: '30%', borderColor: theme.colors.border, borderWidth: 0.5}} onPress={()=>{handleBarcodeClick(item)}}>
+                    <Image source={{uri: item.barcode}} style={{width: '100%', height: 100, resizeMode:'cover'}} />
+                </TouchableOpacity>
+            </Paper>
         )
     }
     
@@ -42,6 +73,14 @@ export const DealsScreen = ({navigation}) => {
                 data={deals}
                 renderItem={renderItem}
                 keyExtractor={(item)=>item.id}
+            />
+            <AddButton show={authUser.role === 'admin'} onPress={addDeal} />
+            <ImageView
+                images={images}
+                imageIndex={0}
+                isVisible={images.length > 0}
+                useNativeDriver={false}
+                onClose={handleClose}
             />
         </SafeAreaView>
     );
@@ -68,32 +107,26 @@ const styles = StyleSheet.create({
         paddingTop: 2,
     },
     saCon: {
-        padding: 20,
         backgroundColor: '#fff',
+        width: '95%',
+        marginVertical: 10,
     },
     gasText: {
         fontSize: 20,
         fontWeight: 'bold',
-        textAlign: 'center',
-        paddingTop: 20,
     },
     dealsText: {
         fontSize: 15,
         color: 'black',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        paddingTop: 20,
-        paddingBottom: 10,
+        paddingVertical: 3,
     },
     dateText: {
-        fontSize: 10,
+        fontSize: 12,
         color: 'black',
-        fontWeight: 'bold',
-        textAlign: 'center',
-        paddingTop: 2,
     },
 
     Btn: {
+        width: '70%',
         padding: 10,
         backgroundColor: 'rgba(0,0,0,0)',
     },

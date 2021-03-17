@@ -186,6 +186,14 @@ const styles = {
         alignItems: 'center',
         zIndex: 1000,
     },
+    dangerText:{
+        fontSize: 18,
+        color: colors.danger,
+        width: '100%',
+        fontWeight: 'bold',
+        marginTop: 10,
+        textAlign: 'center',
+    }
 };
 
 export default {

@@ -1,6 +1,6 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
 import {View, Text, StyleSheet, Alert, Linking, ScrollView, SafeAreaView, StatusBar} from 'react-native';
-import MapView, {Marker} from 'react-native-maps';
+import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import {Card} from 'react-native-elements';
 import MarqueeText from 'react-native-marquee';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -9,7 +9,9 @@ import {useSelector} from 'react-redux';
 import * as Notifications from 'expo-notifications';
 import moment from 'moment'
 import {useFirestore} from "react-redux-firebase";
-import {Button} from "../../components";
+import {Button, Paper} from "../../components";
+import Feather from 'react-native-vector-icons/Feather';
+import {useTheme} from "react-native-paper";
 
 const scheme = Platform.select({ios: 'maps:0,0?q=', android: 'geo:0,0?q='});
 const latLng = `${33.18624068627443},${-94.86102794051021}`;
@@ -41,8 +43,13 @@ const OpenURLButton = ({url, children}) => {
 };
 
 export const HomeScreen = () => {
+    
+    const theme = useTheme();
+    const styles = useStyles(theme);
+    
     const firestore = useFirestore();
     const authUser = useSelector(state=>state.firebase.profile);
+    const [refresh, setRefresh] = useState(false);
     const [region, setRegion] = useState({
         latitude: 33.18624068627443,
         longitude: -94.86102794051021,
@@ -61,6 +68,10 @@ export const HomeScreen = () => {
         });
     }, [authUser]);
 
+    const resetMap = () =>{
+        setRefresh(!refresh);
+    }
+    
     return (
         <SafeAreaView style={styles.root}>
             <ScrollView>
@@ -69,13 +80,19 @@ export const HomeScreen = () => {
                     <Text style={styles.dealsText}> 6262 US HWY 67 E Cookville, TX 75558 </Text>
                     <OpenURLButton url={url}>Open Maps</OpenURLButton>
                 </View>
-                <MapView
-                    style={styles.mapFix}
-                    region={region}
-                    showsUserLocation={true}
-                    onRegionChangeComplete={(region) => setRegion(region)}>
-                    <Marker coordinate={{latitude: 33.18624068627443, longitude: -94.86102794051021}} />
-                </MapView>
+                <View style={styles.mapFix}>
+                    <Paper onPress={resetMap} style={styles.getCurrentLocation}>
+                        <Feather name={'send'} size={20} />
+                    </Paper>
+                    <MapView
+                        key={refresh}
+                        style={styles.mapFix}
+                        provider={PROVIDER_GOOGLE}
+                        region={region}
+                    >
+                        <Marker coordinate={{latitude: 33.18624068627443, longitude: -94.86102794051021}} />
+                    </MapView>
+                </View>
                 <View style={styles.divider}>
                     <MarqueeText
                         style={{fontSize: 24, color: '#bc245c'}}
@@ -116,7 +133,7 @@ export const HomeScreen = () => {
     );
 };
 
-const styles = StyleSheet.create({
+const useStyles = theme => StyleSheet.create({
     root: {
         flex: 1,
         marginTop: StatusBar.currentHeight,
@@ -132,6 +149,19 @@ const styles = StyleSheet.create({
     mapFix: {
         width: 400,
         height: 300,
+        position:'relative',
+        flex: 1,
+    },
+    getCurrentLocation:{
+        width: 40,
+        height: 40,
+        position: 'absolute',
+        top: theme.hp('2%'),
+        right: theme.wp('2%'),
+        justifyContent: 'center',
+        alignItems: 'center',
+        ...theme.styles.shadow,
+        zIndex: 2,
     },
     divider: {
         padding: 20,

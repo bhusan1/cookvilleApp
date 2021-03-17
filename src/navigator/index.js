@@ -6,7 +6,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {TabNavigator} from './TabNavigator';
 import {
     SignInScreen,
-    SignUpScreen
+    SignUpScreen,
+    ResetPasswordScreen,
 } from '../screens';
 import {useSelector} from 'react-redux';
 
@@ -39,6 +40,13 @@ export const AppNavigator = () => {
                 <Stack.Screen
                     name="SignUp"
                     component={SignUpScreen}
+                    options={{
+                        header: () => null,
+                    }}
+                />
+                <Stack.Screen
+                    name="ResetPassword"
+                    component={ResetPasswordScreen}
                     options={{
                         header: () => null,
                     }}

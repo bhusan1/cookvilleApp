@@ -4,6 +4,7 @@ import {useTheme} from 'react-native-paper';
 import {Input} from "../elemensts";
 import {useDispatch} from "react-redux";
 import {signUpUserInFirebase} from "../../store/actions/AuthAction";
+import {validate} from "../../commons/helper";
 
 
 const INITIAL_STATE = {
@@ -22,7 +23,9 @@ export const SignUpForm = forwardRef((props, ref) => {
     const [user, setUser] = useState(INITIAL_STATE)
 
     const handleChange = (name, value) => {
-        setUser({...user, [name]: value});
+        if (validate(user,{fullName: 'required',phoneNumber: 'required', email: 'required|email', password: 'required|min:8|same:confirmPassword'})){
+            setUser({...user, [name]: value});
+        }
     }
 
     useImperativeHandle(ref, ()=>({

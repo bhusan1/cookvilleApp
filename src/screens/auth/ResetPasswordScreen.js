@@ -7,7 +7,7 @@ import {useDispatch} from "react-redux";
 import {sendEmailForRecovery} from "../../store/actions/AuthAction";
 import {imgIcon} from "../../commons/images";
 
-const ResetPasswordScreen =  ({navigation}) => {
+export const ResetPasswordScreen =  ({navigation}) => {
 
     const theme = useTheme();
     const styles = useStyles(theme);

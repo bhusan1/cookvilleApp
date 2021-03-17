@@ -1,11 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet, SafeAreaView} from 'react-native';
 
 import {Button} from "../../components";
 import {useDispatch} from "react-redux";
 import {userLogout} from "../../store/actions/AuthAction";
 
-export const SettingsScreen = ({navigation}) => {
+export const SettingsScreen = () => {
     
     const dispatch = useDispatch();
     
@@ -14,20 +14,20 @@ export const SettingsScreen = ({navigation}) => {
     }
 
     return (
-      <View style={styles.container}>
-        <Button title="Sign Out" onPress={signOut} />
+      <SafeAreaView style={styles.root}>
+          <Button title="Sign Out" onPress={signOut} />
         <Text style={styles.text}> Once signed out, requires password to login again</Text>
-      </View>
+      </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
+  root: {
+        flex: 1,
+      width:'100%'
   },
   text:{
-    fontSize: 10,
+    fontSize: 14,
     textAlign: 'center'
   }
 });

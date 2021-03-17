@@ -1,51 +1,68 @@
-import React, { Component } from 'react';
-import { View, Text, Button, StyleSheet,LayoutAnimation,Image, ScrollView, Platform, UIManager, TouchableOpacity } from 'react-native';
+import React  from 'react';
+import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, SafeAreaView, StatusBar} from 'react-native';
+import {AddButton} from "../../components";
+import {useSelector} from "react-redux";
 
 
 
-export const DealsScreen = () => {
-    return(
-      <ScrollView>
-        <Text style={styles.headText}>
-          OnGoing Deals
-        </Text>
-        <View style={styles.saCon}>
-        <TouchableOpacity activeOpacity={0.8} onPress={this.changeLayout} style={styles.Btn}>
-          <Text style={styles.gasText}>Buy $20 inside store</Text>
-          <Text style={styles.dealsText}> Get 2% off on your total </Text>
-          <Text style={styles.dateText}> Offer ends 1-22-2021 </Text>
-          </TouchableOpacity>
-          <View style={{ height: this.state.expanded ? null : 0, overflow: 'hidden' }}>
-            <Image source={require('../../assets/barcode.jpg')} style={{ width: 300, height: 100 }}/>
-          </View>
-        </View>
-        <View style={styles.divider}></View>
-        <View style={styles.saCon}>
-        <TouchableOpacity activeOpacity={0.8} onPress={this.changeLayout} style={styles.Btn}>
-          <Text style={styles.gasText}>Buy $50 inside store</Text>
-          <Text style={styles.dealsText}> Get 5% off on your total </Text>
-          <Text style={styles.dateText}> Offer ends 1-22-2021 </Text>
-          </TouchableOpacity>
-          <View style={{ height: this.state.expanded ? null : 0, overflow: 'hidden' }}>
-            <Image source={require('../../assets/barcode.jpg')} style={{ width: 300, height: 100 }}/>
-          </View>
-        </View>
-        <View style={styles.divider}></View>
-        <View style={styles.saCon}>
-        <TouchableOpacity activeOpacity={0.8} onPress={this.changeLayout} style={styles.Btn}>
-          <Text style={styles.gasText}>Buy $100 inside store</Text>
-          <Text style={styles.dealsText}> Get 10% off on your total </Text>
-          <Text style={styles.dateText}> Offer ends 1-22-2021 </Text>
-          </TouchableOpacity>
-          <View style={{ height: this.state.expanded ? null : 0, overflow: 'hidden' }}>
-            <Image source={require('../../assets/barcode.jpg')} style={{ width: 300, height: 100 }}/>
-          </View>
-        </View>
-      </ScrollView>
+export const DealsScreen = ({navigation}) => {
+  
+  const authUser = useSelector(state=>state.firebase.profile);
+  
+  const addDeal = () => {
+    navigation.navigate('AddDeal')
+  }
+  
+  return(
+        <SafeAreaView style={styles.root}>
+          <AddButton show={true} onPress={addDeal}/>
+            {/*<ScrollView>*/}
+            {/*  <Text style={styles.headText}>*/}
+            {/*    OnGoing Deals*/}
+            {/*  </Text>*/}
+            {/*  <View style={styles.saCon}>*/}
+            {/*    <TouchableOpacity activeOpacity={0.8} style={styles.Btn}>*/}
+            {/*      <Text style={styles.gasText}>Buy $20 inside store</Text>*/}
+            {/*      <Text style={styles.dealsText}> Get 2% off on your total </Text>*/}
+            {/*      <Text style={styles.dateText}> Offer ends 1-22-2021 </Text>*/}
+            {/*    </TouchableOpacity>*/}
+            {/*    <View>*/}
+            {/*      <Image source={require('../../assets/barcode.jpg')} style={{ width: 300, height: 100 }}/>*/}
+            {/*    </View>*/}
+            {/*  </View>*/}
+            {/*  <View style={styles.divider}/>*/}
+            {/*  <View style={styles.saCon}>*/}
+            {/*    <TouchableOpacity activeOpacity={0.8} style={styles.Btn}>*/}
+            {/*      <Text style={styles.gasText}>Buy $50 inside store</Text>*/}
+            {/*      <Text style={styles.dealsText}> Get 5% off on your total </Text>*/}
+            {/*      <Text style={styles.dateText}> Offer ends 1-22-2021 </Text>*/}
+            {/*    </TouchableOpacity>*/}
+            {/*    <View>*/}
+            {/*      <Image source={require('../../assets/barcode.jpg')} style={{ width: 300, height: 100 }}/>*/}
+            {/*    </View>*/}
+            {/*  </View>*/}
+            {/*  <View style={styles.divider}/>*/}
+            {/*  <View style={styles.saCon}>*/}
+            {/*    <TouchableOpacity activeOpacity={0.8} style={styles.Btn}>*/}
+            {/*      <Text style={styles.gasText}>Buy $100 inside store</Text>*/}
+            {/*      <Text style={styles.dealsText}> Get 10% off on your total </Text>*/}
+            {/*      <Text style={styles.dateText}> Offer ends 1-22-2021 </Text>*/}
+            {/*    </TouchableOpacity>*/}
+            {/*    <View>*/}
+            {/*      <Image source={require('../../assets/barcode.jpg')} style={{ width: 300, height: 100 }}/>*/}
+            {/*    </View>*/}
+            {/*  </View>*/}
+            {/*</ScrollView>*/}
+        </SafeAreaView>
     );
 }
 
 const styles = StyleSheet.create({
+  root:{
+    flex: 1,
+    marginTop: StatusBar.currentHeight,
+    position:'relative',
+  },
   container: {
     flex: 1,
     alignItems: 'center',

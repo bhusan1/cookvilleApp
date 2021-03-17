@@ -13,7 +13,7 @@ const colors = {
     primaryActive: '#e58732',
     primaryOpacity: '#E793473f',
     primaryLight: '#e0b389',
-    secondary: '#60c2d4',
+    secondary: '#6e012a',
     lightgray: '#dcdcdc',
     comment: '#808080',
     gray: 'gray',

@@ -1,16 +1,14 @@
 import React, { useState, useCallback} from 'react';
-import { View, Text, StyleSheet, Image, Linking,Button, ScrollView } from 'react-native';
+import {View, Text, StyleSheet, Alert, Linking, Button, ScrollView, SafeAreaView, StatusBar} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Card } from 'react-native-elements';
 import MarqueeText from 'react-native-marquee';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-
-/* import { firestore } from "@react-native-firebase/firestore"; */
-
 const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
 const latLng = `${33.18624068627443},${-94.86102794051021}`;
 const label = 'Custom Label';
+
 const url = Platform.select({
   ios: `${scheme}${label}@${latLng}`,
   android: `${scheme}${latLng}(${label})`
@@ -18,27 +16,22 @@ const url = Platform.select({
 
 const OpenURLButton = ({ url, children }) => {
   const handlePress = useCallback(async () => {
-    // Checking if the link is supported for links with custom URL scheme.
     const supported = await Linking.canOpenURL(url);
-
     if (supported) {
-      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
-      // by some browser in the mobile
       await Linking.openURL(url);
     } else {
       Alert.alert(`Don't know how to open this URL: ${url}`);
     }
   }, [url]);
-
   return <Button title={children} onPress={handlePress} />;
 };
 
 
 export const HomeScreen = ({navigation}) => {
 
-    var date = new Date().getDate();
-    var month = new Date().getMonth() + 1;
-    var year = new Date().getFullYear();
+    const date = new Date().getDate();
+    const month = new Date().getMonth() + 1;
+    const year = new Date().getFullYear();
 
     const [region, setRegion] = useState({
         latitude: 33.18624068627443,
@@ -46,86 +39,78 @@ export const HomeScreen = ({navigation}) => {
         latitudeDelta: 0.01,
         longitudeDelta: 0.01
       });
-    /* firestore().collection('gasPrice') */
 
     return(
-      <ScrollView>
-      {/* <View style={styles.topImg}>
-      <Image source={require('../../../assets/nozzle.png')} style={{ width: 300, height: 200 }}/>
-      </View> */}
-      <View style={styles.saCon}>
-        <Text style={styles.gasText}>Store Address {"\n"} Cookville #1 Stop</Text>
-
-        <Text style={styles.dealsText}>  6262 US HWY 67 E Cookville, TX 75558 </Text>
-        <OpenURLButton url={url}>Open Maps</OpenURLButton>
-      </View>
-
-      <MapView
-      style={styles.mapFix}
-      region={region}
-      showsUserLocation={true}
-      onRegionChangeComplete={region => setRegion(region)}>
-      <Marker coordinate={{ latitude: 33.18624068627443, longitude: -94.86102794051021 }} />
-    </MapView>
-
-    <View style={styles.divider}>
-    <MarqueeText
-         style={{ fontSize: 24, color: '#bc245c' }}
-          duration={6000}
-          marqueeOnStart
-          loop={true}
-          marqueeDelay={1000}
-          marqueeResetDelay={500}
-    >
-    Find Deals on In-store Purchase and Deli and Save on Gas
-    </MarqueeText>
-
-
-    {/* <Text style={styles.dealsText}>Find Deals on{"\n"}In-store Purchase{"\n"}Deli Food{"\n"}And SAVE on Gas{"\n"}with Fuel Rewards Deals</Text> */}
-
-      </View>
-
-      <View style={styles.gpCon}>
-        <Text style={styles.gasText}>Gas Price</Text>
-        <Icon name="color-fill" color='red' size={36} />
-        <Text style={styles.dateText}>{month}-{date}-{year}</Text>
-      </View>
-
-        <View style={styles.priceContainer}>
-            <View style={styles.col1}>
-                <Card size="15" title="Regular" >
-                <Text style={styles.paragraph}>
-                        REGULAR {"\n"} 2.259/gal
-                </Text>
-                </Card>
-                <Card size="12" title="Plus">
-                <Text style={styles.paragraph}>
-                        PLUS {"\n"} 2.4979/gal
-                </Text>
-                </Card>
-            </View>
-
-            <View style={styles.col1}>
-                <Card title="Super">
-                <Text style={styles.paragraph}>
-                        SUPER {"\n"} 2.7983/gal
-                </Text>
-                </Card>
-                <Card title="Diesel">
-                <Text style={styles.paragraph}>
-                        DIESEL {"\n"}2.4991/gal
-                </Text>
-                </Card>
-            </View>
-        </View>
-
-    </ScrollView>
+        <SafeAreaView style={styles.root}>
+              <ScrollView>
+                  <View style={styles.saCon}>
+                      <Text style={styles.gasText}>Store Address {"\n"} Cookville #1 Stop</Text>
+                
+                      <Text style={styles.dealsText}>  6262 US HWY 67 E Cookville, TX 75558 </Text>
+                      <OpenURLButton url={url}>Open Maps</OpenURLButton>
+                  </View>
+                  <MapView
+                      style={styles.mapFix}
+                      region={region}
+                      showsUserLocation={true}
+                      onRegionChangeComplete={region => setRegion(region)}>
+                      <Marker coordinate={{ latitude: 33.18624068627443, longitude: -94.86102794051021 }} />
+                  </MapView>
+                  <View style={styles.divider}>
+                      <MarqueeText
+                          style={{ fontSize: 24, color: '#bc245c' }}
+                          duration={6000}
+                          marqueeOnStart
+                          loop={true}
+                          marqueeDelay={1000}
+                          marqueeResetDelay={500}
+                      >
+                          Find Deals on In-store Purchase and Deli and Save on Gas
+                      </MarqueeText>
+                  </View>
+                  <View style={styles.gpCon}>
+                      <Text style={styles.gasText}>Gas Price</Text>
+                      <Icon name="color-fill" color='red' size={36} />
+                      <Text style={styles.dateText}>{month}-{date}-{year}</Text>
+                  </View>
+                  <View style={styles.priceContainer}>
+                      <View style={styles.col1}>
+                          <Card size="15" title="Regular" >
+                              <Text style={styles.paragraph}>
+                                  REGULAR {"\n"} 2.259/gal
+                              </Text>
+                          </Card>
+                          <Card size="12" title="Plus">
+                              <Text style={styles.paragraph}>
+                                  PLUS {"\n"} 2.4979/gal
+                              </Text>
+                          </Card>
+                      </View>
+                
+                      <View style={styles.col1}>
+                          <Card title="Super">
+                              <Text style={styles.paragraph}>
+                                  SUPER {"\n"} 2.7983/gal
+                              </Text>
+                          </Card>
+                          <Card title="Diesel">
+                              <Text style={styles.paragraph}>
+                                  DIESEL {"\n"}2.4991/gal
+                              </Text>
+                          </Card>
+                      </View>
+                  </View>
+              </ScrollView>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
+    root:{
+        flex: 1,
+        marginTop:StatusBar.currentHeight
+    },
   container: {
-    flex: 1,
     justifyContent: 'center'
   },
   topImg: {

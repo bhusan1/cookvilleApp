@@ -20,7 +20,7 @@ import {Platform, BackHandler} from "react-native";
 
 const rrfConfig = {
     userProfile: 'users',
-    useFirestoreForProfile: true
+    useFirestoreForProfile: true,
 }
 
 const rrfProps = {

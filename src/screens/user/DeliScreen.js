@@ -27,14 +27,15 @@ export const DeliScreen = ({navigation}) => {
 
     return (
         <SafeAreaView style={styles.root}>
-            <FlatList
-                showsVerticalScrollIndicator={false}
-                numColumns={1}
-                data={recipes}
-                style={{flex: 1, padding: theme.wp('2%')}}
-                renderItem={renderItem}
-                keyExtractor={(item) => `${item.id}`}
-            />
+            <View style={styles.content}>
+                <FlatList
+                    showsVerticalScrollIndicator={false}
+                    numColumns={1}
+                    data={recipes}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => `${item.id}`}
+                />
+            </View>
             <AddButton show={authUser.role === 'admin'} onPress={addDeal} />
         </SafeAreaView>
     );
@@ -46,6 +47,10 @@ const useStyles = (theme) =>
             flex: 1,
             marginTop: StatusBar.currentHeight,
             position: 'relative',
+        },
+        content:{
+            flex: 1,
+            padding: theme.wp('2.5%')
         },
         itemContainer: {
             flexDirection:'column',

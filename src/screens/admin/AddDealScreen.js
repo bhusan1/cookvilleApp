@@ -26,6 +26,7 @@ export const AddDealScreen = () => {
     const firestore = useFirestore();
     
     const tokens = useSelector(state=>state.firestore.ordered.tokens || []);
+    const authUser = useSelector(state=>state.firebase.profile);
     
     const [deal, setDeal] = useState(INITIAL_SATE);
     const [loading, setLoading] = useState(false);
@@ -88,14 +89,21 @@ export const AddDealScreen = () => {
     };
     
     const sendPushNotification = async () => {
+        const pushTokens = tokens.reduce((result, item)=>{
+            if(authUser.uid !== item.user){
+                result.push(item.token)
+            }
+            return result;
+        },[])
         const message = {
-            to: tokens,
+            to: pushTokens,
             sound: 'default',
             title: 'Deal Created',
-            body: deal.title + 'added',
+            body: 'Deal '+deal.title+' added!',
+            _displayInForeground: true,
         };
         
-        await fetch('https://exp.host/--/api/v2/push/send', {
+        return  await fetch('https://exp.host/--/api/v2/push/send', {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -153,8 +161,6 @@ const useStyles = (theme) =>
             width:'100%',
             height:'100%',
             resizeMode:'cover',
-            borderStyle:'solid',
-            borderColor: theme.colors.border,
             borderWidth:0.5,
         }
     });

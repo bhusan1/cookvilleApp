@@ -1,4 +1,4 @@
-import React, {useState, forwardRef} from 'react';
+import React, {useState, forwardRef, useImperativeHandle} from 'react';
 import {View, StyleSheet, Text, TextInput} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import {Input} from "../elemensts";
@@ -11,7 +11,7 @@ const INITIAL_STATE = {
     password: null,
 }
 
-export const SignInForm = forwardRef(() => {
+export const SignInForm = forwardRef((props, ref) => {
     const theme = useTheme();
     const styles = useStyles(theme);
     const dispatch = useDispatch();
@@ -22,9 +22,12 @@ export const SignInForm = forwardRef(() => {
         setUser({...user, [name]: value});
     }
 
-    const submit = () => {
-        dispatch(signInWithFirebase(user));
-    }
+    useImperativeHandle(ref, ()=>({
+        submit(){
+            dispatch(signInWithFirebase(user));
+        }
+    }))
+
 
     return (
         <View style={styles.root}>

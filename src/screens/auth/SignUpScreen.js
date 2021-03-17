@@ -1,93 +1,69 @@
-import React, { useState } from 'react'
-import { Image, Text, TextInput,TouchableOpacity, View } from 'react-native'
+import React, {useRef} from 'react'
+import { Image, Text, View, StyleSheet } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {SignUpForm} from "../../components/auth/SignUpForm";
+import {Button} from "../../components";
+import {useTheme} from "react-native-paper";
+import {imgIcon} from "../../commons/images";
 
 export const SignUpScreen = ({navigation}) => {
-    const [fullName, setFullName] = useState('')
-    const [email, setEmail] = useState('')
-    const [phoneNumber, setPhoneNumber] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
+    const theme = useTheme();
+    const styles = useStyles(theme);
+    const signUpFormRef = useRef(null);
 
     const onFooterLinkPress = () => {
-        navigation.navigate('Login')
-    }
-
-    const onRegisterPress = () => {
+        navigation.navigate('SignIn')
     }
 
     return (
         <View style={styles.container}>
-            <KeyboardAwareScrollView
-                style={{ flex: 1, width: '100%' }}
-                keyboardShouldPersistTaps="always">
-                <Image
-                    style={styles.logo}
-                    source={require('../../../assets/icon.png')}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder='Full Name'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setFullName(text)}
-                    value={fullName}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder='E-mail'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setEmail(text)}
-                    value={email}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder='Phone Number'
-                    placeholderTextColor="#aaaaaa"
-                    onChangeText={(text) => setPhoneNumber(text)}
-                    value={phoneNumber}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholderTextColor="#aaaaaa"
-                    secureTextEntry
-                    placeholder='Password'
-                    onChangeText={(text) => setPassword(text)}
-                    value={password}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholderTextColor="#aaaaaa"
-                    secureTextEntry
-                    placeholder='Confirm Password'
-                    onChangeText={(text) => setConfirmPassword(text)}
-                    value={confirmPassword}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                {/* <View style={styles.footerView}>
-                <CheckBox
-                        value={isSelected}
-                        onValueChange={setSelection}
-                        style={styles.checkbox}/>
-                    <Text style={styles.footerText}>Allow Promotions</Text>
-                </View> */}
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={() => onRegisterPress()}>
-                    <Text style={styles.buttonTitle}>Create account</Text>
-                </TouchableOpacity>
-                <View style={styles.footerView}>
-                    <Text style={styles.footerText}>Already got an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Log in</Text></Text>
+            <KeyboardAwareScrollView keyboardShouldPersistTaps="always">
+                <View style={styles.content}>
+                    <Image
+                        style={styles.logo}
+                        source={imgIcon}
+                    />
+                    <SignUpForm ref={signUpFormRef}/>
+                    <Button title={'Create Account'} onPress={signUpFormRef?.current?.submit}/>
+                    <View style={styles.footerView}>
+                        <Text style={styles.footerText}>Already got an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Log in</Text></Text>
+                    </View>
                 </View>
             </KeyboardAwareScrollView>
         </View>
     )
 }
+
+const useStyles = theme => StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: 'white',
+    },
+    content: {
+        flex: 1,
+        width:'90%',
+        alignItems: 'center',
+        alignSelf: 'center',
+        justifyContent:'center',
+    },
+    logo: {
+        height: theme.wp('40%'),
+        resizeMode:'contain',
+        alignSelf:'center',
+        marginTop: theme.hp('10%')
+    },
+    footerView: {
+        flex: 1,
+        alignItems: "center",
+        marginTop: 20
+    },
+    footerText: {
+        fontSize: 16,
+        color: '#2e2e2d'
+    },
+    footerLink: {
+        color: "#788eec",
+        fontWeight: "bold",
+        fontSize: 16
+    }
+})

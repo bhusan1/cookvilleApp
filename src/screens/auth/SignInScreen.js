@@ -12,11 +12,17 @@ export const SignInScreen = ({navigation}) => {
     const styles = useStyles(theme);
     const signInFormRef = useRef();
 
-    const onFooterLinkPress = () => {
-        navigation.navigate('Registration')
+    const signIn = () => {
+        if (signInFormRef?.current){
+            signInFormRef.current?.submit();
+        }
     }
 
-    const goToResetPassword = () => {navigation.navigate('Reset Password')}
+    const onFooterLinkPress = () => {
+        navigation.navigate('SignUp')
+    }
+
+    const goToResetPassword = () => {navigation.navigate('ResetPassword')}
 
 
     return (
@@ -33,8 +39,7 @@ export const SignInScreen = ({navigation}) => {
                     </View>
                     <Button
                         title={'Log In'}
-                        style={styles.button}
-                        onPress={signInFormRef.current?.submit}/>
+                        onPress={signIn}/>
                     <View style={styles.footerView}>
                         <Text style={styles.footerText}>Don't have an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Sign up</Text></Text>
                     </View>
@@ -61,11 +66,6 @@ const useStyles = theme => StyleSheet.create({
         resizeMode:'contain',
         alignSelf:'center',
         marginTop: theme.hp('20%')
-    },
-    button: {
-        marginLeft: 30,
-        marginRight: 30,
-        marginTop: 20,
     },
     footerView: {
         flex: 1,

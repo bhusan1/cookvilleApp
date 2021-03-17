@@ -1,8 +1,6 @@
-import { Text } from 'react-native';
-import React, { Component } from 'react';
-import { recipes, categories} from './dataArrays';
-
-
+import {Text} from 'react-native';
+import React, {Component} from 'react';
+import {recipes, categories} from './dataArrays';
 
 /* export function getCategoryName(categoryId) {
   let name;
@@ -15,12 +13,11 @@ import { recipes, categories} from './dataArrays';
 } */
 
 export function getRecipes(categoryId) {
-  const recipesArray = [];
-  recipes.map(data => {
-    if (data.categoryId == categoryId) {
-      recipesArray.push(data);
-    }
-  });
-  return recipesArray;
+    const recipesArray = [];
+    recipes.map((data) => {
+        if (data.categoryId == categoryId) {
+            recipesArray.push(data);
+        }
+    });
+    return recipesArray;
 }
-

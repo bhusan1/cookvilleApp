@@ -1,33 +1,37 @@
-import { Notifications } from "expo";
-import * as Permissions from "expo-permissions";
+import {Notifications} from 'expo';
+import * as Permissions from 'expo-permissions';
 
 export const registerForPushNotifications = () => async (dispatch, getState, {getFirebase, getFirestore}) => {
     try {
-        const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
-        
+        const {status: existingStatus} = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+
         let finalStatus = existingStatus;
-        
+
         if (existingStatus !== 'granted') {
-            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            const {status} = await Permissions.askAsync(Permissions.NOTIFICATIONS);
             finalStatus = status;
         }
-        
+
         if (finalStatus !== 'granted') {
             alert('Failed to get push token for push notification!');
             return;
         }
         let token = await Notifications.getExpoPushTokenAsync();
-        getFirestore().collection('tokens').doc(token).set({
-            user: getFirebase().profile.uid,
-            token: token
-        }).then(()=>{
-            console.log('Success');
-        })
-    }catch (e) {
+        getFirestore()
+            .collection('tokens')
+            .doc(token)
+            .set({
+                user: getFirebase().profile.uid,
+                token: token,
+            })
+            .then(() => {
+                console.log('Success');
+            });
+    } catch (e) {
         console.log(e);
-        alert('Something with Notification settings')
+        alert('Something with Notification settings');
     }
-    
+
     if (Platform.OS === 'android') {
         Notifications.createChannelAndroidAsync('default', {
             name: 'default',
@@ -37,12 +41,12 @@ export const registerForPushNotifications = () => async (dispatch, getState, {ge
             badge: true,
         });
     }
-}
+};
 
 const sendPushNotification = (body) => {
     return async (dispatch, getState) => {
         const tokens = (getState().firestore.ordered.tokens || []).reduce((result, item) => {
-            return result.push(item.token)
+            return result.push(item.token);
         }, []);
         const message = {
             to: tokens,

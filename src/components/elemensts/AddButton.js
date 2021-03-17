@@ -1,17 +1,16 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity } from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export const AddButton = ({onPress, show}) => {
-    
     const theme = useTheme();
     const styles = useStyles(theme);
-    
-    if(!show){
-        return  null;
+
+    if (!show) {
+        return null;
     }
-    
+
     return (
         <TouchableOpacity onPress={onPress} style={styles.button}>
             <AntDesign name="plus" size={theme.wp('7%')} color={'white'} />

@@ -8,11 +8,11 @@ export const ProgressImage = ({style = {}, source, imageStyle = {}}) => {
     const theme = useTheme();
     const styles = useStyles(theme);
     const [imageSize, setImageSize] = useState({width: 0, height: 0});
-    
+
     const [visible, setVisible] = useState(true);
     const [isError, setIsError] = useState(false);
     const viewAnimation = useRef(null);
-    
+
     useEffect(() => {
         if (viewAnimation) {
             (async () => {
@@ -20,16 +20,16 @@ export const ProgressImage = ({style = {}, source, imageStyle = {}}) => {
             })();
         }
     }, [viewAnimation]);
-    
+
     const _loadEnd = () => {
         setVisible(false);
         setImageSize({width: '100%', height: '100%'});
     };
-    
+
     const _onError = () => {
-        setIsError(true)
-    }
-    
+        setIsError(true);
+    };
+
     return (
         <View style={[styles.root, style]}>
             {visible && (
@@ -37,7 +37,12 @@ export const ProgressImage = ({style = {}, source, imageStyle = {}}) => {
                     <ActivityIndicator />
                 </Animatable.View>
             )}
-            <FastImage source={source} style={[styles.image, imageStyle, imageSize]} onLoadEnd={_loadEnd} onError={_onError}/>
+            <FastImage
+                source={source}
+                style={[styles.image, imageStyle, imageSize]}
+                onLoadEnd={_loadEnd}
+                onError={_onError}
+            />
         </View>
     );
 };

@@ -1,13 +1,11 @@
 import React, {useState, forwardRef, useImperativeHandle} from 'react';
-import {View, StyleSheet, Text, TextInput} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 import {useTheme} from 'react-native-paper';
-import {Input} from "../elemensts";
-import {useDispatch} from "react-redux";
-import {signUpUserInFirebase} from "../../store/actions/AuthAction";
-import {validate} from "../../commons/helper";
+import {Input} from '../elemensts';
+import {useDispatch} from 'react-redux';
+import {signUpUserInFirebase} from '../../store/actions';
+import {validate} from '../../commons/helper';
 import Spinner from 'react-native-loading-spinner-overlay';
-
-
 
 const INITIAL_STATE = {
     fullName: null,
@@ -15,7 +13,7 @@ const INITIAL_STATE = {
     email: null,
     password: null,
     confirmPassword: null,
-}
+};
 
 export const SignUpForm = forwardRef((props, ref) => {
     const theme = useTheme();
@@ -27,51 +25,48 @@ export const SignUpForm = forwardRef((props, ref) => {
 
     const handleChange = (name, value) => {
         setUser({...user, [name]: value});
-    }
+    };
 
-    useImperativeHandle(ref, ()=>({
-        submit(){
-            if (validate(user,{fullName: 'required',phoneNumber: 'required', email: 'required|email', password: 'required|min:8|same:confirmPassword'})) {
+    useImperativeHandle(ref, () => ({
+        submit() {
+            if (
+                validate(user, {
+                    fullName: 'required',
+                    phoneNumber: 'required',
+                    email: 'required|email',
+                    password: 'required|min:8|same:confirmPassword',
+                })
+            ) {
                 setLoading(true);
-                dispatch(signUpUserInFirebase(user)).then(()=>{
+                dispatch(signUpUserInFirebase(user)).then(() => {
                     setLoading(false);
                 });
             }
-        }
+        },
     }));
 
     return (
         <View style={styles.root}>
             <Spinner visible={loading} textContent={'Loading...'} textStyle={{color: 'white'}} />
-            <Input
-                name={'fullName'}
-                value={user.fullName}
-                placeholder='Full Name'
-                onChangeText={handleChange}
-            />
-            <Input
-                name={'email'}
-                value={user.email}
-                placeholder='Email'
-                onChangeText={handleChange}
-            />
+            <Input name={'fullName'} value={user.fullName} placeholder="Full Name" onChangeText={handleChange} />
+            <Input name={'email'} value={user.email} placeholder="Email" onChangeText={handleChange} />
             <Input
                 name={'phoneNumber'}
                 value={user.phoneNumber}
-                placeholder='Phone Number'
+                placeholder="Phone Number"
                 onChangeText={handleChange}
             />
             <Input
                 name={'password'}
                 secureTextEntry
-                placeholder='Password'
+                placeholder="Password"
                 onChangeText={handleChange}
                 value={user.password}
             />
             <Input
                 name={'confirmPassword'}
                 secureTextEntry
-                placeholder='Confirm Password'
+                placeholder="Confirm Password"
                 onChangeText={handleChange}
                 value={user.confirmPassword}
             />

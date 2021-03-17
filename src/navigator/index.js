@@ -3,40 +3,34 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {useTheme} from "react-native-paper";
+import {useTheme} from 'react-native-paper';
 
-import {authCheck} from "../store/actions/AuthAction";
+import {authCheck} from '../store/actions/AuthAction';
 
 import {TabNavigator} from './TabNavigator';
-import {
-    SignInScreen,
-    SignUpScreen,
-    ResetPasswordScreen,
-    AddDealScreen,
-} from '../screens';
+import {SignInScreen, SignUpScreen, ResetPasswordScreen, AddDealScreen} from '../screens';
 const Stack = createStackNavigator();
 
 export const navigationRef = React.createRef();
 
 export const AppNavigator = () => {
-
     const theme = useTheme();
     const dispatch = useDispatch();
 
     const [initialScreen, setInitialScreen] = useState(null);
 
-    useEffect(()=>{
-        dispatch(authCheck()).then(isLoggedIn=>{
-            if (isLoggedIn){
-                setInitialScreen('UserBoard')
-            }else {
-                setInitialScreen('SignIn')
+    useEffect(() => {
+        dispatch(authCheck()).then((isLoggedIn) => {
+            if (isLoggedIn) {
+                setInitialScreen('UserBoard');
+            } else {
+                setInitialScreen('SignIn');
             }
-        })
-    },[])
+        });
+    }, []);
 
-    if(!initialScreen){
-        return  null;
+    if (!initialScreen) {
+        return null;
     }
 
     return (
@@ -74,11 +68,11 @@ export const AppNavigator = () => {
                     name="AddDeal"
                     component={AddDealScreen}
                     options={{
-                        headerTitle:'Create Deal',
-                        headerBackTitle:'Back',
-                        headerTintColor:'white',
+                        headerTitle: 'Create Deal',
+                        headerBackTitle: 'Back',
+                        headerTintColor: 'white',
                         headerStyle: {
-                            backgroundColor: theme.colors.secondary
+                            backgroundColor: theme.colors.secondary,
                         },
                     }}
                 />

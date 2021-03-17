@@ -6,9 +6,9 @@ export const Paper = (props) => {
     const {children, style, hidden, onPress, active = false} = props;
     const theme = useTheme();
     const styles = useStyles(theme);
-    
+
     const rootStyle = [styles.root, theme.styles.shadow, style];
-    
+
     if (onPress) {
         return (
             <>

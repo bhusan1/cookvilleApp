@@ -2,7 +2,7 @@ import React from 'react';
 import {TextInput, StyleSheet} from 'react-native';
 import {useTheme} from 'react-native-paper';
 
-export const Input = ({name, style, value, onChangeText, isInvalid=false, ...props}) => {
+export const Input = ({name, style, value, onChangeText, isInvalid = false, ...props}) => {
     const theme = useTheme();
     const styles = useStyles(theme);
 

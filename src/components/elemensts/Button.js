@@ -39,6 +39,6 @@ const useStyles = (theme) => ({
         fontSize: theme.hp('2.5%'),
         color: 'white',
         fontFamily: theme.fonts.bold,
-        fontWeight:'900',
+        fontWeight: '900',
     },
 });

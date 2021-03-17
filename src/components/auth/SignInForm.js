@@ -33,7 +33,6 @@ export const SignInForm = forwardRef(() => {
                 value={user.email}
                 placeholder='Email'
                 onChangeText={handleChange}
-                style={styles.input}
             />
             <Input
                 style={styles.input}
@@ -41,7 +40,6 @@ export const SignInForm = forwardRef(() => {
                 placeholder='Password'
                 onChangeText={handleChange}
                 value={user.password}
-                style={styles.input}
             />
         </View>
     );
@@ -52,9 +50,5 @@ const useStyles = (theme) =>
         root: {
             flex: 1,
             width: '100%',
-        },
-        input: {
-            marginVertical: 10,
-            marginHorizontal: 30,
         },
     });

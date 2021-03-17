@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import { StatusBar } from 'expo-status-bar';
-import * as Font from 'expo-font';
 import {store} from "./store";
 import {Provider} from 'react-redux';
 import {AppNavigator} from './navigator';
@@ -39,18 +38,12 @@ export default function App() {
             });
         }
 
-        (async()=>{
-            await  Font.loadAsync({
-                'OpenSans': require('./assets/fonts/OpenSans-Regular.ttf'),
-            })
-        })();
-
     },[])
     return (
         <PaperProvider theme={theme}>
             <Provider store= {store}>
                 <ReactReduxFirebaseProvider {...rrfProps}>
-                    <StatusBar barStyle={'light'} backgroundColor={'red'} />
+                    <StatusBar barStyle={'light'} backgroundColor={'white'} />
                     <AppNavigator />
                     <FlashMessage position="top" />
                 </ReactReduxFirebaseProvider>

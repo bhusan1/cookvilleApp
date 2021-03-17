@@ -8,7 +8,7 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 
 const colors = {
     default: '#000000',
-    border:'#808080',
+    border:'#aaaaaa',
     primary: '#788eec',
     primaryActive: '#e58732',
     primaryOpacity: '#E793473f',

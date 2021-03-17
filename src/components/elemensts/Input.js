@@ -2,20 +2,20 @@ import React from 'react';
 import {TextInput, StyleSheet} from 'react-native';
 import {useTheme} from 'react-native-paper';
 
-export const Input = ({name, value, onChangeText, isInvalid=false, ...props}) => {
+export const Input = ({name, style, value, onChangeText, isInvalid=false, ...props}) => {
     const theme = useTheme();
     const styles = useStyles(theme);
 
     return (
         <TextInput
+            {...props}
             name={name}
             value={value}
             autoCapitalize="none"
             placeholderTextColor="#aaaaaa"
             underlineColorAndroid="transparent"
             onChangeText={(text) => onChangeText(name, text)} //... Bind the name here
-            style={[styles.textInputStyle, {borderColor: isInvalid ? theme.colors.danger : theme.colors.border}]}
-            {...props}
+            style={[styles.textInputStyle, style]}
         />
     );
 };
@@ -33,9 +33,10 @@ const useStyles = (theme) =>
             paddingLeft: 10,
             fontSize: 18,
             fontFamily: theme.fonts.regular,
-            textAlignVertical: 'top',
+            textAlignVertical: 'center',
             borderStyle: 'solid',
-            borderWidth: 1,
+            borderWidth: 0.5,
             borderColor: theme.colors.border,
+            marginTop: theme.hp('3%'),
         },
     });

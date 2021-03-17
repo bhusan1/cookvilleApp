@@ -13,7 +13,7 @@ export const DeliScreen = ({navigation}) => {
 
     const authUser = useSelector((state) => state.firebase.profile);
     const recipes = useSelector((state) => state.firestore.ordered.recipes || []);
-
+console.log(recipes)
     const addDeal = () => {
         navigation.navigate('AddDeal');
     };
@@ -65,8 +65,6 @@ const useStyles = (theme) =>
             borderRadius: 5,
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
-            borderStyle:'solid',
-            borderWidth: 0.5,
             resizeMode:'cover',
         },
         title: {

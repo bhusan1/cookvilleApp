@@ -171,7 +171,7 @@ const styles = {
         },
         shadowOpacity: 0.3,
         shadowRadius: 3,
-        elevation: 8,
+        elevation: 4,
     },
     overLayer: {
         width: wp('100%'),

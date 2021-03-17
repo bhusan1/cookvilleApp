@@ -31,9 +31,9 @@ export const DeliScreen = ({navigation}) => {
                 showsVerticalScrollIndicator={false}
                 numColumns={1}
                 data={recipes}
-                style={{flex: 1}}
+                style={{flex: 1, padding: theme.wp('2%')}}
                 renderItem={renderItem}
-                keyExtractor={(item) => `${item.recipeId}`}
+                keyExtractor={(item) => `${item.id}`}
             />
             <AddButton show={authUser.role === 'admin'} onPress={addDeal} />
         </SafeAreaView>
@@ -54,15 +54,15 @@ const useStyles = (theme) =>
             marginVertical: theme.hp('1%'),
             width: '100%',
             padding: 0,
-            height: 225,
+            height: theme.hp('30%'),
             borderColor: '#cccccc',
             borderWidth: 0.5,
             borderRadius: 15,
         },
         photo: {
             width: '100%',
-            height: 150,
-            borderRadius: 15,
+            height: '80%',
+            borderRadius: 5,
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
             borderStyle:'solid',
@@ -75,7 +75,6 @@ const useStyles = (theme) =>
             fontWeight: 'bold',
             textAlign: 'center',
             color: '#444444',
-            marginTop: 3,
             marginRight: 5,
             marginLeft: 5,
             borderStyle:'solid',

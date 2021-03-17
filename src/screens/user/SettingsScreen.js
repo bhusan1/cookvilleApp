@@ -1,9 +1,9 @@
 import React from 'react';
-import { Text, StyleSheet, SafeAreaView} from 'react-native';
+import {Text, StyleSheet, SafeAreaView, StatusBar} from 'react-native';
 
 import {Button} from "../../components";
 import {useDispatch} from "react-redux";
-import {userLogout} from "../../store/actions/AuthAction";
+import {userLogout} from "../../store/actions";
 
 export const SettingsScreen = () => {
     
@@ -24,7 +24,8 @@ export const SettingsScreen = () => {
 const styles = StyleSheet.create({
   root: {
         flex: 1,
-      width:'100%'
+      width:'100%',
+      marginTop: StatusBar.currentHeight,
   },
   text:{
     fontSize: 14,

@@ -5,7 +5,7 @@ import { Card } from 'react-native-elements';
 import MarqueeText from 'react-native-marquee';
 
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Constants} from "expo-constants";
+import Constants from 'expo-constants';
 import {useDispatch} from "react-redux";
 import {registerForPushNotifications} from "../../store/actions";
 const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });

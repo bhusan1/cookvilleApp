@@ -4,8 +4,7 @@ import {useDispatch} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useTheme} from 'react-native-paper';
-
-import {authCheck} from '../store/actions/AuthAction';
+import {authCheck} from '../store/actions';
 
 import {TabNavigator} from './TabNavigator';
 import {SignInScreen, SignUpScreen, ResetPasswordScreen, AddDealScreen} from '../screens';
@@ -16,7 +15,7 @@ export const navigationRef = React.createRef();
 export const AppNavigator = () => {
     const theme = useTheme();
     const dispatch = useDispatch();
-
+    
     const [initialScreen, setInitialScreen] = useState(null);
 
     useEffect(() => {
@@ -35,7 +34,9 @@ export const AppNavigator = () => {
 
     return (
         <NavigationContainer ref={navigationRef}>
-            <Stack.Navigator initialRouteName={initialScreen}>
+            <Stack.Navigator
+                initialRouteName={initialScreen}
+            >
                 <Stack.Screen
                     name="SignIn"
                     component={SignInScreen}
@@ -79,4 +80,4 @@ export const AppNavigator = () => {
             </Stack.Navigator>
         </NavigationContainer>
     );
-};
+}

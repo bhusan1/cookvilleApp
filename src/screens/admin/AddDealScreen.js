@@ -99,7 +99,7 @@ export const AddDealScreen = () => {
             to: pushTokens,
             sound: 'default',
             title: 'Deal Created',
-            body: 'Deal '+deal.title+' added!',
+            body: 'Deal ' + deal.title + ' added!',
             _displayInForeground: true,
         };
         

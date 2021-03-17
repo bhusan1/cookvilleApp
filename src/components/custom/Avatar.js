@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {View, Alert, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import {useTheme} from 'react-native-paper';
+import React, {useState} from 'react';
+import {View, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import {imgAvatar} from "../../commons/images";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useFirebase, useFirestore} from 'react-redux-firebase';
@@ -8,23 +7,12 @@ import {useSelector} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import * as ImagePicker from 'expo-image-picker';
 
-export const Avatar = ({size = 80, noEdit, avatar, style, disabled}) => {
-    const theme = useTheme();
-    const styles = useStyles(theme);
+export const Avatar = ({size = 80, noEdit, style={}, disabled}) => {
     const firebase = useFirebase();
     const firestore = useFirestore();
     const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(false);
-    const authUser = useSelector((state) => state.auth.user);
-    const [source, setSource] = useState(authUser.avatar ? {uri: authUser.avatar} : imgAvatar);
-
-    useEffect(() => {
-        if (authUser.avatar) {
-            setSource({uri: authUser.avatar});
-        } else {
-            setSource(imgAvatar);
-        }
-    }, [authUser.avatar]);
+    const authUser = useSelector((state) => state.firebase.profile);
     
     const openImagePickerAsync = async () => {
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
@@ -40,7 +28,7 @@ export const Avatar = ({size = 80, noEdit, avatar, style, disabled}) => {
                 const blob = await response.blob();
                 const fileName = authUser.uid + '.' + uri.split('.').pop();
                 setLoading(true);
-                firebase.storage().ref(`/avatar/${fileName}`)
+                firebase.storage().ref(`/avatars/${fileName}`)
                     .put(blob).on(
                     "state_changed",
                     (snapshot )=> {
@@ -52,11 +40,16 @@ export const Avatar = ({size = 80, noEdit, avatar, style, disabled}) => {
                     },
                     ()=>{
                         firebase.storage()
-                            .ref("deals/")
+                            .ref("avatars/")
                             .child(fileName)
                             .getDownloadURL()
                             .then((url) => {
-                                setLoading(false);
+                                firestore.collection('users').doc(authUser.uid)
+                                    .update({photoUrl: url})
+                                    .then(()=>{
+                                        setLoading(false);
+                                        setProgress(0);
+                                    })
                             })
                     }
                 )
@@ -73,6 +66,9 @@ export const Avatar = ({size = 80, noEdit, avatar, style, disabled}) => {
         alignItems: 'center',
         position: 'relative',
         backgroundColor: 'white',
+        borderStyle:'solid',
+        borderWidth: 0.5,
+        borderColor: '#8080807f',
         ...style,
     };
 
@@ -91,14 +87,10 @@ export const Avatar = ({size = 80, noEdit, avatar, style, disabled}) => {
     const avatarStyle = {
         width: '100%',
         height: '100%',
-        resizeMode: 'cover',
+        resizeMode: 'contain',
         position: 'relative',
-        borderWidth: 0.5,
-        borderColor: '#8080807f',
         zIndex: 1,
         borderRadius: 2000,
-        overflow: 'hidden',
-        opacity: disabled ? 0.4 : 1,
     };
 
     return (
@@ -109,7 +101,7 @@ export const Avatar = ({size = 80, noEdit, avatar, style, disabled}) => {
                     <AntDesign name={'camera'} size={16} color={'white'} />
                 </TouchableOpacity>
             )}
-            <Image imageStyle={avatarStyle} source={avatar || source} />
+            <Image style={avatarStyle} source={authUser.photoUrl?{uri: authUser.photoUrl}:imgAvatar} />
         </View>
     );
 };

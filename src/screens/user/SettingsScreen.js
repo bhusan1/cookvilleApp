@@ -1,7 +1,7 @@
 import React from 'react';
 import {Text, StyleSheet, SafeAreaView, StatusBar, View, Switch} from 'react-native';
 
-import {Button} from '../../components';
+import {Avatar, Button} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
 import {userLogout} from '../../store/actions';
 import {useFirestore} from "react-redux-firebase";
@@ -26,9 +26,13 @@ export const SettingsScreen = () => {
         <SafeAreaView style={styles.root}>
             <View style={styles.content}>
                 <View style={styles.settingItem}>
-                    <View style={[styles.settingItemContent,{flexDirection:'column'}]}>
-                        <Text>Profile</Text>
-                        
+                    <View style={[styles.settingItemContent,{justifyContent:'flex-start'}]}>
+                        <Avatar />
+                        <View style={{marginLeft: 20}}>
+                            <Text>{authUser.fullName}</Text>
+                            <Text style={{marginTop: 3}}>{authUser.email}</Text>
+                            <Text style={{marginTop: 3}}>{authUser.phoneNumber}</Text>
+                        </View>
                     </View>
                 </View>
                 <View style={styles.settingItem}>

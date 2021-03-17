@@ -8,7 +8,7 @@ import Constants from 'expo-constants';
 import {useSelector} from 'react-redux';
 import * as Notifications from 'expo-notifications';
 import moment from 'moment'
-import {useFirestore} from "react-redux-firebase";
+import {useFirestore, useFirestoreConnect} from "react-redux-firebase";
 import {Button, Paper} from "../../components";
 import Feather from 'react-native-vector-icons/Feather';
 import {useTheme} from "react-native-paper";
@@ -45,13 +45,17 @@ const OpenURLButton = ({url, children}) => {
 
 export const HomeScreen = () => {
     
+    useFirestoreConnect([{collection:'settings', doc: 'gasPrice', storeAs: 'gasPrice'}])
+    
     const theme = useTheme();
     const styles = useStyles(theme);
     
     const firestore = useFirestore();
     const authUser = useSelector(state=>state.firebase.profile);
+    const gasPrice = useSelector(state=>state.firestore.data.gasPrice || {});
+    
     const [refresh, setRefresh] = useState(false);
-    const [region, setRegion] = useState({
+    const [region] = useState({
         latitude: 33.18624068627443,
         longitude: -94.86102794051021,
         latitudeDelta: 0.01,
@@ -107,25 +111,25 @@ export const HomeScreen = () => {
                 </View>
                 <View style={styles.gpCon}>
                     <Text style={styles.gasText}>Gas Price</Text>
-                    <FontAwesome5 name="gas-pump" color="black" size={50} />
+                    <FontAwesome5 name="gas-pump" color="black" size={70} style={{marginVertical: 10}} />
                     <Text style={styles.dateText}>{moment().format('MM/DD/YYYY')}</Text>
                 </View>
                 <View style={styles.priceContainer}>
                     <View style={styles.col1}>
                         <Card size="15" title="Regular">
-                            <Text style={styles.paragraph}>REGULAR {'\n'} 2.259/gal</Text>
+                            <Text style={styles.paragraph}>REGULAR {'\n'} {gasPrice.regular || 0}/gal</Text>
                         </Card>
                         <Card size="12" title="Plus">
-                            <Text style={styles.paragraph}>PLUS {'\n'} 2.4979/gal</Text>
+                            <Text style={styles.paragraph}>PLUS {'\n'} {gasPrice.plus || 0}/gal</Text>
                         </Card>
                     </View>
 
                     <View style={styles.col1}>
                         <Card title="Super">
-                            <Text style={styles.paragraph}>SUPER {'\n'} 2.7983/gal</Text>
+                            <Text style={styles.paragraph}>SUPER {'\n'} {gasPrice.super || 0}/gal</Text>
                         </Card>
                         <Card title="Diesel">
-                            <Text style={styles.paragraph}>DIESEL {'\n'}2.4991/gal</Text>
+                            <Text style={styles.paragraph}>DIESEL {'\n'}{gasPrice.diesel || 0}/gal</Text>
                         </Card>
                     </View>
                 </View>
@@ -158,7 +162,7 @@ const useStyles = theme => StyleSheet.create({
         height: 40,
         position: 'absolute',
         top: theme.hp('2%'),
-        right: theme.wp('2%'),
+        right: theme.wp('5%'),
         justifyContent: 'center',
         alignItems: 'center',
         ...theme.styles.shadow,

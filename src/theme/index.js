@@ -40,7 +40,7 @@ const fonts = {
     regular: isIos ? 'OpenSans' : 'OpenSans',
     italic: isIos ? 'OpenSans' : 'OpenSans',
     medium: isIos ? 'OpenSans' : 'OpenSans',
-    bold: isIos ? 'OpenSans' : 'OpenSans',
+    bold: isIos ? 'OpenSansBold' : 'OpenSansBold',
     boldItalic: isIos ? 'OpenSans' : 'OpenSans',
     semiBold: isIos ? 'OpenSans' : 'OpenSans',
     extraBold: isIos ? 'OpenSans' : 'OpenSans',
@@ -58,6 +58,7 @@ const borderRadius = {
 
 const styles = {
     h1: {
+        width:'100%',
         fontSize: fontSizes.extraLarge,
         fontFamily: fonts.bold,
         color: colors.default,

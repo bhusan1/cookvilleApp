@@ -78,7 +78,6 @@ export const AddDealScreen = () => {
                             .getDownloadURL()
                             .then((url) => {
                                 setDeal({...deal, image: url});
-                                setProgress(0);
                                 setLoading(false);
                             })
                     }

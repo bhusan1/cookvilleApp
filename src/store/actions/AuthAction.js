@@ -66,7 +66,6 @@ export const signUpUserInFirebase = (user) => async (dispatch, getState, {getFir
 
 export const signInWithFirebase = (user) => (dispatch, getState, {getFirebase}) => {
     return new Promise((resolve) => {
-        console.log(getState());
         getFirebase()
             .auth()
             .signInWithEmailAndPassword(user.email, user.password)

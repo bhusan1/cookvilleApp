@@ -27,6 +27,7 @@
       },
       "package": "com.ssp.cookville1stop",
       "googleServicesFile": "./google-services.json",
+      "useNextNotificationsApi": true,
       "permissions": [
         "CAMERA",
         "READ_CONTACTS",

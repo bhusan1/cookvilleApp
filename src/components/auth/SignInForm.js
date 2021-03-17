@@ -27,7 +27,7 @@ export const SignInForm = forwardRef((props, ref) => {
     useImperativeHandle(ref, () => ({
         submit() {
             if (validate(user, {email: 'required|email', password: 'required|min:8'})) {
-                // setLoading(true);
+                setLoading(true);
                 dispatch(signInWithFirebase(user)).then(() => {
                     setLoading(false);
                 });

@@ -1,13 +1,16 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import {View, Text, StyleSheet, Alert, Linking, Button, ScrollView, SafeAreaView, StatusBar} from 'react-native';
+import React, {useState, useCallback, useEffect, useRef} from 'react';
+import {View, Text, StyleSheet, Alert, Linking, ScrollView, SafeAreaView, StatusBar} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import {Card} from 'react-native-elements';
 import MarqueeText from 'react-native-marquee';
-
 import Icon from 'react-native-vector-icons/Ionicons';
 import Constants from 'expo-constants';
-import {useDispatch} from 'react-redux';
-import {registerForPushNotifications} from '../../store/actions';
+import {useDispatch, useSelector} from 'react-redux';
+import * as Notifications from 'expo-notifications';
+import moment from 'moment'
+import {useFirestore} from "react-redux-firebase";
+import {Button} from "../../components";
+
 const scheme = Platform.select({ios: 'maps:0,0?q=', android: 'geo:0,0?q='});
 const latLng = `${33.18624068627443},${-94.86102794051021}`;
 const label = 'Custom Label';
@@ -15,6 +18,14 @@ const label = 'Custom Label';
 const url = Platform.select({
     ios: `${scheme}${label}@${latLng}`,
     android: `${scheme}${latLng}(${label})`,
+});
+
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: true,
+        shouldSetBadge: true,
+    }),
 });
 
 const OpenURLButton = ({url, children}) => {
@@ -29,26 +40,23 @@ const OpenURLButton = ({url, children}) => {
     return <Button title={children} onPress={handlePress} />;
 };
 
-export const HomeScreen = ({navigation}) => {
-    const date = new Date().getDate();
-    const month = new Date().getMonth() + 1;
-    const year = new Date().getFullYear();
-
-    const dispatch = useDispatch();
-
+export const HomeScreen = () => {
+    const firestore = useFirestore();
+    const authUser = useSelector(state=>state.firebase.profile);
     const [region, setRegion] = useState({
         latitude: 33.18624068627443,
         longitude: -94.86102794051021,
         latitudeDelta: 0.01,
         longitudeDelta: 0.01,
     });
-
+    
     useEffect(() => {
-        if (Constants.isDevice) {
-            dispatch(registerForPushNotifications());
-        } else {
-            console.warn('Must use physical device for Push Notifications');
-        }
+        registerForPushNotificationsAsync().then(token => {
+            firestore.collection('tokens').doc(token).set({
+                user: authUser.uid,
+                token,
+            }).then(r => log(r));
+        });
     }, []);
 
     return (
@@ -56,7 +64,6 @@ export const HomeScreen = ({navigation}) => {
             <ScrollView>
                 <View style={styles.saCon}>
                     <Text style={styles.gasText}>Store Address {'\n'} Cookville #1 Stop</Text>
-
                     <Text style={styles.dealsText}> 6262 US HWY 67 E Cookville, TX 75558 </Text>
                     <OpenURLButton url={url}>Open Maps</OpenURLButton>
                 </View>
@@ -81,9 +88,7 @@ export const HomeScreen = ({navigation}) => {
                 <View style={styles.gpCon}>
                     <Text style={styles.gasText}>Gas Price</Text>
                     <Icon name="color-fill" color="red" size={36} />
-                    <Text style={styles.dateText}>
-                        {month}-{date}-{year}
-                    </Text>
+                    <Text style={styles.dateText}>{moment().format('MM/DD/YYYY')}</Text>
                 </View>
                 <View style={styles.priceContainer}>
                     <View style={styles.col1}>
@@ -229,3 +234,35 @@ const styles = StyleSheet.create({
         color: '#333333',
     },
 });
+
+
+async function registerForPushNotificationsAsync() {
+    let token;
+    if (Constants.isDevice) {
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+        }
+        token = (await Notifications.getExpoPushTokenAsync()).data;
+        console.log(token);
+    } else {
+        alert('Must use physical device for Push Notifications');
+    }
+    
+    if (Platform.OS === 'android') {
+        Notifications.setNotificationChannelAsync('default', {
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
+        });
+    }
+    
+    return token;
+}

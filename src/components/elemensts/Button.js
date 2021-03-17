@@ -25,7 +25,7 @@ export const Button = ({title, onPress, style, titleStyle, icon}) => {
 const useStyles = (theme) => ({
     buttonStyle: {
         width: '100%',
-        padding: 13,
+        padding: theme.hp('1%'),
         maxWidth: 400,
         justifyContent: 'center',
         alignItems: 'center',
@@ -33,10 +33,10 @@ const useStyles = (theme) => ({
         backgroundColor: theme.colors.primary,
         marginVertical: 8,
         flexDirection: 'row',
-        borderRadius: 10,
+        borderRadius: 5,
     },
     titleStyle: {
-        fontSize: theme.hp('2.5%'),
+        fontSize: theme.hp('2%'),
         color: 'white',
         fontFamily: theme.fonts.bold,
         fontWeight: '900',

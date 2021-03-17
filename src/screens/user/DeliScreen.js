@@ -13,7 +13,7 @@ export const DeliScreen = ({navigation}) => {
 
     const authUser = useSelector((state) => state.firebase.profile);
     const recipes = useSelector((state) => state.firestore.ordered.recipes || []);
-console.log(recipes)
+
     const addDeal = () => {
         navigation.navigate('AddDeal');
     };
@@ -58,10 +58,11 @@ const useStyles = (theme) =>
             borderColor: '#cccccc',
             borderWidth: 0.5,
             borderRadius: 15,
+            overflow: 'hidden',
         },
         photo: {
             width: '100%',
-            height: '80%',
+            height: '85%',
             borderRadius: 5,
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
@@ -76,6 +77,7 @@ const useStyles = (theme) =>
             marginRight: 5,
             marginLeft: 5,
             borderStyle:'solid',
-            borderTopWidth: 0.5
+            borderTopWidth: 0.5,
+            height:'15%'
         },
     });

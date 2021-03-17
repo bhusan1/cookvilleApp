@@ -28,12 +28,13 @@ export const AddDealScreen = () => {
     const tokens = useSelector(state=>state.firestore.ordered.tokens || []);
     
     const [deal, setDeal] = useState(INITIAL_SATE);
-    const [progress, setProgress] = useState(0)
     const [loading, setLoading] = useState(false);
+    const [loadingText, setLoadingText] = useState('');
     
     const submit = () => {
         if(validate(deal,{title:'required', image: 'required'})){
             setLoading(true);
+            setLoadingText('Loading');
             firestore.collection('recipes').add(deal).then(async ()=>{
                 await sendPushNotification();
                 showMessage({
@@ -64,7 +65,8 @@ export const AddDealScreen = () => {
                     .put(blob).on(
                     "state_changed",
                     (snapshot )=> {
-                        setProgress(Math.floor(snapshot.bytesTransferred/snapshot.totalBytes * 100));
+                        const progress = Math.floor(snapshot.bytesTransferred/snapshot.totalBytes * 100);
+                        setLoadingText(`Uploading (${progress}%)`);
                     },
                     (error) => {
                         console.log(error);
@@ -107,7 +109,7 @@ export const AddDealScreen = () => {
     
     return (
         <View style={styles.root} >
-            <Spinner visible={loading} textContent={`Uploading (${progress}%)`} textStyle={{color: 'white'}} />
+            <Spinner visible={loading} textContent={loadingText} textStyle={{color: 'white'}} />
             <View style={styles.content}>
                 <Input
                     name={'title'}

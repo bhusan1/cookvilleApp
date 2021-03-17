@@ -1,7 +1,10 @@
 import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
+import {useDispatch} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+
+import {authCheck} from "../store/actions/AuthAction";
 
 import {TabNavigator} from './TabNavigator';
 import {
@@ -9,22 +12,28 @@ import {
     SignUpScreen,
     ResetPasswordScreen,
 } from '../screens';
-import {useSelector} from 'react-redux';
-
 const Stack = createStackNavigator();
 
 export const navigationRef = React.createRef();
 
 export const AppNavigator = () => {
 
-    const profile = useSelector(state=>state.firebase.profile);
+    const dispatch = useDispatch();
 
-    let  initialScreen = null;
+    const [initialScreen, setInitialScreen] = useState(null);
 
-    if(!profile.isLoaded){
+    useEffect(()=>{
+        dispatch(authCheck()).then(isLoggedIn=>{
+            if (isLoggedIn){
+                setInitialScreen('UserBoard')
+            }else {
+                setInitialScreen('SignIn')
+            }
+        })
+    },[])
+
+    if(!initialScreen){
         return  null;
-    }else {
-        initialScreen = profile.isEmpty ? 'SignIn' : 'UserBoard';
     }
 
     return (

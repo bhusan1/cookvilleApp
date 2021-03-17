@@ -5,6 +5,8 @@ import {Input} from "../elemensts";
 import {useDispatch} from "react-redux";
 import {signUpUserInFirebase} from "../../store/actions/AuthAction";
 import {validate} from "../../commons/helper";
+import Spinner from 'react-native-loading-spinner-overlay';
+
 
 
 const INITIAL_STATE = {
@@ -20,7 +22,8 @@ export const SignUpForm = forwardRef((props, ref) => {
     const styles = useStyles(theme);
     const dispatch = useDispatch();
 
-    const [user, setUser] = useState(INITIAL_STATE)
+    const [user, setUser] = useState(INITIAL_STATE);
+    const [loading, setLoading] = useState(false);
 
     const handleChange = (name, value) => {
         setUser({...user, [name]: value});
@@ -29,13 +32,17 @@ export const SignUpForm = forwardRef((props, ref) => {
     useImperativeHandle(ref, ()=>({
         submit(){
             if (validate(user,{fullName: 'required',phoneNumber: 'required', email: 'required|email', password: 'required|min:8|same:confirmPassword'})) {
-                dispatch(signUpUserInFirebase(user));
+                setLoading(true);
+                dispatch(signUpUserInFirebase(user)).then(()=>{
+                    setLoading(false);
+                });
             }
         }
     }));
 
     return (
         <View style={styles.root}>
+            <Spinner visible={loading} textContent={'Loading...'} textStyle={{color: 'white'}} />
             <Input
                 name={'fullName'}
                 value={user.fullName}

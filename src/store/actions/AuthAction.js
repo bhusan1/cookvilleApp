@@ -7,6 +7,19 @@ export const USER_LOG_OUT = 'USER_LOG_OUT';
  */
 
 let unsubscribes = [];
+
+export const authCheck = () => async (dispatch, getState, {getFirebase}) => {
+    return new Promise(resolve => {
+        getFirebase().auth().onAuthStateChanged(function(user) {
+            if (user) {
+                resolve(true)
+            } else {
+                resolve(false);
+            }
+        });
+    })
+}
+
 export const signUpUserInFirebase = (user) => async (dispatch, getState, {getFirebase, getFirestore}) => {
     return new Promise((resolve) => {
         const firebase = getFirebase();
@@ -32,6 +45,7 @@ export const signUpUserInFirebase = (user) => async (dispatch, getState, {getFir
                             description: 'You are signed in now!',
                             type: 'success',
                         });
+                        getState().nav.reset({index: 0, routes:[{name:'UserBoard'}]})
                         resolve(true);
                     });
                 unsubscribes.push(unsubscribe);
@@ -49,8 +63,9 @@ export const signUpUserInFirebase = (user) => async (dispatch, getState, {getFir
 };
 
 
-export const signInWithFirebase = (user) => (dispatch, getState, {getFirestore, getFirebase}) => {
+export const signInWithFirebase = (user) => (dispatch, getState, {getFirebase}) => {
     return new Promise((resolve) => {
+        console.log(getState())
         getFirebase()
             .auth()
             .signInWithEmailAndPassword(user.email, user.password)
@@ -60,6 +75,8 @@ export const signInWithFirebase = (user) => (dispatch, getState, {getFirestore, 
                     description: 'You are logged in now',
                     type: 'success',
                 });
+                getState().nav.reset({index: 0, routes: [{name: 'UserBoard'}]});
+                resolve(true);
             })
             .catch((error) => {
                 showMessage({

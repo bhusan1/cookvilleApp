@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import * as Font from 'expo-font';
-import  MainApp  from './src/app';
+import  MainApp  from './src/App';
 
 import {decode, encode} from 'base-64';
 import {BackHandler, Platform} from "react-native";

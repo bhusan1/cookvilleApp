@@ -58,33 +58,36 @@ export const AddDealScreen = () => {
             alert("Permission to access camera roll is required!");
             return;
         }
+        
         ImagePicker.launchImageLibraryAsync().then(async (res)=>{
-            const {uri} = res;
-            setDeal({...deal, image: uri});
-            const response = await fetch(uri);
-            const blob = await response.blob();
-            const fileName = uuid.v4() + '.' + uri.split('.').pop();
-            setLoading(true);
-            firebase.storage().ref(`/deals/${fileName}`)
-                .put(blob).on(
-                "state_changed",
-                (snapshot )=> {
-                    setProgress(snapshot.bytesTransferred/snapshot.totalBytes);
-                },
-                (error) => {
-                    console.log(error);
-                },
-                ()=>{
-                    firebase.storage()
-                        .ref("deals/")
-                        .child(fileName)
-                        .getDownloadURL()
-                        .then((url) => {
-                            setProgress(0);
-                            setLoading(false);
-                        })
-                }
-            )
+            if(!res.cancelled){
+                const {uri} = res;
+                setDeal({...deal, image: uri});
+                const response = await fetch(uri);
+                const blob = await response.blob();
+                const fileName = uuid.v4() + '.' + uri.split('.').pop();
+                setLoading(true);
+                firebase.storage().ref(`/deals/${fileName}`)
+                    .put(blob).on(
+                    "state_changed",
+                    (snapshot )=> {
+                        setProgress(snapshot.bytesTransferred/snapshot.totalBytes);
+                    },
+                    (error) => {
+                        console.log(error);
+                    },
+                    ()=>{
+                        firebase.storage()
+                            .ref("deals/")
+                            .child(fileName)
+                            .getDownloadURL()
+                            .then((url) => {
+                                setProgress(0);
+                                setLoading(false);
+                            })
+                    }
+                )
+            }
         });
         
     }
@@ -119,7 +122,7 @@ export const AddDealScreen = () => {
                             <ProgressImage source={{uri: deal.image}}/>
                         </View>:
                         <TouchableOpacity style={styles.imagePicker} onPress={launchActionSheet}>
-                            <AntDesign name={'camera'} size={theme.wp('30%')} color={'white'} />
+                            <AntDesign name={'camera'} size={theme.wp('20%')} color={'white'} />
                         </TouchableOpacity>
                 }
                 <Button title={'Create Deal'} onPress={submit}/>
@@ -145,6 +148,7 @@ const useStyles = (theme) =>
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: '#8080809f',
+            marginVertical: 20,
         },
         buttonStyle:{
             width: theme.wp('60%'),

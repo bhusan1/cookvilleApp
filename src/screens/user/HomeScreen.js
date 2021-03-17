@@ -5,7 +5,7 @@ import {Card} from 'react-native-elements';
 import MarqueeText from 'react-native-marquee';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Constants from 'expo-constants';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import * as Notifications from 'expo-notifications';
 import moment from 'moment'
 import {useFirestore} from "react-redux-firebase";
@@ -256,7 +256,7 @@ async function registerForPushNotificationsAsync() {
     }
     
     if (Platform.OS === 'android') {
-        Notifications.setNotificationChannelAsync('default', {
+        await Notifications.setNotificationChannelAsync('default', {
             name: 'default',
             importance: Notifications.AndroidImportance.MAX,
             vibrationPattern: [0, 250, 250, 250],

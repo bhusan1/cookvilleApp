@@ -1,10 +1,13 @@
-import React, { useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {View, Text, StyleSheet, Alert, Linking, Button, ScrollView, SafeAreaView, StatusBar} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { Card } from 'react-native-elements';
 import MarqueeText from 'react-native-marquee';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import {Constants} from "expo-constants";
+import {useDispatch} from "react-redux";
+import {registerForPushNotifications} from "../../store/actions";
 const scheme = Platform.select({ ios: 'maps:0,0?q=', android: 'geo:0,0?q=' });
 const latLng = `${33.18624068627443},${-94.86102794051021}`;
 const label = 'Custom Label';
@@ -32,6 +35,8 @@ export const HomeScreen = ({navigation}) => {
     const date = new Date().getDate();
     const month = new Date().getMonth() + 1;
     const year = new Date().getFullYear();
+    
+    const dispatch = useDispatch();
 
     const [region, setRegion] = useState({
         latitude: 33.18624068627443,
@@ -39,6 +44,14 @@ export const HomeScreen = ({navigation}) => {
         latitudeDelta: 0.01,
         longitudeDelta: 0.01
       });
+    
+    useEffect(()=>{
+        if(Constants.isDevice){
+            dispatch(registerForPushNotifications())
+        } else {
+            console.warn('Must use physical device for Push Notifications');
+        }
+    },[])
 
     return(
         <SafeAreaView style={styles.root}>

@@ -23,14 +23,14 @@ export const SignUpForm = forwardRef((props, ref) => {
     const [user, setUser] = useState(INITIAL_STATE)
 
     const handleChange = (name, value) => {
-        if (validate(user,{fullName: 'required',phoneNumber: 'required', email: 'required|email', password: 'required|min:8|same:confirmPassword'})){
-            setUser({...user, [name]: value});
-        }
+        setUser({...user, [name]: value});
     }
 
     useImperativeHandle(ref, ()=>({
         submit(){
-            dispatch(signUpUserInFirebase(user));
+            if (validate(user,{fullName: 'required',phoneNumber: 'required', email: 'required|email', password: 'required|min:8|same:confirmPassword'})) {
+                dispatch(signUpUserInFirebase(user));
+            }
         }
     }));
 

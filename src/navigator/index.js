@@ -1,13 +1,13 @@
 import 'react-native-gesture-handler';
 import React, {useEffect, useState} from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useTheme} from 'react-native-paper';
 import {authCheck} from '../store/actions';
 
 import {TabNavigator} from './TabNavigator';
-import {SignInScreen, SignUpScreen, ResetPasswordScreen, AddRecipeScreen, AddDealScreen} from '../screens';
+import {SignInScreen, SignUpScreen, ResetPasswordScreen, AddRecipeScreen, AddDealScreen, AllowNotificationScreen} from '../screens';
 const Stack = createStackNavigator();
 
 export const navigationRef = React.createRef();
@@ -15,18 +15,25 @@ export const navigationRef = React.createRef();
 export const AppNavigator = () => {
     const theme = useTheme();
     const dispatch = useDispatch();
+    const authUser = useSelector(state=>state.firebase.profile);
     
     const [initialScreen, setInitialScreen] = useState(null);
 
     useEffect(() => {
         dispatch(authCheck()).then((isLoggedIn) => {
             if (isLoggedIn) {
-                setInitialScreen('UserBoard');
+                if(authUser.isLoaded){
+                    if(authUser.muteNotifications){
+                        setInitialScreen('AllowNotification')
+                    }else {
+                        setInitialScreen('UserBoard');
+                    }
+                }
             } else {
                 setInitialScreen('SignIn');
             }
         });
-    }, []);
+    }, [authUser]);
 
     if (!initialScreen) {
         return null;
@@ -61,6 +68,13 @@ export const AppNavigator = () => {
                 <Stack.Screen
                     name="UserBoard"
                     component={TabNavigator}
+                    options={{
+                        header: () => null,
+                    }}
+                />
+                <Stack.Screen
+                    name="AllowNotification"
+                    component={AllowNotificationScreen}
                     options={{
                         header: () => null,
                     }}

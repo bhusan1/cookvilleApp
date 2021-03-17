@@ -20,7 +20,7 @@ export const DeliScreen = ({navigation}) => {
 
     const renderItem = ({item}) => (
         <Paper style={styles.itemContainer}>
-            <Image style={styles.photo} source={{uri: item.photo_url}} />
+            <Image style={styles.photo} source={{uri: item.image}} />
             <Text style={styles.title}>{item.title}</Text>
         </Paper>
     );
@@ -29,8 +29,9 @@ export const DeliScreen = ({navigation}) => {
         <SafeAreaView style={styles.root}>
             <FlatList
                 showsVerticalScrollIndicator={false}
-                numColumns={2}
+                numColumns={1}
                 data={recipes}
+                style={{flex: 1}}
                 renderItem={renderItem}
                 keyExtractor={(item) => `${item.recipeId}`}
             />
@@ -47,31 +48,37 @@ const useStyles = (theme) =>
             position: 'relative',
         },
         itemContainer: {
+            flexDirection:'column',
             justifyContent: 'center',
             alignItems: 'center',
-            marginLeft: 10,
-            marginRight: 20,
-            marginTop: 20,
-            width: theme.wp('40%'),
+            marginTop: theme.hp('2%'),
+            width: '100%',
+            padding: 0,
             height: 225,
             borderColor: '#cccccc',
             borderWidth: 0.5,
             borderRadius: 15,
         },
         photo: {
-            width: theme.wp('40%'),
+            width: '100%',
             height: 150,
             borderRadius: 15,
             borderBottomLeftRadius: 0,
             borderBottomRightRadius: 0,
+            borderStyle:'solid',
+            borderWidth: 0.5,
+            resizeMode:'cover',
         },
         title: {
             fontSize: 17,
+            width:'100%',
             fontWeight: 'bold',
             textAlign: 'center',
             color: '#444444',
             marginTop: 3,
             marginRight: 5,
             marginLeft: 5,
+            borderStyle:'solid',
+            borderTopWidth: 0.5
         },
     });

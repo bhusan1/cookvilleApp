@@ -81,3 +81,21 @@ export const userLogout = () => async (dispatch, getState, {getFirebase}) => {
     });
     getState().nav.reset({index: 0, routes: [{name: 'UserBoard'}]});
 };
+
+/**
+ *Send Email for verify Code and Password
+ */
+export const sendEmailForRecovery = (email) => (dispatch, getState, {getFirebase}) => {
+    const firebase = getFirebase();
+    firebase
+        .auth()
+        .sendPasswordResetEmail(email)
+        .then(function () {
+            showMessage({
+                message: 'Success',
+                description: 'Please check your email',
+                type: 'success',
+            });
+        })
+        .catch(function (error) {});
+};

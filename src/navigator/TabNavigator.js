@@ -11,7 +11,6 @@ const Tab = createBottomTabNavigator();
 export const TabNavigator = () => {
     const theme = useTheme();
     const route = useRoute();
-    const initialRoute = route.params?.initialRoute;
     const routeName = getFocusedRouteNameFromRoute(route);
     return (
         <Tab.Navigator
@@ -19,8 +18,8 @@ export const TabNavigator = () => {
             activeColor="#fff"
             tabBarOptions={{
                 activeTintColor: theme.colors.primary,
-                inactiveTintColor: theme.colors.default,
-                showLabel: true,
+                inactiveTintColor: theme.colors.boarder,
+                // showLabel: true,
                 style: {
                     backgroundColor:'#6e012a',
                 },
@@ -30,16 +29,15 @@ export const TabNavigator = () => {
                     paddingBottom: theme.hp('0.5%'),
                 },
             }}
-            screenOptions={{
-                header: () => null,
-            }}>
+        >
             <Tab.Screen
                 name="Home"
                 component={HomeScreen}
                 options={{
                     tabBarLabel: 'Home',
+                    showLabel: false,
                     tabBarIcon: ({ color }) => (
-                        <Icon name="ios-home" color={color} size={26} />
+                        <Icon name="ios-home" color={color} size={20} />
                     ),
                 }}
             />
@@ -49,7 +47,7 @@ export const TabNavigator = () => {
                 options={{
                     tabBarLabel: 'Deals',
                     tabBarIcon: ({ color }) => (
-                        <Icon name="ios-notifications" color={color} size={26} />
+                        <Icon name="ios-notifications" color={color} size={20} />
                     ),
                 }}
             />
@@ -59,7 +57,7 @@ export const TabNavigator = () => {
                 options={{
                     tabBarLabel: 'Deli',
                     tabBarIcon: ({ color }) => (
-                        <Icon name="fast-food" color={color} size={26} />
+                        <Icon name="fast-food" color={color} size={20} />
                     ),
                 }}
             />
@@ -69,7 +67,7 @@ export const TabNavigator = () => {
                 options={{
                     tabBarLabel: 'Settings',
                     tabBarIcon: ({ color }) => (
-                        <Icon name="ios-aperture" color={color} size={26} />
+                        <Icon name="ios-aperture" color={color} size={20} />
                     ),
                 }}
             />

@@ -96,7 +96,7 @@ export const userLogout = () => async (dispatch, getState, {getFirebase}) => {
     unsubscribes.forEach((unsubscribe) => {
         unsubscribe();
     });
-    getState().nav.reset({index: 0, routes: [{name: 'UserBoard'}]});
+    getState().nav.reset({index: 0, routes: [{name: 'SignIn'}]});
 };
 
 /**

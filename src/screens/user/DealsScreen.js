@@ -3,32 +3,12 @@ import { View, Text, Button, StyleSheet,LayoutAnimation,Image, ScrollView, Platf
 
 
 
-export default class DealsScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => ({
-    title: 'Deals',
-  });
-
-  constructor() {
-    super();
-
-    this.state = { expanded: false }
-
-    if (Platform.OS === 'android') {
-      UIManager.setLayoutAnimationEnabledExperimental(true);
-    }
-  }
-
-  changeLayout = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    this.setState({ expanded: !this.state.expanded });
-  }
-    render() {
+export const DealsScreen = () => {
     return(
       <ScrollView>
         <Text style={styles.headText}>
           OnGoing Deals
         </Text>
-
         <View style={styles.saCon}>
         <TouchableOpacity activeOpacity={0.8} onPress={this.changeLayout} style={styles.Btn}>
           <Text style={styles.gasText}>Buy $20 inside store</Text>
@@ -39,9 +19,7 @@ export default class DealsScreen extends React.Component {
             <Image source={require('../../assets/barcode.jpg')} style={{ width: 300, height: 100 }}/>
           </View>
         </View>
-
         <View style={styles.divider}></View>
-
         <View style={styles.saCon}>
         <TouchableOpacity activeOpacity={0.8} onPress={this.changeLayout} style={styles.Btn}>
           <Text style={styles.gasText}>Buy $50 inside store</Text>
@@ -52,9 +30,7 @@ export default class DealsScreen extends React.Component {
             <Image source={require('../../assets/barcode.jpg')} style={{ width: 300, height: 100 }}/>
           </View>
         </View>
-
         <View style={styles.divider}></View>
-
         <View style={styles.saCon}>
         <TouchableOpacity activeOpacity={0.8} onPress={this.changeLayout} style={styles.Btn}>
           <Text style={styles.gasText}>Buy $100 inside store</Text>
@@ -65,11 +41,8 @@ export default class DealsScreen extends React.Component {
             <Image source={require('../../assets/barcode.jpg')} style={{ width: 300, height: 100 }}/>
           </View>
         </View>
-
-
       </ScrollView>
     );
-  }
 }
 
 const styles = StyleSheet.create({

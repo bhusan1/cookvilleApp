@@ -1,39 +1,43 @@
 import React from 'react';
 import { FlatList,View, Text,Image, StyleSheet} from 'react-native';
-import { recipes } from '../../data/dataArrays';
 import {useTheme} from "react-native-paper";
+import {useFirestoreConnect} from "react-redux-firebase";
+import {useSelector} from "react-redux";
+import {Paper} from '../../components'
 
 
-export const DeliScreen = ({navigation}) => {
-
+export const DeliScreen = () => {
+    
+    useFirestoreConnect([{collection:'recipes'}])
+    
     const theme = useTheme();
     const styles = useStyles(theme)
     
-  const renderItem = ({ item }) => (
-    <View style={styles.container}>
-      <Image style={styles.photo} source={{ uri: item.photo_url }}/>
-      <Text style={styles.title}>{item.title}</Text>
-    </View>
-  );
+    const recipes = useSelector(state=> state.firestore.ordered.recipes || []);
+    
+    const renderItem = ({ item }) => (
+        <Paper style={styles.itemContainer}>
+          <Image style={styles.photo} source={{ uri: item.photo_url }}/>
+          <Text style={styles.title}>{item.title}</Text>
+        </Paper>
+    );
 
     return(
-      <View>
-        <FlatList
-        vertical
-        showsVerticalScrollIndicator={false}
-        numColumns={2}
-        data={recipes}
-        renderItem={renderItem}
-        keyExtractor={item => `${item.recipeId}`}
-        />
+        <View>
+            <FlatList
+                showsVerticalScrollIndicator={false}
+                numColumns={2}
+                data={recipes}
+                renderItem={renderItem}
+                keyExtractor={item => `${item.recipeId}`}
+            />
       </View>
     )
 }
 
 
 const useStyles = theme => StyleSheet.create({
-    container: {
-        flex: 1,
+    itemContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: 10,
@@ -53,7 +57,6 @@ const useStyles = theme => StyleSheet.create({
         borderBottomRightRadius: 0
     },
     title: {
-        flex: 1,
         fontSize: 17,
         fontWeight: 'bold',
         textAlign: 'center',

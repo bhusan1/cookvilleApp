@@ -12,6 +12,7 @@ import {useFirestore} from "react-redux-firebase";
 import {Button, Paper} from "../../components";
 import Feather from 'react-native-vector-icons/Feather';
 import {useTheme} from "react-native-paper";
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 
 const scheme = Platform.select({ios: 'maps:0,0?q=', android: 'geo:0,0?q='});
 const latLng = `${33.18624068627443},${-94.86102794051021}`;
@@ -106,7 +107,7 @@ export const HomeScreen = () => {
                 </View>
                 <View style={styles.gpCon}>
                     <Text style={styles.gasText}>Gas Price</Text>
-                    <Icon name="color-fill" color="red" size={36} />
+                    <FontAwesome5 name="gas-pump" color="black" size={50} />
                     <Text style={styles.dateText}>{moment().format('MM/DD/YYYY')}</Text>
                 </View>
                 <View style={styles.priceContainer}>

@@ -1,19 +1,24 @@
 import React from 'react';
-import { FlatList,View, Text,Image, StyleSheet} from 'react-native';
+import {FlatList, View, Text, Image, StyleSheet, ScrollView, SafeAreaView, StatusBar} from 'react-native';
 import {useTheme} from "react-native-paper";
 import {useFirestoreConnect} from "react-redux-firebase";
 import {useSelector} from "react-redux";
-import {Paper} from '../../components'
+import {AddButton, Paper} from '../../components'
 
 
-export const DeliScreen = () => {
+export const DeliScreen = ({navigation}) => {
     
     useFirestoreConnect([{collection:'recipes'}])
     
     const theme = useTheme();
     const styles = useStyles(theme)
     
+    const authUser = useSelector(state=>state.firebase.profile);
     const recipes = useSelector(state=> state.firestore.ordered.recipes || []);
+    
+    const addDeal = () => {
+        navigation.navigate('AddDeal')
+    }
     
     const renderItem = ({ item }) => (
         <Paper style={styles.itemContainer}>
@@ -23,7 +28,7 @@ export const DeliScreen = () => {
     );
 
     return(
-        <View>
+        <SafeAreaView style={styles.root}>
             <FlatList
                 showsVerticalScrollIndicator={false}
                 numColumns={2}
@@ -31,12 +36,18 @@ export const DeliScreen = () => {
                 renderItem={renderItem}
                 keyExtractor={item => `${item.recipeId}`}
             />
-      </View>
+            <AddButton show={authUser.role === 'admin'} onPress={addDeal}/>
+      </SafeAreaView>
     )
 }
 
 
 const useStyles = theme => StyleSheet.create({
+    root:{
+      flex: 1,
+      marginTop: StatusBar.currentHeight,
+        position:'relative'
+    },
     itemContainer: {
         justifyContent: 'center',
         alignItems: 'center',

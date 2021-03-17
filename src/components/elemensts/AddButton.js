@@ -5,8 +5,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export const AddButton = ({onPress, show}) => {
     
-    console.log('ppppppppppppppppppp')
-    
     const theme = useTheme();
     const styles = useStyles(theme);
     
@@ -25,12 +23,12 @@ const useStyles = (theme) =>
     StyleSheet.create({
         button: {
             position: 'absolute',
-            bottom: theme.hp('10%'),
+            bottom: theme.hp('5%'),
             width: theme.wp('12%'),
             height: theme.wp('12%'),
             right: theme.wp('7%'),
             alignSelf: 'flex-end',
-            backgroundColor: theme.colors.btnContinue,
+            backgroundColor: theme.colors.secondary,
             borderRadius: theme.wp('6%'),
             justifyContent: 'center',
             alignItems: 'center',

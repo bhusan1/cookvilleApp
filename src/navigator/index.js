@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {useDispatch} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import {useTheme} from "react-native-paper";
 
 import {authCheck} from "../store/actions/AuthAction";
 
@@ -11,6 +12,7 @@ import {
     SignInScreen,
     SignUpScreen,
     ResetPasswordScreen,
+    AddDealScreen,
 } from '../screens';
 const Stack = createStackNavigator();
 
@@ -18,6 +20,7 @@ export const navigationRef = React.createRef();
 
 export const AppNavigator = () => {
 
+    const theme = useTheme();
     const dispatch = useDispatch();
 
     const [initialScreen, setInitialScreen] = useState(null);
@@ -65,6 +68,18 @@ export const AppNavigator = () => {
                     component={TabNavigator}
                     options={{
                         header: () => null,
+                    }}
+                />
+                <Stack.Screen
+                    name="AddDeal"
+                    component={AddDealScreen}
+                    options={{
+                        headerTitle:'Create Deal',
+                        headerBackTitle:'Back',
+                        headerTintColor:'white',
+                        headerStyle: {
+                            backgroundColor: theme.colors.secondary
+                        },
                     }}
                 />
             </Stack.Navigator>

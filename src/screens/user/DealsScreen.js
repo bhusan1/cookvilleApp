@@ -22,6 +22,7 @@ export const DealsScreen = ({navigation}) => {
     const deals = useSelector(state=>state.firestore.ordered.deals || []);
     const authUser = useSelector(state=>state.firebase.profile);
     const [images, setImages] = useState([]);
+    const [visible, setVisible] = useState(false);
     
     const addDeal = () => {
         navigation.navigate('AddDeal');
@@ -34,19 +35,18 @@ export const DealsScreen = ({navigation}) => {
     }
     
     const handleClose = () => {
-        setImages([]);
+        setVisible(false);
     }
     
     const handleBarcodeClick = (deal)=>{
+        setVisible(true);
         setImages([
             {
-                source: {
-                    uri: deal.barcode,
-                },
+                source: {uri: deal.barcode,},
                 title: deal.title,
                 width: theme.wp('100%'),
                 height: theme.hp('100%'),
-            },
+            }
         ])
     }
     
@@ -78,9 +78,9 @@ export const DealsScreen = ({navigation}) => {
             <ImageView
                 images={images}
                 imageIndex={0}
-                isVisible={images.length > 0}
-                useNativeDriver={false}
+                isVisible={visible}
                 onClose={handleClose}
+                animationType={'none'}
             />
         </SafeAreaView>
     );

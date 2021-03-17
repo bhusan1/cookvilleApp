@@ -19,7 +19,7 @@ export const SettingsScreen = () => {
     
     const handleMuteNotifications = async () => {
         setMuteNotifications(!muteNotifications);
-        await firestore.collection('users').doc(authUser.uid).update({muteNotifications});
+        await firestore.collection('users').doc(authUser.uid).update({muteNotifications: !muteNotifications});
     }
 
     return (

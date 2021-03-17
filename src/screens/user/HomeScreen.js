@@ -51,13 +51,15 @@ export const HomeScreen = () => {
     });
     
     useEffect(() => {
-        registerForPushNotificationsAsync().then(token => {
-            firestore.collection('tokens').doc(token).set({
-                user: authUser.uid,
-                token,
-            }).then(r => log(r));
+        registerForPushNotificationsAsync().then(async (token) => {
+            const tokenRef = firestore.collection('tokens').doc(token);
+            if (authUser.muteNotifications){
+                await tokenRef.delete();
+            }else {
+                await tokenRef.set({ user: authUser.uid, token})
+            }
         });
-    }, []);
+    }, [authUser]);
 
     return (
         <SafeAreaView style={styles.root}>

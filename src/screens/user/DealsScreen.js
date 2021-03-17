@@ -1,44 +1,48 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, SafeAreaView, StatusBar} from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Image,
+    ScrollView,
+    TouchableOpacity,
+    SafeAreaView,
+    StatusBar,
+    FlatList
+} from 'react-native';
+import {useFirestoreConnect} from "react-redux-firebase";
+import {useSelector} from "react-redux";
 
 export const DealsScreen = ({navigation}) => {
+    
+    useFirestoreConnect([{collection:'deals'}]);
+    
+    const deals = useSelector(state=>state.firestore.ordered.deals || []);
+    
+    const renderItem = () => {
+        
+        return (
+            <View style={styles.saCon}>
+                <TouchableOpacity activeOpacity={0.8} style={styles.Btn}>
+                    <Text style={styles.gasText}>Buy $50 inside store</Text>
+                    <Text style={styles.dealsText}> Get 5% off on your total </Text>
+                    <Text style={styles.dateText}> Offer ends 1-22-2021 </Text>
+                </TouchableOpacity>
+                <View>
+                    <Image source={require('../../assets/barcode.jpg')} style={{width: 300, height: 100}} />
+                </View>
+            </View>
+        )
+    }
+    
     return (
         <SafeAreaView style={styles.root}>
-            <ScrollView>
-                <Text style={styles.headText}>OnGoing Deals</Text>
-                <View style={styles.saCon}>
-                    <TouchableOpacity activeOpacity={0.8} style={styles.Btn}>
-                        <Text style={styles.gasText}>Buy $20 inside store</Text>
-                        <Text style={styles.dealsText}> Get 2% off on your total </Text>
-                        <Text style={styles.dateText}> Offer ends 1-22-2021 </Text>
-                    </TouchableOpacity>
-                    <View>
-                        <Image source={require('../../assets/barcode.jpg')} style={{width: 300, height: 100}} />
-                    </View>
-                </View>
-                <View style={styles.divider} />
-                <View style={styles.saCon}>
-                    <TouchableOpacity activeOpacity={0.8} style={styles.Btn}>
-                        <Text style={styles.gasText}>Buy $50 inside store</Text>
-                        <Text style={styles.dealsText}> Get 5% off on your total </Text>
-                        <Text style={styles.dateText}> Offer ends 1-22-2021 </Text>
-                    </TouchableOpacity>
-                    <View>
-                        <Image source={require('../../assets/barcode.jpg')} style={{width: 300, height: 100}} />
-                    </View>
-                </View>
-                <View style={styles.divider} />
-                <View style={styles.saCon}>
-                    <TouchableOpacity activeOpacity={0.8} style={styles.Btn}>
-                        <Text style={styles.gasText}>Buy $100 inside store</Text>
-                        <Text style={styles.dealsText}> Get 10% off on your total </Text>
-                        <Text style={styles.dateText}> Offer ends 1-22-2021 </Text>
-                    </TouchableOpacity>
-                    <View>
-                        <Image source={require('../../assets/barcode.jpg')} style={{width: 300, height: 100}} />
-                    </View>
-                </View>
-            </ScrollView>
+            <Text style={styles.headText}>OnGoing Deals</Text>
+            <FlatList
+                data={deals}
+                renderItem={renderItem}
+                keyExtractor={(item)=>item.id}
+            />
         </SafeAreaView>
     );
 };

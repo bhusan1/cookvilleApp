@@ -15,7 +15,7 @@ export const DeliScreen = ({navigation}) => {
     const recipes = useSelector((state) => state.firestore.ordered.recipes || []);
 
     const addDeal = () => {
-        navigation.navigate('AddDeal');
+        navigation.navigate('AddRecipe');
     };
 
     const renderItem = ({item}) => (

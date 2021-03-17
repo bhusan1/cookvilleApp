@@ -64,11 +64,13 @@ export const HomeScreen = () => {
     
     useEffect(() => {
         registerForPushNotificationsAsync().then(async (token) => {
-            const tokenRef = firestore.collection('tokens').doc(token);
-            if (authUser.muteNotifications){
-                await tokenRef.delete();
-            }else {
-                await tokenRef.set({ user: authUser.uid, token})
+            if(token){
+                const tokenRef = firestore.collection('tokens').doc(token);
+                if (authUser.muteNotifications){
+                    await tokenRef.delete();
+                }else {
+                    await tokenRef.set({ user: authUser.uid, token})
+                }
             }
         });
     }, [authUser]);
@@ -289,7 +291,7 @@ async function registerForPushNotificationsAsync() {
         token = (await Notifications.getExpoPushTokenAsync()).data;
         console.log(token);
     } else {
-        alert('Must use physical device for Push Notifications');
+        console.log('Must use physical device for Push Notifications');
     }
     
     if (Platform.OS === 'android') {

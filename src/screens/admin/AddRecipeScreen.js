@@ -4,26 +4,30 @@ import {useTheme} from 'react-native-paper';
 import {Button, Input } from "../../components";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import * as ImagePicker from 'expo-image-picker';
-import {useFirebase, useFirestore} from "react-redux-firebase";
+import {useFirebase, useFirestore, useFirestoreConnect} from "react-redux-firebase";
 import uuid from 'react-native-uuid';
 import Spinner from "react-native-loading-spinner-overlay";
 import {validate} from "../../commons/helper";
 import {showMessage} from 'react-native-flash-message';
-import moment from "moment";
+import {useSelector} from "react-redux";
 
 const INITIAL_SATE = {
     title: '',
-    subtitle:'',
-    deadline: moment().format('MM/DD/YYYY'),
-    barcode: '',
+    image: '',
 };
 
-export const AddDealScreen = () => {
+export const AddRecipeScreen = () => {
+    
+    useFirestoreConnect([{collection:'tokens'}]);
     
     const theme = useTheme();
     const styles = useStyles(theme);
     const firebase = useFirebase();
     const firestore = useFirestore();
+    
+    const tokens = useSelector(state=>state.firestore.ordered.tokens || []);
+    const authUser = useSelector(state=>state.firebase.profile);
+    
     const [deal, setDeal] = useState(INITIAL_SATE);
     const [loading, setLoading] = useState(false);
     const [loadingText, setLoadingText] = useState('');
@@ -32,10 +36,11 @@ export const AddDealScreen = () => {
         if(validate(deal,{title:'required', image: 'required'})){
             setLoading(true);
             setLoadingText('Loading');
-            firestore.collection('deals').add(deal).then(async ()=>{
+            firestore.collection('recipes').add(deal).then(async ()=>{
+                await sendPushNotification();
                 showMessage({
                     message: 'Success',
-                    description: 'Deal created successfully!',
+                    description: 'Recipe created successfully!',
                     type: 'success',
                 });
                 setLoading(false);
@@ -57,7 +62,7 @@ export const AddDealScreen = () => {
                 const blob = await response.blob();
                 const fileName = uuid.v4() + '.' + uri.split('.').pop();
                 setLoading(true);
-                firebase.storage().ref(`/)/${fileName}`)
+                firebase.storage().ref(`/recipes/${fileName}`)
                     .put(blob).on(
                     "state_changed",
                     (snapshot )=> {
@@ -69,7 +74,7 @@ export const AddDealScreen = () => {
                     },
                     ()=>{
                         firebase.storage()
-                            .ref("barcodes/")
+                            .ref("recipes/")
                             .child(fileName)
                             .getDownloadURL()
                             .then((url) => {
@@ -82,6 +87,32 @@ export const AddDealScreen = () => {
         });
         
     };
+    
+    const sendPushNotification = async () => {
+        const pushTokens = tokens.reduce((result, item)=>{
+            if(authUser.uid !== item.user){
+                result.push(item.token)
+            }
+            return result;
+        },[])
+        const message = {
+            to: pushTokens,
+            sound: 'default',
+            title: 'Recipe Created',
+            body: 'Recipe ' + deal.title + ' added!',
+            _displayInForeground: true,
+        };
+        
+        return  await fetch('https://exp.host/--/api/v2/push/send', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Accept-encoding': 'gzip, deflate',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(message),
+        });
+    }
     
     return (
         <View style={styles.root} >

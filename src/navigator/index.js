@@ -7,7 +7,7 @@ import {useTheme} from 'react-native-paper';
 import {authCheck} from '../store/actions';
 
 import {TabNavigator} from './TabNavigator';
-import {SignInScreen, SignUpScreen, ResetPasswordScreen, AddDealScreen} from '../screens';
+import {SignInScreen, SignUpScreen, ResetPasswordScreen, AddRecipeScreen, AddDealScreen} from '../screens';
 const Stack = createStackNavigator();
 
 export const navigationRef = React.createRef();
@@ -63,6 +63,18 @@ export const AppNavigator = () => {
                     component={TabNavigator}
                     options={{
                         header: () => null,
+                    }}
+                />
+                <Stack.Screen
+                    name="AddRecipe"
+                    component={AddRecipeScreen}
+                    options={{
+                        headerTitle: 'Create Recipe',
+                        headerBackTitle: 'Back',
+                        headerTintColor: 'white',
+                        headerStyle: {
+                            backgroundColor: theme.colors.secondary,
+                        },
                     }}
                 />
                 <Stack.Screen

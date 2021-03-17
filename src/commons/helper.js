@@ -21,7 +21,7 @@ export const validate = (data, rules, showAlert = true) => {
             }
 
             if (ruleItem.split(':')[0] === 'min') {
-                if (data[key].length <= parseInt(ruleItem.split(':')[1])) {
+                if (data[key].length < parseInt(ruleItem.split(':')[1])) {
                     if (showAlert) {
                         Alert.alert('Warning', key + ' should be more than ' + ruleItem.split(':')[1] + 'characters');
                     }

@@ -41,7 +41,7 @@ export const SignInForm = forwardRef((props, ref) => {
                 onChangeText={handleChange}
             />
             <Input
-                style={styles.input}
+                name={'password'}
                 secureTextEntry
                 placeholder='Password'
                 onChangeText={handleChange}

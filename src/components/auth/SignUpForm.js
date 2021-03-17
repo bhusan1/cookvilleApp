@@ -55,14 +55,14 @@ export const SignUpForm = forwardRef((props, ref) => {
                 onChangeText={handleChange}
             />
             <Input
-                style={styles.input}
+                name={'password'}
                 secureTextEntry
                 placeholder='Password'
                 onChangeText={handleChange}
                 value={user.password}
             />
             <Input
-                style={styles.input}
+                name={'confirmPassword'}
                 secureTextEntry
                 placeholder='Confirm Password'
                 onChangeText={handleChange}

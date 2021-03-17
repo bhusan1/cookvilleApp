@@ -11,6 +11,12 @@ export const SignUpScreen = ({navigation}) => {
     const styles = useStyles(theme);
     const signUpFormRef = useRef(null);
 
+    const signUp = () => {
+        if(signUpFormRef?.current){
+            signUpFormRef.current?.submit();
+        }
+    }
+
     const onFooterLinkPress = () => {
         navigation.navigate('SignIn')
     }
@@ -24,7 +30,7 @@ export const SignUpScreen = ({navigation}) => {
                         source={imgIcon}
                     />
                     <SignUpForm ref={signUpFormRef}/>
-                    <Button title={'Create Account'} onPress={signUpFormRef?.current?.submit}/>
+                    <Button title={'Create Account'} onPress={signUp}/>
                     <View style={styles.footerView}>
                         <Text style={styles.footerText}>Already got an account? <Text onPress={onFooterLinkPress} style={styles.footerLink}>Log in</Text></Text>
                     </View>

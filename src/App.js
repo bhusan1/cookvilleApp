@@ -42,7 +42,7 @@ export default function App() {
         <PaperProvider theme={theme}>
             <Provider store={store}>
                 <ReactReduxFirebaseProvider {...rrfProps}>
-                    <StatusBar barStyle={'light'} backgroundColor={'white'} />
+                    <StatusBar barStyle={'light'} backgroundColor={'#6e012a'} />
                     <AppNavigator />
                     <FlashMessage position="top" />
                 </ReactReduxFirebaseProvider>

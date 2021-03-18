@@ -6,7 +6,6 @@ import {
     Alert,
     Linking,
     SafeAreaView,
-    StatusBar,
     FlatList,
     Image, TouchableOpacity
 } from 'react-native';
@@ -28,6 +27,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 import {validate} from "../../commons/helper";
 import ImageView from "react-native-image-view";
 import { v4 as uuid } from 'uuid'
+import { StatusBar } from 'expo-status-bar';
 
 const scheme = Platform.select({ios: 'maps:0,0?q=', android: 'geo:0,0?q='});
 const latLng = `${33.18624068627443},${-94.86102794051021}`;
@@ -191,7 +191,6 @@ export const HomeScreen = () => {
             alert("Permission to access camera roll is required!");
             return;
         }
-        
         ImagePicker.launchImageLibraryAsync().then(async (res)=>{
             if(!res.cancelled){
                 const {uri} = res;
@@ -215,6 +214,7 @@ export const HomeScreen = () => {
                             .child(fileName)
                             .getDownloadURL()
                             .then((url) => {
+                                console.log(url)
                                 setHomeDeal({...homeDeal, image: url})
                                 setLoading(false);
                             })
@@ -226,100 +226,104 @@ export const HomeScreen = () => {
     };
     
     return (
-        <SafeAreaView style={styles.root}>
-            <Spinner visible={loading} textContent={`Uploading (${progress}%)`} textStyle={{color: 'white'}} />
-            <Overlay isVisible={visible} onBackdropPress={()=>{setVisible(false)}}>
-                <View style={{width: theme.wp('70%')}}>
-                    <Text>Title</Text>
-                    <Input value={homeDeal.title} style={styles.inputStyle} placeholder={'Title'} onChangeText={(name, value)=>{setHomeDeal({...homeDeal, title: value})}} />
-                    <View style={{flexDirection:'row', marginVertical: 10,}}>
-                        <Text>Image</Text>
-                        <TouchableOpacity
-                            style={{width: 20, height: 20, ...theme.styles.center, backgroundColor: theme.colors.success, marginLeft: 5, borderRadius: 10,}}
-                            onPress={openImagePickerAsync}
-                        >
-                            <Feather name={'plus'} size={16} color={'white'}/>
-                        </TouchableOpacity>
-                    </View>
-                    <Button title={'submit'} onPress={submit}/>
-                </View>
-            </Overlay>
-            <View style={styles.mapFix} pointerEvents={'box-none'}>
-                <View style={styles.topPanel}>
-                    <View style={styles.topPanelContent}>
-                        <View style={styles.saCon}>
-                            <Text style={styles.gasText}>Store Address {'\n'} Cookville #1 Stop</Text>
+        <>
+            <StatusBar barStyle={'light-content'} backgroundColor='#6e012a' />
+            <SafeAreaView style={styles.root}>
+                <Overlay isVisible={visible} onBackdropPress={()=>{setVisible(false)}}>
+                    <Spinner visible={loading} textContent={`Uploading (${progress}%)`} textStyle={{color: 'white'}} />
+                    <View style={{width: theme.wp('70%')}}>
+                        <Text>Title</Text>
+                        <Input value={homeDeal.title} style={styles.inputStyle} placeholder={'Title'} onChangeText={(name, value)=>{setHomeDeal({...homeDeal, title: value})}} />
+                        <View style={{flexDirection:'row', marginVertical: 10,}}>
+                            <Text>Image</Text>
+                            <TouchableOpacity
+                                style={{width: 20, height: 20, ...theme.styles.center, backgroundColor: theme.colors.success, marginLeft: 5, borderRadius: 10,}}
+                                onPress={openImagePickerAsync}
+                            >
+                                <Feather name={'plus'} size={16} color={'white'}/>
+                            </TouchableOpacity>
                         </View>
-                        <View style={styles.divider}>
-                            <MarqueeText
-                                style={{fontSize: 18, color: '#bc245c', paddingBottom: 10,}}
-                                duration={3000}
-                                marqueeOnStart
-                                loop
-                                marqueeDelay={1000}
-                                useNativeDriver={false}
-                                marqueeResetDelay={500}>
-                                Find Deals on In-store Purchase and Deli and Save on Gas
-                            </MarqueeText>
+                        <Button title={'submit'} onPress={submit}/>
+                    </View>
+                </Overlay>
+                <View style={styles.mapFix} pointerEvents={'box-none'}>
+                    <View style={styles.topPanel}>
+                        <View style={styles.topPanelContent}>
+                            <View style={styles.saCon}>
+                                <Text style={styles.gasText}>Store Address {'\n'} Cookville #1 Stop</Text>
+                            </View>
+                            <View style={styles.divider}>
+                                <MarqueeText
+                                    style={{fontSize: 20, color: '#bc245c', paddingBottom: 10,}}
+                                    duration={3000}
+                                    marqueeOnStart
+                                    loop
+                                    marqueeDelay={1000}
+                                    useNativeDriver={false}
+                                    marqueeResetDelay={500}
+                                >
+                                    Find Deals on In-store Purchase and Deli and Save on Gas
+                                </MarqueeText>
+                            </View>
                         </View>
                     </View>
-                </View>
-                <Paper onPress={resetMap} style={styles.getCurrentLocation}>
-                    <Feather name={'send'} size={20} />
-                </Paper>
-                <Paper style={styles.address}>
-                    <Text style={styles.dealsText}>6262 US HWY 67 E Cookville, TX 75558</Text>
-                    <OpenURLButton url={url}>Open Maps</OpenURLButton>
-                </Paper>
-                <MapView
-                    key={refresh}
-                    style={styles.mapFix}
-                    provider={PROVIDER_GOOGLE}
-                    region={region}
-                >
-                    <Marker coordinate={{latitude: 33.18624068627443, longitude: -94.86102794051021}} />
-                </MapView>
-                <View style={styles.footerPanel}>
-                    <FlatList
-                        ListHeaderComponent = {()=>(
-                            <>
-                                <View style={styles.gpCon}>
-                                    <Text style={styles.gasText}>Gas Price</Text>
-                                    <FontAwesome5 name="gas-pump" color="black" size={50} style={{marginVertical: 2}} />
-                                    <Text style={styles.dateText}>{moment().format('MM/DD/YYYY')}</Text>
-                                </View>
-                                <View style={styles.priceContainer}>
-                                    <View style={styles.priceItem}>
-                                        <Text style={styles.paragraph}>REGULAR{'\n'}{gasPrice.regular || 0}/gal</Text>
+                    <Paper onPress={resetMap} style={styles.getCurrentLocation}>
+                        <Feather name={'send'} size={20} />
+                    </Paper>
+                    <Paper style={styles.address}>
+                        <Text style={styles.dealsText}>6262 US HWY 67 E Cookville, TX 75558</Text>
+                        <OpenURLButton url={url}>Open Maps</OpenURLButton>
+                    </Paper>
+                    <MapView
+                        key={refresh}
+                        style={styles.mapFix}
+                        provider={PROVIDER_GOOGLE}
+                        region={region}
+                    >
+                        <Marker coordinate={{latitude: 33.18624068627443, longitude: -94.86102794051021}} />
+                    </MapView>
+                    <View style={styles.footerPanel}>
+                        <FlatList
+                            ListHeaderComponent = {()=>(
+                                <>
+                                    <View style={styles.gpCon}>
+                                        <Text style={styles.gasText}>Gas Price</Text>
+                                        <FontAwesome5 name="gas-pump" color="black" size={50} style={{marginVertical: 2}} />
+                                        <Text style={styles.dateText}>{moment().format('MM/DD/YYYY')}</Text>
                                     </View>
-                                    <View style={styles.priceItem}>
-                                        <Text style={styles.paragraph}>PLUS{'\n'}{gasPrice.plus || 0}/gal</Text>
+                                    <View style={styles.priceContainer}>
+                                        <View style={styles.priceItem}>
+                                            <Text style={styles.paragraph}>REGULAR{'\n'}{gasPrice.regular || 0}/gal</Text>
+                                        </View>
+                                        <View style={styles.priceItem}>
+                                            <Text style={styles.paragraph}>PLUS{'\n'}{gasPrice.plus || 0}/gal</Text>
+                                        </View>
+                                        <View style={styles.priceItem}>
+                                            <Text style={styles.paragraph}>SUPER{'\n'}{gasPrice.super || 0}/gal</Text>
+                                        </View>
+                                        <View  style={styles.priceItem}>
+                                            <Text style={styles.paragraph}>DIESEL{'\n'}{gasPrice.diesel || 0}/gal</Text>
+                                        </View>
                                     </View>
-                                    <View style={styles.priceItem}>
-                                        <Text style={styles.paragraph}>SUPER{'\n'}{gasPrice.super || 0}/gal</Text>
-                                    </View>
-                                    <View  style={styles.priceItem}>
-                                        <Text style={styles.paragraph}>DIESEL{'\n'}{gasPrice.diesel || 0}/gal</Text>
-                                    </View>
-                                </View>
-                            </>
-                        )}
-                        style={{flex: 1, width:'100%', padding: theme.wp('2%')}}
-                        data={authUser.role === 'admin'?[...homeDeals,'add']: homeDeals}
-                        renderItem={renderItem}
-                        showsVerticalScrollIndicator={false}
-                        keyExtractor={item => JSON.stringify(item)}
+                                </>
+                            )}
+                            style={{flex: 1, width:'100%', padding: theme.wp('2%')}}
+                            data={authUser.role === 'admin'?[...homeDeals,'add']: homeDeals}
+                            renderItem={renderItem}
+                            showsVerticalScrollIndicator={false}
+                            keyExtractor={item => JSON.stringify(item)}
+                        />
+                    </View>
+                    <ImageView
+                        images={images}
+                        imageIndex={0}
+                        isVisible={fullImage}
+                        onClose={handleClose}
+                        animationType={'none'}
                     />
                 </View>
-                <ImageView
-                    images={images}
-                    imageIndex={0}
-                    isVisible={fullImage}
-                    onClose={handleClose}
-                    animationType={'none'}
-                />
-            </View>
-        </SafeAreaView>
+            </SafeAreaView>
+        </>
     );
 }
 

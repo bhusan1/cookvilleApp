@@ -8,7 +8,7 @@ import {
     SafeAreaView,
     StatusBar,
     FlatList,
-    Image, TouchableOpacity, ScrollView
+    Image, TouchableOpacity
 } from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import MarqueeText from 'react-native-marquee';
@@ -253,10 +253,11 @@ export const HomeScreen = () => {
                         <View style={styles.divider}>
                             <MarqueeText
                                 style={{fontSize: 18, color: '#bc245c', paddingBottom: 10,}}
-                                duration={6000}
+                                duration={3000}
                                 marqueeOnStart
-                                loop={true}
+                                loop
                                 marqueeDelay={1000}
+                                useNativeDriver={false}
                                 marqueeResetDelay={500}>
                                 Find Deals on In-store Purchase and Deli and Save on Gas
                             </MarqueeText>
@@ -279,36 +280,36 @@ export const HomeScreen = () => {
                     <Marker coordinate={{latitude: 33.18624068627443, longitude: -94.86102794051021}} />
                 </MapView>
                 <View style={styles.footerPanel}>
-                    <ScrollView>
-                        <View style={styles.gpCon}>
-                            <Text style={styles.gasText}>Gas Price</Text>
-                            <FontAwesome5 name="gas-pump" color="black" size={50} style={{marginVertical: 2}} />
-                            <Text style={styles.dateText}>{moment().format('MM/DD/YYYY')}</Text>
-                        </View>
-                        <View style={styles.priceContainer}>
-                            <View style={styles.priceItem}>
-                                <Text style={styles.paragraph}>REGULAR{'\n'}{gasPrice.regular || 0}/gal</Text>
-                            </View>
-                            <View style={styles.priceItem}>
-                                <Text style={styles.paragraph}>PLUS{'\n'}{gasPrice.plus || 0}/gal</Text>
-                            </View>
-                            <View style={styles.priceItem}>
-                                <Text style={styles.paragraph}>SUPER{'\n'}{gasPrice.super || 0}/gal</Text>
-                            </View>
-                            <View  style={styles.priceItem}>
-                                <Text style={styles.paragraph}>DIESEL{'\n'}{gasPrice.diesel || 0}/gal</Text>
-                            </View>
-                        </View>
-                        <View style={styles.homeDeals}>
-                            <FlatList
-                                style={{flex: 1, width:'100%'}}
-                                data={authUser.role === 'admin'?[...homeDeals,'add']: homeDeals}
-                                renderItem={renderItem}
-                                showsHorizontalScrollIndicator={false}
-                                keyExtractor={item => JSON.stringify(item)}
-                            />
-                        </View>
-                    </ScrollView>
+                    <FlatList
+                        ListHeaderComponent = {()=>(
+                            <>
+                                <View style={styles.gpCon}>
+                                    <Text style={styles.gasText}>Gas Price</Text>
+                                    <FontAwesome5 name="gas-pump" color="black" size={50} style={{marginVertical: 2}} />
+                                    <Text style={styles.dateText}>{moment().format('MM/DD/YYYY')}</Text>
+                                </View>
+                                <View style={styles.priceContainer}>
+                                    <View style={styles.priceItem}>
+                                        <Text style={styles.paragraph}>REGULAR{'\n'}{gasPrice.regular || 0}/gal</Text>
+                                    </View>
+                                    <View style={styles.priceItem}>
+                                        <Text style={styles.paragraph}>PLUS{'\n'}{gasPrice.plus || 0}/gal</Text>
+                                    </View>
+                                    <View style={styles.priceItem}>
+                                        <Text style={styles.paragraph}>SUPER{'\n'}{gasPrice.super || 0}/gal</Text>
+                                    </View>
+                                    <View  style={styles.priceItem}>
+                                        <Text style={styles.paragraph}>DIESEL{'\n'}{gasPrice.diesel || 0}/gal</Text>
+                                    </View>
+                                </View>
+                            </>
+                        )}
+                        style={{flex: 1, width:'100%', padding: theme.wp('2%')}}
+                        data={authUser.role === 'admin'?[...homeDeals,'add']: homeDeals}
+                        renderItem={renderItem}
+                        showsVerticalScrollIndicator={false}
+                        keyExtractor={item => JSON.stringify(item)}
+                    />
                 </View>
                 <ImageView
                     images={images}
@@ -331,10 +332,6 @@ const useStyles = theme => StyleSheet.create({
     },
     inputStyle:{
         height: 30,
-    },
-    homeDeals:{
-        width:'100%',
-        padding: theme.wp('1%'),
     },
     homeDealItem:{
         position:'relative',
@@ -371,8 +368,7 @@ const useStyles = theme => StyleSheet.create({
     },
     homeDealAddItem:{
         position:'relative',
-        width: '100%',
-        height: theme.hp('15%'),
+        height: 50,
         justifyContent:'center',
         alignItems:'center',
         backgroundColor: 'white',
@@ -380,6 +376,9 @@ const useStyles = theme => StyleSheet.create({
         marginVertical: 5,
         overflow:'hidden',
         ...theme.styles.shadow,
+        borderWidth: 0.5,
+        borderStyle: 'solid',
+        borderColor: '#afafaf',
         zIndex: 2,
     },
     homeDealImage:{
@@ -411,7 +410,7 @@ const useStyles = theme => StyleSheet.create({
         bottom: 0,
         width: '100%',
         ...theme.styles.shadow,
-        height: theme.hp('50%'),
+        height: theme.hp('45%'),
         backgroundColor:'white',
     },
     mapFix: {

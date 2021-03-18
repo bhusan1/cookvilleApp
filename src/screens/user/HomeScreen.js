@@ -197,7 +197,7 @@ export const HomeScreen = () => {
                 const {uri} = res;
                 const response = await fetch(uri);
                 const blob = await response.blob();
-                const fileName = uuid.v4() + '.' + uri.split('.').pop();
+                const fileName = uuid() + '.' + uri.split('.').pop();
                 setLoading(true);
                 firebase.storage().ref(`/homeDeals/${fileName}`)
                     .put(blob).on(

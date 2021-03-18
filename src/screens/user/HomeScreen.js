@@ -1,17 +1,32 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
-import {View, Text, StyleSheet, Alert, Linking, ScrollView, SafeAreaView, StatusBar} from 'react-native';
+import {
+    View,
+    Text,
+    StyleSheet,
+    Alert,
+    Linking,
+    SafeAreaView,
+    StatusBar,
+    FlatList,
+    Image, TouchableOpacity
+} from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import {Card} from 'react-native-elements';
 import MarqueeText from 'react-native-marquee';
 import Constants from 'expo-constants';
 import {useSelector} from 'react-redux';
 import * as Notifications from 'expo-notifications';
 import moment from 'moment'
-import {useFirestore, useFirestoreConnect} from "react-redux-firebase";
-import {Button, Paper} from "../../components";
+import {useFirebase, useFirestore, useFirestoreConnect} from "react-redux-firebase";
+import {Button, Input, Paper} from "../../components";
 import Feather from 'react-native-vector-icons/Feather';
 import {useTheme} from "react-native-paper";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
+import {Overlay} from "react-native-elements";
+import * as ImagePicker from "expo-image-picker";
+import Spinner from "react-native-loading-spinner-overlay";
+import {validate} from "../../commons/helper";
+import uuid from 'react-native-uuid';
 
 const scheme = Platform.select({ios: 'maps:0,0?q=', android: 'geo:0,0?q='});
 const latLng = `${33.18624068627443},${-94.86102794051021}`;
@@ -44,16 +59,28 @@ const OpenURLButton = ({url, children}) => {
 
 export const HomeScreen = () => {
     
-    useFirestoreConnect([{collection:'settings', doc: 'gasPrice', storeAs: 'gasPrice'}])
+    useFirestoreConnect([
+        {collection:'settings', doc: 'gasPrice', storeAs: 'gasPrice'},
+        {collection:'homeDeals', storeAs: 'homeDeals'}
+        ]);
     
     const theme = useTheme();
     const styles = useStyles(theme);
-    
+    const firebase = useFirebase();
     const firestore = useFirestore();
+    
     const authUser = useSelector(state=>state.firebase.profile);
     const gasPrice = useSelector(state=>state.firestore.data.gasPrice || {});
+    const homeDeals = useSelector(state=>state.firestore.ordered.homeDeals || []);
     
     const [refresh, setRefresh] = useState(false);
+    const [visible, setVisible] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [progress, setProgress] = useState(0);
+    const [homeDeal, setHomeDeal] = useState({title:'', image:''});
+    const [images, setImages] = useState([]);
+    const [fullImage, setFullImage] = useState(false);
+    
     const [region] = useState({
         latitude: 33.18454068627443,
         longitude: -94.86102794051021,
@@ -78,8 +105,138 @@ export const HomeScreen = () => {
         setRefresh(!refresh);
     }
     
+    const viewFullImage = () => {
+        const homeDealImages = homeDeals.reduce((result, item)=>{
+            result.push({
+                source: {uri: item.image,},
+                title: item.title,
+                width: theme.wp('100%'),
+                height: theme.hp('100%'),
+            })
+            return result;
+        }, [])
+        if(homeDealImages.length > 0){
+            setImages(homeDealImages);
+            setFullImage(true)
+        }
+    }
+    
+    const removeHomeDeal = (item) => {
+        Alert.alert(
+          'Confirm',
+          'Are you really want to remove it?',
+          [
+              {
+                  text:'Cancel',
+                  style:'cancel'
+              },
+              {
+                  text: 'Delete',
+                  onPress:()=>{
+                      console.log(item)
+                      firestore.collection('homeDeals')
+                          .doc(item.id).delete().then(res=>{
+                          console.log(res);
+                      })
+                  }
+              }
+          ]
+        );
+    }
+    
+    const renderItem = ({item}) => {
+        
+        if(item === 'add'){
+            return (
+                <TouchableOpacity style={styles.homeDealAddItem} onPress={()=>{setVisible(true)}}>
+                    <Feather name={'plus'} size={theme.wp('12%')}/>
+                </TouchableOpacity>
+            )
+        }else {
+            return (
+                <TouchableOpacity style={styles.homeDealItem} onPress={viewFullImage}>
+                    {
+                        authUser.role === 'admin' &&
+                        <TouchableOpacity style={styles.homeDealRemove} onPress={()=>{removeHomeDeal(item)}}>
+                            <SimpleLineIcons name={'close'} size={16} color={theme.colors.danger}/>
+                        </TouchableOpacity>
+                    }
+                    <Image source={{uri: item.image}} style={styles.homeDealImage}/>
+                    <Text style={styles.homeDealTitle}>{item.title}</Text>
+                </TouchableOpacity>
+            )
+        }
+    }
+    
+    const submit = () => {
+        if(validate(homeDeal, {title:'required',image:'required'})){
+            firestore.collection('homeDeals')
+                .add(homeDeal).then(res=>{
+                    setHomeDeal({title: '', image: ''});
+                    setVisible(false);
+            })
+        }
+    }
+    
+    const openImagePickerAsync = async () => {
+        const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+        if (permissionResult.granted === false) {
+            alert("Permission to access camera roll is required!");
+            return;
+        }
+        
+        ImagePicker.launchImageLibraryAsync().then(async (res)=>{
+            if(!res.cancelled){
+                const {uri} = res;
+                const response = await fetch(uri);
+                const blob = await response.blob();
+                const fileName = uuid.v4() + '.' + uri.split('.').pop();
+                setLoading(true);
+                firebase.storage().ref(`/homeDeals/${fileName}`)
+                    .put(blob).on(
+                    "state_changed",
+                    (snapshot )=> {
+                        const progress = Math.floor(snapshot.bytesTransferred/snapshot.totalBytes * 100);
+                        setProgress(progress);
+                    },
+                    (error) => {
+                        console.log(error);
+                    },
+                    ()=>{
+                        firebase.storage()
+                            .ref("homeDeals/")
+                            .child(fileName)
+                            .getDownloadURL()
+                            .then((url) => {
+                                setHomeDeal({...homeDeal, image: url})
+                                setLoading(false);
+                            })
+                    }
+                )
+            }
+        });
+        
+    };
+    
     return (
         <SafeAreaView style={styles.root}>
+            <Spinner visible={loading} textContent={`Uploading (${progress}%)`} textStyle={{color: 'white'}} />
+            <Overlay isVisible={visible} onBackdropPress={()=>{setVisible(false)}}>
+                <View style={{width: theme.wp('70%')}}>
+                    <Text>Title</Text>
+                    <Input value={homeDeal.title} style={styles.inputStyle} placeholder={'Title'} onChangeText={(name, value)=>{setHomeDeal({...homeDeal, title: value})}} />
+                    <View style={{flexDirection:'row', marginVertical: 10,}}>
+                        <Text>Image</Text>
+                        <TouchableOpacity
+                            style={{width: 20, height: 20, ...theme.styles.center, backgroundColor: theme.colors.success, marginLeft: 5, borderRadius: 10,}}
+                            onPress={openImagePickerAsync}
+                        >
+                            <Feather name={'plus'} size={16} color={'white'}/>
+                        </TouchableOpacity>
+                    </View>
+                    <Button title={'submit'} onPress={submit}/>
+                </View>
+            </Overlay>
             <View style={styles.mapFix} pointerEvents={'box-none'}>
                 <View style={styles.topPanel}>
                     <View style={styles.topPanelContent}>
@@ -115,6 +272,15 @@ export const HomeScreen = () => {
                     <Marker coordinate={{latitude: 33.18624068627443, longitude: -94.86102794051021}} />
                 </MapView>
                 <View style={styles.footerPanel}>
+                    <View style={styles.homeDeals}>
+                        <FlatList
+                            style={{flex: 1, width:'100%'}}
+                            data={authUser.role === 'admin'?[...homeDeals,'add']: homeDeals}
+                            renderItem={renderItem}
+                            horizontal={true}
+                            showsHorizontalScrollIndicator={false}
+                        />
+                    </View>
                     <View style={styles.gpCon}>
                         <Text style={styles.gasText}>Gas Price</Text>
                         <FontAwesome5 name="gas-pump" color="black" size={50} style={{marginVertical: 2}} />
@@ -138,7 +304,7 @@ export const HomeScreen = () => {
             </View>
         </SafeAreaView>
     );
-};
+}
 
 const useStyles = theme => StyleSheet.create({
     root: {
@@ -146,6 +312,65 @@ const useStyles = theme => StyleSheet.create({
         width:'100%',
         marginTop: StatusBar.currentHeight,
         zIndex: 0,
+    },
+    inputStyle:{
+        height: 30,
+    },
+    homeDeals:{
+        height: theme.hp('17%'),
+        width:'100%',
+        padding: theme.wp('1%'),
+    },
+    homeDealItem:{
+        position:'relative',
+        width: theme.hp('15%'),
+        height: theme.hp('15%'),
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor: 'white',
+        marginHorizontal: 2.5,
+        borderRadius: 10,
+        overflow:'hidden',
+        zIndex: 2,
+        borderWidth: 0.5,
+        borderStyle: 'solid',
+        borderColor: '#afafaf'
+    },
+    homeDealRemove:{
+        position:'absolute',
+        top: 0,
+        right: 0,
+        width: 30,
+        height: 30,
+        zIndex: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    homeDealTitle:{
+        backgroundColor:'white',
+        textAlign:'center',
+        position:'absolute',
+        bottom: 0,
+        padding: 5,
+        width:'100%'
+    },
+    homeDealAddItem:{
+        position:'relative',
+        width: 50,
+        height: theme.hp('15%'),
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor: 'white',
+        borderRadius: 15,
+        marginHorizontal: 5,
+        overflow:'hidden',
+        ...theme.styles.shadow,
+        zIndex: 2,
+    },
+    homeDealImage:{
+      width: '100%',
+      height: '100%',
+      resizeMode:'cover',
     },
     container: {
         justifyContent: 'center',
@@ -155,9 +380,9 @@ const useStyles = theme => StyleSheet.create({
         top: 0,
         left: 0,
         width:'100%',
-        zIndex: 2,
         paddingBottom: 5,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        zIndex: 3,
     },
     topPanelContent:{
         ...theme.styles.shadow,
@@ -238,7 +463,7 @@ const useStyles = theme => StyleSheet.create({
         alignItems: 'center',
         flexDirection:'row',
         justifyContent:'center',
-        paddingBottom: 10,
+        paddingBottom: 20,
     },
     paragraph: {
         fontSize: 14,

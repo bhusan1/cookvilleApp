@@ -18,7 +18,15 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.ssp.cookville1stop"
+      "bundleIdentifier": "com.ssp.cookville1stop",
+      "buildNumber": "1.0.0",
+      "usesIcloudStorage": true,
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.599155764226-mr9gaoc7g2ouv6s0cf031b34dsh98jcr"
+        }
+      },
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {

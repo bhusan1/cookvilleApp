@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import {StatusBar} from 'expo-status-bar';
 import {Provider} from 'react-redux';
-import {store} from './store';
 import {AppNavigator} from './navigator';
+import {store} from './store';
 
 // Message
 import FlashMessage from 'react-native-flash-message';

@@ -5,12 +5,13 @@ import {Button, Input } from "../../components";
 import DatePicker from 'react-native-datepicker';
 import * as ImagePicker from 'expo-image-picker';
 import {useFirebase, useFirestore} from "react-redux-firebase";
-import uuid from 'react-native-uuid';
 import Spinner from "react-native-loading-spinner-overlay";
 import {validate} from "../../commons/helper";
 import {showMessage} from 'react-native-flash-message';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import moment from "moment";
+import { v4 as uuid } from 'uuid'
+
 
 const INITIAL_SATE = {
     title: '',
@@ -72,7 +73,7 @@ export const AddDealScreen = (props) => {
                 const {uri} = res;
                 const response = await fetch(uri);
                 const blob = await response.blob();
-                const fileName = uuid.v4() + '.' + uri.split('.').pop();
+                const fileName = uuid() + '.' + uri.split('.').pop();
                 setLoading(true);
                 firebase.storage().ref(`/barcodes/${fileName}`)
                     .put(blob).on(

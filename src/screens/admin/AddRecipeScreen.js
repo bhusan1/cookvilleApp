@@ -5,7 +5,7 @@ import {Button, Input } from "../../components";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import * as ImagePicker from 'expo-image-picker';
 import {useFirebase, useFirestore, useFirestoreConnect} from "react-redux-firebase";
-import uuid from 'react-native-uuid';
+import { v4 as uuid } from 'uuid'
 import Spinner from "react-native-loading-spinner-overlay";
 import {validate} from "../../commons/helper";
 import {showMessage} from 'react-native-flash-message';
@@ -60,7 +60,7 @@ export const AddRecipeScreen = () => {
                 const {uri} = res;
                 const response = await fetch(uri);
                 const blob = await response.blob();
-                const fileName = uuid.v4() + '.' + uri.split('.').pop();
+                const fileName = uuid() + '.' + uri.split('.').pop();
                 setLoading(true);
                 firebase.storage().ref(`/recipes/${fileName}`)
                     .put(blob).on(

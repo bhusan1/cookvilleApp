@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import 'react-native-get-random-values'
 import * as Font from 'expo-font';
 import MainApp from './src/App';
 

@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect, useRef} from 'react';
+import React, {useState, useCallback, useEffect,} from 'react';
 import {
     View,
     Text,
@@ -26,8 +26,8 @@ import {Overlay} from "react-native-elements";
 import * as ImagePicker from "expo-image-picker";
 import Spinner from "react-native-loading-spinner-overlay";
 import {validate} from "../../commons/helper";
-import uuid from 'react-native-uuid';
 import ImageView from "react-native-image-view";
+import { v4 as uuid } from 'uuid'
 
 const scheme = Platform.select({ios: 'maps:0,0?q=', android: 'geo:0,0?q='});
 const latLng = `${33.18624068627443},${-94.86102794051021}`;
@@ -60,6 +60,7 @@ const OpenURLButton = ({url, children}) => {
 
 export const HomeScreen = () => {
     
+    
     useFirestoreConnect([
         {collection:'settings', doc: 'gasPrice', storeAs: 'gasPrice'},
         {collection:'homeDeals', storeAs: 'homeDeals'}
@@ -90,6 +91,7 @@ export const HomeScreen = () => {
     });
     
     useEffect(() => {
+        
         registerForPushNotificationsAsync().then(async (token) => {
             if(token){
                 const tokenRef = firestore.collection('tokens').doc(token);
@@ -303,6 +305,7 @@ export const HomeScreen = () => {
                                 data={authUser.role === 'admin'?[...homeDeals,'add']: homeDeals}
                                 renderItem={renderItem}
                                 showsHorizontalScrollIndicator={false}
+                                keyExtractor={item => JSON.stringify(item)}
                             />
                         </View>
                     </ScrollView>

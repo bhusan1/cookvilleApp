@@ -23,6 +23,7 @@ export const authCheck = () => async (dispatch, getState, {getFirebase}) => {
 };
 
 export const signUpUserInFirebase = (user) => async (dispatch, getState, {getFirebase, getFirestore}) => {
+    const state = getState();
     return new Promise((resolve) => {
         const firebase = getFirebase();
         firebase
@@ -47,7 +48,7 @@ export const signUpUserInFirebase = (user) => async (dispatch, getState, {getFir
                             description: 'You are signed in now!',
                             type: 'success',
                         });
-                        getState().nav.reset({index: 0, routes: [{name: 'UserBoard'}]});
+                        state.nav.reset({index: 0, routes: [{name: 'UserBoard'}]});
                         resolve(true);
                     });
                 unsubscribes.push(unsubscribe);
@@ -65,6 +66,7 @@ export const signUpUserInFirebase = (user) => async (dispatch, getState, {getFir
 };
 
 export const signInWithFirebase = (user) => (dispatch, getState, {getFirebase}) => {
+    const state = getState();
     return new Promise((resolve) => {
         getFirebase()
             .auth()
@@ -75,7 +77,7 @@ export const signInWithFirebase = (user) => (dispatch, getState, {getFirebase}) 
                     description: 'You are logged in now',
                     type: 'success',
                 });
-                getState().nav.reset({index: 0, routes: [{name: 'UserBoard'}]});
+                state.nav.reset({index: 0, routes: [{name: 'UserBoard'}]});
                 resolve(true);
             })
             .catch((error) => {
@@ -91,12 +93,13 @@ export const signInWithFirebase = (user) => (dispatch, getState, {getFirebase}) 
 };
 
 export const userLogout = () => async (dispatch, getState, {getFirebase}) => {
+    const state = getState();
     const firebase = getFirebase();
     await firebase.auth().signOut();
     unsubscribes.forEach((unsubscribe) => {
         unsubscribe();
     });
-    getState().nav.reset({index: 0, routes: [{name: 'SignIn'}]});
+    state.nav.reset({index: 0, routes: [{name: 'SignIn'}]});
 };
 
 /**

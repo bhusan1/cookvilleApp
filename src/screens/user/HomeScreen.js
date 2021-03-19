@@ -7,7 +7,8 @@ import {
     Linking,
     SafeAreaView,
     FlatList,
-    Image, TouchableOpacity
+    Image, TouchableOpacity,
+    StatusBar
 } from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import MarqueeText from 'react-native-marquee';
@@ -27,7 +28,6 @@ import Spinner from "react-native-loading-spinner-overlay";
 import {validate} from "../../commons/helper";
 import ImageView from "react-native-image-view";
 import { v4 as uuid } from 'uuid'
-import { StatusBar } from 'expo-status-bar';
 
 const scheme = Platform.select({ios: 'maps:0,0?q=', android: 'geo:0,0?q='});
 const latLng = `${33.18624068627443},${-94.86102794051021}`;
@@ -227,7 +227,6 @@ export const HomeScreen = () => {
     
     return (
         <>
-            <StatusBar barStyle={'light-content'} backgroundColor='#6e012a' />
             <SafeAreaView style={styles.root}>
                 <Overlay isVisible={visible} onBackdropPress={()=>{setVisible(false)}}>
                     <Spinner visible={loading} textContent={`Uploading (${progress}%)`} textStyle={{color: 'white'}} />
@@ -253,17 +252,10 @@ export const HomeScreen = () => {
                                 <Text style={styles.gasText}>Store Address {'\n'} Cookville #1 Stop</Text>
                             </View>
                             <View style={styles.divider}>
-                                <MarqueeText
-                                    style={{fontSize: 20, color: '#bc245c', paddingBottom: 10,}}
-                                    duration={3000}
-                                    marqueeOnStart
-                                    loop
-                                    marqueeDelay={1000}
-                                    useNativeDriver={false}
-                                    marqueeResetDelay={500}
-                                >
+                                <Text
+                                    style={{fontSize: 13, color: '#bc245c', paddingBottom: 10, textAlign:'center'}}>
                                     Find Deals on In-store Purchase and Deli and Save on Gas
-                                </MarqueeText>
+                                </Text>
                             </View>
                         </View>
                     </View>

@@ -2,7 +2,8 @@ import React, {useState} from 'react';
 import {View, StyleSheet, TouchableOpacity, Image, Text, Alert} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import {Button, Input } from "../../components";
-import DatePicker from 'react-native-datepicker';
+// import DatePicker from 'react-native-datepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
 import {useFirebase, useFirestore} from "react-redux-firebase";
 import Spinner from "react-native-loading-spinner-overlay";
@@ -29,6 +30,7 @@ export const AddDealScreen = (props) => {
     const [deal, setDeal] = useState(props.route.params?.deal || INITIAL_SATE);
     const [loading, setLoading] = useState(false);
     const [loadingText, setLoadingText] = useState('');
+    const [show, setShow] = useState(false);
     
     const submit = () => {
         if(validate(deal,{title:'required',description:'required', barcode: 'required'})){
@@ -145,27 +147,23 @@ export const AddDealScreen = (props) => {
                     placeholder={'Description'}
                 />
                 <Text>Deadline</Text>
-                <DatePicker
-                    showIcon={true}
-                    androidMode="spinner"
-                    style={styles.datePicker}
-                    date={deal.deadline}
-                    mode="date"
-                    placeholder="MM/DD/YYYY"
-                    format="MM/DD/YYYY"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                        dateInput: {
-                            backgroundColor: 'white',
-                            borderWidth: 0.5,
-                            borderRadius: 5,
-                        },
-                    }}
-                    onDateChange={(date) => {
-                        handleChange('deadline', date);
-                    }}
-                />
+                <TouchableOpacity onPress={()=>{if (!show) setShow(true)}}>
+                    <Text style={styles.deadLine}>{deal.deadline}</Text>
+                </TouchableOpacity>
+                {
+                    show &&
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={new Date(deal.deadline)}
+                        mode={'date'}
+                        display="default"
+                        onChange={(event, date) => {
+                            setShow(false);
+                            handleChange('deadline', moment(date).format('MM/DD/YYYY'));
+                        }}
+                        onTouchCancel={()=>setShow(false)}
+                    />
+                }
                 {
                     deal.barcode?
                         <View style={styles.imagePicker}>
@@ -195,6 +193,15 @@ const useStyles = (theme) =>
             flex: 1,
             width: '100%',
             backgroundColor: 'white',
+        },
+        deadLine:{
+            height: 40,
+            borderStyle:'solid',
+            borderWidth: 0.5,
+            borderRadius: 5,
+            textAlignVertical:'center',
+            marginTop: 3,
+            paddingLeft: 10,
         },
         content:{
             flex: 1,

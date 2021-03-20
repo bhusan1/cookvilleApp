@@ -1,7 +1,8 @@
-import React, {useEffect} from 'react';
-import {StatusBar} from 'expo-status-bar';
+import React from 'react';
+import {StatusBar} from 'react-native';
 import {Provider} from 'react-redux';
 import {AppNavigator} from './navigator';
+
 import {store} from './store';
 
 // Message
@@ -16,8 +17,6 @@ import firebase from './firebase';
 import {ReactReduxFirebaseProvider} from 'react-redux-firebase';
 import {createFirestoreInstance} from 'redux-firestore';
 
-import {Platform, BackHandler} from 'react-native';
-
 const rrfConfig = {
     userProfile: 'users',
     useFirestoreForProfile: true,
@@ -31,13 +30,8 @@ const rrfProps = {
 };
 
 export default function App() {
-    useEffect(() => {
-        if (Platform.OS === 'android') {
-            BackHandler.addEventListener('hardwareBackPress', () => {
-                return true;
-            });
-        }
-    }, []);
+    
+    
     return (
         <PaperProvider theme={theme}>
             <Provider store={store}>

@@ -45,7 +45,6 @@ const useStyles = (theme) =>
     StyleSheet.create({
         root: {
             flex: 1,
-            marginTop: StatusBar.currentHeight,
             position: 'relative',
         },
         content:{

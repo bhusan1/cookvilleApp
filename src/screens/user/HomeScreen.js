@@ -91,14 +91,13 @@ export const HomeScreen = () => {
     });
     
     useEffect(() => {
-        
         registerForPushNotificationsAsync().then(async (token) => {
             if(token){
                 const tokenRef = firestore.collection('tokens').doc(token);
                 if (authUser.muteNotifications){
                     await tokenRef.delete();
                 }else {
-                    await tokenRef.set({ user: authUser.uid, token})
+                    await tokenRef.set({ user: authUser.uid, token: token})
                 }
             }
         });
@@ -323,7 +322,6 @@ const useStyles = theme => StyleSheet.create({
     root: {
         flex: 1,
         width:'100%',
-        marginTop: StatusBar.currentHeight,
         zIndex: 0,
     },
     inputStyle:{
@@ -507,7 +505,6 @@ async function registerForPushNotificationsAsync() {
             return;
         }
         token = (await Notifications.getExpoPushTokenAsync()).data;
-        console.log(token);
     } else {
         console.log('Must use physical device for Push Notifications');
     }

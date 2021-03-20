@@ -1,4 +1,5 @@
 import React from 'react';
+import {StatusBar} from "react-native";
 import {useTheme} from 'react-native-paper';
 import {getFocusedRouteNameFromRoute, useRoute} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -6,7 +7,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {HomeScreen, DealsScreen, DeliScreen, SettingsScreen} from '../screens';
-import {StatusBar} from 'expo-status-bar';
 
 const Tab = createBottomTabNavigator();
 

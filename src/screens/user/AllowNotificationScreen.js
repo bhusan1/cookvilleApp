@@ -52,7 +52,6 @@ const useStyles = (theme) =>
             flex: 1,
             height: '100%',
             width: '100%',
-            marginTop: StatusBar.currentHeight,
             backgroundColor: 'white',
             alignItems:'center',
             justifyContent:'center',

@@ -1,15 +1,26 @@
 import React from 'react';
-import {FlatList, View, Text, Image, StyleSheet, ScrollView, SafeAreaView, StatusBar} from 'react-native';
+import {
+    FlatList,
+    View,
+    Text,
+    Image,
+    StyleSheet,
+    SafeAreaView,
+    Alert,
+    TouchableOpacity
+} from 'react-native';
 import {useTheme} from 'react-native-paper';
-import {useFirestoreConnect} from 'react-redux-firebase';
+import {useFirestore, useFirestoreConnect} from 'react-redux-firebase';
 import {useSelector} from 'react-redux';
 import {AddButton, Paper} from '../../components';
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 
 export const DeliScreen = ({navigation}) => {
     useFirestoreConnect([{collection: 'recipes'}]);
 
     const theme = useTheme();
     const styles = useStyles(theme);
+    const firestore = useFirestore();
 
     const authUser = useSelector((state) => state.firebase.profile);
     const recipes = useSelector((state) => state.firestore.ordered.recipes || []);
@@ -20,10 +31,35 @@ export const DeliScreen = ({navigation}) => {
 
     const renderItem = ({item}) => (
         <Paper style={styles.itemContainer}>
+            {
+                authUser.role === 'admin' &&
+                <TouchableOpacity style={styles.dealRemove} onPress={()=>{removeDeal(item,id)}}>
+                    <SimpleLineIcons name={'close'} size={16} color={theme.colors.danger}/>
+                </TouchableOpacity>
+            }
             <Image style={styles.photo} source={{uri: item.image}} />
             <Text style={styles.title}>{item.title}</Text>
         </Paper>
     );
+    
+    const removeDeal = (dealId) => {
+        Alert.alert(
+            'Confirm',
+            'Do you really want to delete it?',
+            [
+                {
+                    text:'Cancel',
+                    style:'cancel'
+                },
+                {
+                    text:'Delete',
+                    onPress:async ()=>{
+                        await firestore.collection('deals').doc(dealId).delete();
+                    }
+                }
+            ]
+        )
+    }
 
     return (
         <SafeAreaView style={styles.root}>
@@ -51,6 +87,16 @@ const useStyles = (theme) =>
             flex: 1,
             padding: theme.wp('2.5%')
         },
+        dealRemove:{
+            position:'absolute',
+            top: 0,
+            right: 0,
+            width: 30,
+            height: 30,
+            zIndex: 5,
+            justifyContent: 'center',
+            alignItems: 'center',
+        },
         itemContainer: {
             flexDirection:'column',
             justifyContent: 'center',
@@ -63,6 +109,7 @@ const useStyles = (theme) =>
             borderWidth: 0.5,
             borderRadius: 15,
             overflow: 'hidden',
+            position: 'relative',
         },
         photo: {
             width: '100%',

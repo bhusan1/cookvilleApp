@@ -89,13 +89,14 @@ export const signInWithFirebase = (user) => (dispatch, getState, {getFirebase}) 
 };
 
 export const userLogout = () => async (dispatch, getState, {getFirebase}) => {
-    const state = getState();
-    const firebase = getFirebase();
-    await firebase.auth().signOut();
-    unsubscribes.forEach((unsubscribe) => {
-        unsubscribe();
-    });
-    state.nav.reset({index: 0, routes: [{name: 'SignIn'}]});
+    return new Promise(async (resolve)=>{
+        const firebase = getFirebase();
+        await firebase.auth().signOut();
+        unsubscribes.forEach((unsubscribe) => {
+            unsubscribe();
+        });
+        resolve(true);
+    })
 };
 
 /**

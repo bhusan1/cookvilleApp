@@ -34,6 +34,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.ssp.cookville1stop",
+      "versionCode": 2,
       "config": {
         "googleMaps": {
           "apiKey" : "AIzaSyAWzsPglgq6rpHO_EuEtSVzWFcStAR9txM"

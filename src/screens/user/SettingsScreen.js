@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, StyleSheet, SafeAreaView, StatusBar, View, Switch} from 'react-native';
+import {Text, StyleSheet, SafeAreaView, View, Switch} from 'react-native';
 
 import {Avatar, Button, Input} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
@@ -15,7 +15,7 @@ const INITIAL_STATE = {
     diesel: 0,
 }
 
-export const SettingsScreen = () => {
+export const SettingsScreen = ({navigation}) => {
     
     useFirestoreConnect([{collection:'settings', doc: 'gasPrice', storeAs: 'gasPrice'}])
     
@@ -27,7 +27,9 @@ export const SettingsScreen = () => {
     const [price, setPrice] = useState(useSelector(state=>state.firestore.data.gasPrice || INITIAL_STATE))
     
     const signOut = () => {
-        dispatch(userLogout());
+        dispatch(userLogout()).then(()=>{
+            navigation.navigate({index:0, routes:[{name:'SignIn'}]});
+        });
     };
     
     const handleMuteNotifications = async () => {

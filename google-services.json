@@ -15,14 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "599155764226-66ecoo1ae8ooja53uoda7rq8a3lmhi8f.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.ssp.cookville1stop",
-            "certificate_hash": "6710f02e2bc1e24b313664cf06e728bac95c38ac"
-          }
-        },
-        {
           "client_id": "599155764226-j1lnoni38arjmqculpic9flghn27virh.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -38,6 +30,14 @@
             {
               "client_id": "599155764226-j1lnoni38arjmqculpic9flghn27virh.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "599155764226-mr9gaoc7g2ouv6s0cf031b34dsh98jcr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ssp.cookville1stop",
+                "app_store_id": "1559278793"
+              }
             }
           ]
         }

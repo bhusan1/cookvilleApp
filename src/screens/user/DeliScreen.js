@@ -16,6 +16,7 @@ import {AddButton, Paper} from '../../components';
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 
 export const DeliScreen = ({navigation}) => {
+    
     useFirestoreConnect([{collection: 'recipes'}]);
 
     const theme = useTheme();
@@ -33,7 +34,7 @@ export const DeliScreen = ({navigation}) => {
         <Paper style={styles.itemContainer}>
             {
                 authUser.role === 'admin' &&
-                <TouchableOpacity style={styles.dealRemove} onPress={()=>{removeDeal(item,id)}}>
+                <TouchableOpacity style={styles.dealRemove} onPress={()=>{removeDeal(item.id)}}>
                     <SimpleLineIcons name={'close'} size={16} color={theme.colors.danger}/>
                 </TouchableOpacity>
             }
@@ -54,7 +55,7 @@ export const DeliScreen = ({navigation}) => {
                 {
                     text:'Delete',
                     onPress:async ()=>{
-                        await firestore.collection('deals').doc(dealId).delete();
+                        await firestore.collection('recipes').doc(dealId).delete();
                     }
                 }
             ]

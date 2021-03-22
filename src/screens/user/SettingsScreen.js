@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, StyleSheet, SafeAreaView, View, Switch} from 'react-native';
+import {Text, StyleSheet, SafeAreaView, View, Switch, ScrollView} from 'react-native';
 
 import {Avatar, Button, Input} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
@@ -53,71 +53,73 @@ export const SettingsScreen = ({navigation}) => {
 
     return (
         <SafeAreaView style={styles.root}>
-            <View style={styles.content}>
-                <View style={styles.settingItem}>
-                    <View style={[styles.settingItemContent,{justifyContent:'flex-start'}]}>
-                        <Avatar />
-                        <View style={{marginLeft: 20}}>
-                            <Text>{authUser.fullName}</Text>
-                            <Text style={{marginTop: 3}}>{authUser.email}</Text>
-                            <Text style={{marginTop: 3}}>{authUser.phoneNumber}</Text>
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.settingItem}>
-                    <View style={styles.settingItemContent}>
-                        <Text>Mute Notification</Text>
-                        <Switch
-                            trackColor={{ false: "#a4a4a4", true: "#35c759" }}
-                            thumbColor={muteNotifications ? "white" : "white"}
-                            ios_backgroundColor="#a4a4a4"
-                            onValueChange={handleMuteNotifications}
-                            value={muteNotifications}
-                        />
-                    </View>
-                </View>
-                {
-                    authUser.role === 'admin' &&
+            <ScrollView>
+                <View style={styles.content}>
                     <View style={styles.settingItem}>
-                        <View style={[styles.settingItemContent, {flexDirection:'column'}]}>
-                            <Text style={theme.styles.h2}>Gas Prices</Text>
-                            <View style={styles.gasPriceItem}>
-                                <View style={styles.inputContainer}>
-                                    <Input style={styles.inputStyle}  onChangeText={handleChange} value={price.regular} name={'regular'}/>
-                                    <Text> $/gal</Text>
-                                </View>
-                                <Text>Regular</Text>
+                        <View style={[styles.settingItemContent,{justifyContent:'flex-start'}]}>
+                            <Avatar />
+                            <View style={{marginLeft: 20}}>
+                                <Text>{authUser.fullName}</Text>
+                                <Text style={{marginTop: 3}}>{authUser.email}</Text>
+                                <Text style={{marginTop: 3}}>{authUser.phoneNumber}</Text>
                             </View>
-                            <View style={styles.gasPriceItem}>
-                                <View style={styles.inputContainer}>
-                                    <Input style={styles.inputStyle} onChangeText={handleChange} value={price.plus} name={'plus'}/>
-                                    <Text> $/gal</Text>
-                                </View>
-                                <Text>Plus</Text>
-                            </View>
-                            <View style={styles.gasPriceItem}>
-                                <View style={styles.inputContainer}>
-                                    <Input style={styles.inputStyle}  onChangeText={handleChange} value={price.super} name={'super'}/>
-                                    <Text> $/gal</Text>
-                                </View>
-                                <Text>Super</Text>
-                            </View>
-                            <View style={styles.gasPriceItem}>
-                                <View style={styles.inputContainer}>
-                                    <Input style={styles.inputStyle}  onChangeText={handleChange} value={price.diesel} name={'diesel'}/>
-                                    <Text> $/gal</Text>
-                                </View>
-                                <Text>Diesel</Text>
-                            </View>
-                            <Button style={{width: 120}} title={'Save'} onPress={submitGasPrice}/>
                         </View>
                     </View>
-                }
-            </View>
-            <View style={{paddingHorizontal: 30}}>
-                <Button title="Sign Out" onPress={signOut} />
-                <Text style={styles.text}> Once signed out, requires password to login again</Text>
-            </View>
+                    <View style={styles.settingItem}>
+                        <View style={styles.settingItemContent}>
+                            <Text>Mute Notification</Text>
+                            <Switch
+                                trackColor={{ false: "#a4a4a4", true: "#35c759" }}
+                                thumbColor={muteNotifications ? "white" : "white"}
+                                ios_backgroundColor="#a4a4a4"
+                                onValueChange={handleMuteNotifications}
+                                value={muteNotifications}
+                            />
+                        </View>
+                    </View>
+                    {
+                        authUser.role === 'admin' &&
+                        <View style={styles.settingItem}>
+                            <View style={[styles.settingItemContent, {flexDirection:'column'}]}>
+                                <Text style={theme.styles.h2}>Gas Prices</Text>
+                                <View style={styles.gasPriceItem}>
+                                    <View style={styles.inputContainer}>
+                                        <Input style={styles.inputStyle}  onChangeText={handleChange} value={price.regular} name={'regular'}/>
+                                        <Text> $/gal</Text>
+                                    </View>
+                                    <Text>Regular</Text>
+                                </View>
+                                <View style={styles.gasPriceItem}>
+                                    <View style={styles.inputContainer}>
+                                        <Input style={styles.inputStyle} onChangeText={handleChange} value={price.plus} name={'plus'}/>
+                                        <Text> $/gal</Text>
+                                    </View>
+                                    <Text>Plus</Text>
+                                </View>
+                                <View style={styles.gasPriceItem}>
+                                    <View style={styles.inputContainer}>
+                                        <Input style={styles.inputStyle}  onChangeText={handleChange} value={price.super} name={'super'}/>
+                                        <Text> $/gal</Text>
+                                    </View>
+                                    <Text>Super</Text>
+                                </View>
+                                <View style={styles.gasPriceItem}>
+                                    <View style={styles.inputContainer}>
+                                        <Input style={styles.inputStyle}  onChangeText={handleChange} value={price.diesel} name={'diesel'}/>
+                                        <Text> $/gal</Text>
+                                    </View>
+                                    <Text>Diesel</Text>
+                                </View>
+                                <Button style={{width: 120}} title={'Save'} onPress={submitGasPrice}/>
+                            </View>
+                        </View>
+                    }
+                    <View style={{paddingHorizontal: 30}}>
+                        <Button title="Sign Out" onPress={signOut} />
+                        <Text style={styles.text}> Once signed out, requires password to login again</Text>
+                    </View>
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };

@@ -64,5 +64,6 @@ const useStyles = (theme) =>
         root: {
             flex: 1,
             width: '100%',
+            alignItems:'center',
         },
     });

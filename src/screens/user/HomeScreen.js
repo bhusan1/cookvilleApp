@@ -252,7 +252,7 @@ export const HomeScreen = () => {
                             </View>
                             <View style={styles.divider}>
                                 <Text
-                                    style={{fontSize: 13, color: '#bc245c', paddingBottom: 10, textAlign:'center'}}>
+                                    style={{fontSize: theme.hp('2%'), color: '#bc245c', paddingBottom: theme.hp('1%'), textAlign:'center'}}>
                                     Find Deals on In-store Purchase and Deli and Save on Gas
                                 </Text>
                             </View>
@@ -265,18 +265,20 @@ export const HomeScreen = () => {
                         <Text style={styles.dealsText}>6262 US HWY 67 E Cookville, TX 75558</Text>
                         <OpenURLButton url={url}>Open Maps</OpenURLButton>
                     </Paper>
-                    <MapView
-                        key={refresh}
-                        style={styles.mapFix}
-                        provider={PROVIDER_GOOGLE}
-                        region={region}
-                    >
-                        <Marker coordinate={{latitude: 33.18624068627443, longitude: -94.86102794051021}} />
-                    </MapView>
                     <View style={styles.footerPanel}>
                         <FlatList
                             ListHeaderComponent = {()=>(
                                 <>
+                                    <View style={styles.mapContainer}>
+                                        <MapView
+                                            key={refresh}
+                                            style={styles.mapFix}
+                                            provider={PROVIDER_GOOGLE}
+                                            region={region}
+                                        >
+                                            <Marker coordinate={{latitude: 33.18624068627443, longitude: -94.86102794051021}} />
+                                        </MapView>
+                                    </View>
                                     <View style={styles.gpCon}>
                                         <Text style={styles.gasText}>Gas Price</Text>
                                         <FontAwesome5 name="gas-pump" color="black" size={50} style={{marginVertical: 2}} />
@@ -407,6 +409,12 @@ const useStyles = theme => StyleSheet.create({
         height: theme.hp('45%'),
         backgroundColor:'white',
     },
+    mapContainer:{
+        width: theme.wp('100%'),
+        height: theme.hp('30%'),
+        position:'relative',
+        flex: 1,
+    },
     mapFix: {
         width: theme.wp('100%'),
         height: '100%',
@@ -420,6 +428,7 @@ const useStyles = theme => StyleSheet.create({
         top: 140,
         flexDirection:'column',
         width: 150,
+        fontSize: theme.hp('1%')
     },
     getCurrentLocation:{
         width: 40,
@@ -433,35 +442,35 @@ const useStyles = theme => StyleSheet.create({
         zIndex: 2,
     },
     divider: {
-        padding: 10,
+        padding: theme.hp('1%'),
         backgroundColor: 'white',
     },
     gasText: {
-        fontSize: 20,
+        fontSize: theme.hp('2.5%'),
         fontWeight: 'bold',
         textAlign: 'center',
         color: '#bc245c',
         paddingTop: 5,
     },
     dealsText: {
-        fontSize: 12,
+        fontSize: theme.hp('1.5%'),
         color: '#bc245c',
         fontWeight: 'bold',
         textAlign:'center',
     },
     dateText: {
-        fontSize: 15,
+        fontSize: theme.hp('2%'),
         color: '#6e012a',
         fontWeight: 'bold',
         textAlign: 'center',
-        paddingBottom: 20,
+        paddingBottom: theme.hp('1.5%'),
     },
     gasPrice: {
         width: 250,
         height: 50,
     },
     saCon: {
-        paddingTop: 20,
+        paddingTop: theme.hp('1.5%'),
         backgroundColor: '#fff',
     },
     gpCon: {
@@ -473,10 +482,10 @@ const useStyles = theme => StyleSheet.create({
         alignItems: 'center',
         flexDirection:'row',
         justifyContent:'center',
-        paddingBottom: 20,
+        paddingBottom: theme.hp('1.5%'),
     },
     paragraph: {
-        fontSize: 14,
+        fontSize: theme.hp('1.6%'),
         fontWeight: 'bold',
         textAlign: 'center',
         color: '#bc245c',

@@ -28,7 +28,7 @@ export const SettingsScreen = ({navigation}) => {
     
     const signOut = () => {
         dispatch(userLogout()).then(()=>{
-            navigation.navigate({index:0, routes:[{name:'SignIn'}]});
+            navigation.reset({index:0, routes:[{name:'SignIn'}]});
         });
     };
     

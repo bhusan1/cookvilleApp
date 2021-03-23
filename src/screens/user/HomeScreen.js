@@ -8,7 +8,6 @@ import {
     SafeAreaView,
     FlatList,
     Image, TouchableOpacity,
-    StatusBar
 } from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Constants from 'expo-constants';
@@ -27,6 +26,7 @@ import Spinner from "react-native-loading-spinner-overlay";
 import {validate} from "../../commons/helper";
 import ImageView from "react-native-image-view";
 import { v4 as uuid } from 'uuid'
+import {imgIcon} from "../../commons/images";
 
 const scheme = Platform.select({ios: 'maps:0,0?q=', android: 'geo:0,0?q='});
 const latLng = `${33.18624068627443},${-94.86102794051021}`;
@@ -243,23 +243,24 @@ export const HomeScreen = () => {
                         <Button title={'submit'} onPress={submit}/>
                     </View>
                 </Overlay>
+                <View style={styles.topPanel}>
+                    <View style={styles.topPanelContent}>
+                        <View style={styles.saCon}>
+                            <Image source={imgIcon} style={styles.logoStyle}/>
+                            <Text style={styles.gasText}>Cookville #1 Stop</Text>
+                        </View>
+                        <View style={styles.divider}>
+                            <Text
+                                style={{fontSize: theme.hp('2%'), color: '#bc245c', paddingBottom: theme.hp('1%'), textAlign:'center'}}>
+                                Find Deals on In-store Purchase and Deli and Save on Gas
+                            </Text>
+                        </View>
+                    </View>
+                </View>
                 <FlatList
                     ListHeaderComponent = {()=>(
                         <>
                             <View style={styles.mapContainer}>
-                                <View style={styles.topPanel}>
-                                    <View style={styles.topPanelContent}>
-                                        <View style={styles.saCon}>
-                                            <Text style={styles.gasText}>Store Address {'\n'} Cookville #1 Stop</Text>
-                                        </View>
-                                        <View style={styles.divider}>
-                                            <Text
-                                                style={{fontSize: theme.hp('2%'), color: '#bc245c', paddingBottom: theme.hp('1%'), textAlign:'center'}}>
-                                                Find Deals on In-store Purchase and Deli and Save on Gas
-                                            </Text>
-                                        </View>
-                                    </View>
-                                </View>
                                 <Paper onPress={resetMap} style={styles.getCurrentLocation}>
                                     <Feather name={'send'} size={theme.wp('4%')} />
                                 </Paper>
@@ -282,17 +283,21 @@ export const HomeScreen = () => {
                                 <Text style={styles.dateText}>{moment().format('MM/DD/YYYY')}</Text>
                             </View>
                             <View style={styles.priceContainer}>
-                                <View style={styles.priceItem}>
-                                    <Text style={styles.paragraph}>REGULAR{'\n'}{gasPrice.regular || 0}/gal</Text>
+                                <View style={[styles.priceItem, {backgroundColor:'#e28e16'}]}>
+                                    <Text style={styles.paragraph}>REGULAR</Text>
+                                    <Text style={[styles.paragraph2,{color:'#e28e16'}]}>{gasPrice.regular || 0}/gal</Text>
                                 </View>
-                                <View style={styles.priceItem}>
-                                    <Text style={styles.paragraph}>PLUS{'\n'}{gasPrice.plus || 0}/gal</Text>
+                                <View style={[styles.priceItem, {backgroundColor:'#0b234b'}]}>
+                                    <Text style={styles.paragraph}>PLUS</Text>
+                                    <Text style={[styles.paragraph2, {color:'#0b234b'}]}>{gasPrice.plus || 0}/gal</Text>
                                 </View>
-                                <View style={styles.priceItem}>
-                                    <Text style={styles.paragraph}>SUPER{'\n'}{gasPrice.super || 0}/gal</Text>
+                                <View style={[styles.priceItem, {backgroundColor:'#079e43'}]}>
+                                    <Text style={styles.paragraph}>SUPER</Text>
+                                    <Text style={[styles.paragraph2,{color:'#079e43'}]}>{gasPrice.super || 0}/gal</Text>
                                 </View>
-                                <View  style={styles.priceItem}>
-                                    <Text style={styles.paragraph}>DIESEL{'\n'}{gasPrice.diesel || 0}/gal</Text>
+                                <View  style={[styles.priceItem, {backgroundColor:'#d10019'}]}>
+                                    <Text style={styles.paragraph}>DIESEL</Text>
+                                    <Text style={[styles.paragraph2,{color:'#d10019'}]}>{gasPrice.diesel || 0}/gal</Text>
                                 </View>
                             </View>
                         </>
@@ -390,6 +395,11 @@ const useStyles = theme => StyleSheet.create({
         overflow: 'hidden',
         zIndex: 3,
     },
+    logoStyle:{
+        width: theme.wp('15%'),
+        height: theme.wp('15%'),
+        resizeMode: 'contain',
+    },
     topPanelContent:{
         ...theme.styles.shadow,
         borderBottomRightRadius: theme.wp('5%'),
@@ -410,6 +420,7 @@ const useStyles = theme => StyleSheet.create({
         height: theme.hp('45%'),
         position:'relative',
         flex: 1,
+        marginTop: theme.hp('5%'),
     },
     mapFix: {
         width: theme.wp('100%'),
@@ -426,8 +437,8 @@ const useStyles = theme => StyleSheet.create({
         width: theme.wp('35%'),
     },
     getCurrentLocation:{
-        width: theme.wp('7%'),
-        height: theme.wp('7%'),
+        width: theme.wp('8%'),
+        height: theme.wp('8%'),
         position: 'absolute',
         top: theme.hp('16%'),
         right: theme.wp('5%'),
@@ -465,8 +476,9 @@ const useStyles = theme => StyleSheet.create({
         height: 50,
     },
     saCon: {
-        paddingTop: theme.hp('1.5%'),
+        paddingTop: theme.hp('1%'),
         backgroundColor: '#fff',
+        alignItems: 'center',
     },
     gpCon: {
         alignItems: 'center',
@@ -475,22 +487,34 @@ const useStyles = theme => StyleSheet.create({
     priceContainer: {
         backgroundColor: '#fff',
         alignItems: 'center',
-        flexDirection:'row',
         justifyContent:'center',
+        flexDirection:'row',
+        flexWrap:'wrap',
         paddingBottom: theme.hp('1.5%'),
     },
     paragraph: {
         fontSize: theme.hp('1.6%'),
         fontWeight: 'bold',
         textAlign: 'center',
-        color: '#bc245c',
+        color:'white'
+    },
+    paragraph2: {
+        fontSize: theme.hp('1.8%'),
+        fontWeight: 'bold',
+        textAlign: 'center',
+        backgroundColor:'white',
+        paddingHorizontal: theme.wp('1.8%'),
+        paddingVertical: theme.wp('1%'),
+        borderRadius: 100,
     },
     priceItem:{
-        width: '20%',
+        width: '40%',
         margin:'1%',
-        padding: 5,
-        borderStyle:'solid',
-        borderWidth: 0.5,
+        padding: 10,
+        flexDirection: 'row',
+        justifyContent:'space-between',
+        alignItems:'center',
+        borderRadius: theme.wp('1%')
     }
 });
 

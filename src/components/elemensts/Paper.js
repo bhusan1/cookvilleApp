@@ -37,7 +37,7 @@ const useStyles = (theme) =>
             width: '90%',
             alignSelf: 'center',
             padding: theme.hp('1%'),
-            borderRadius: theme.wp('2%'),
+            borderRadius: theme.wp('1.5%'),
             backgroundColor: 'white',
             flexDirection: 'row',
             alignItems: 'center',

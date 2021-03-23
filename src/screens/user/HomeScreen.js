@@ -11,7 +11,6 @@ import {
     StatusBar
 } from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
-import MarqueeText from 'react-native-marquee';
 import Constants from 'expo-constants';
 import {useSelector} from 'react-redux';
 import * as Notifications from 'expo-notifications';
@@ -46,7 +45,7 @@ Notifications.setNotificationHandler({
     }),
 });
 
-const OpenURLButton = ({url, children}) => {
+const OpenURLButton = ({url}) => {
     const handlePress = useCallback(async () => {
         const supported = await Linking.canOpenURL(url);
         if (supported) {
@@ -55,7 +54,7 @@ const OpenURLButton = ({url, children}) => {
             Alert.alert(`Don't know how to open this URL: ${url}`);
         }
     }, [url]);
-    return <Button style={{padding: 2,}} titleStyle={{fontFamily:'OpenSans'}} title={children} onPress={handlePress} />;
+    return <Button style={{padding: 2, marginBottom: 0,}} titleStyle={{fontFamily:'OpenSans'}} title={'Open Maps'} onPress={handlePress} />;
 };
 
 export const HomeScreen = () => {
@@ -84,8 +83,8 @@ export const HomeScreen = () => {
     const [fullImage, setFullImage] = useState(false);
     
     const [region] = useState({
-        latitude: 33.18454068627443,
-        longitude: -94.86102794051021,
+        latitude: 33.18854068627443,
+        longitude: -94.86152794051021,
         latitudeDelta: 0.01,
         longitudeDelta: 0.01,
     });
@@ -244,77 +243,73 @@ export const HomeScreen = () => {
                         <Button title={'submit'} onPress={submit}/>
                     </View>
                 </Overlay>
-                <View style={styles.mapFix} pointerEvents={'box-none'}>
-                    <View style={styles.topPanel}>
-                        <View style={styles.topPanelContent}>
-                            <View style={styles.saCon}>
-                                <Text style={styles.gasText}>Store Address {'\n'} Cookville #1 Stop</Text>
+                <FlatList
+                    ListHeaderComponent = {()=>(
+                        <>
+                            <View style={styles.mapContainer}>
+                                <View style={styles.topPanel}>
+                                    <View style={styles.topPanelContent}>
+                                        <View style={styles.saCon}>
+                                            <Text style={styles.gasText}>Store Address {'\n'} Cookville #1 Stop</Text>
+                                        </View>
+                                        <View style={styles.divider}>
+                                            <Text
+                                                style={{fontSize: theme.hp('2%'), color: '#bc245c', paddingBottom: theme.hp('1%'), textAlign:'center'}}>
+                                                Find Deals on In-store Purchase and Deli and Save on Gas
+                                            </Text>
+                                        </View>
+                                    </View>
+                                </View>
+                                <Paper onPress={resetMap} style={styles.getCurrentLocation}>
+                                    <Feather name={'send'} size={theme.wp('4%')} />
+                                </Paper>
+                                <Paper style={styles.address}>
+                                    <Text style={styles.dealsText}>6262 US HWY 67 E Cookville, TX 75558</Text>
+                                    <OpenURLButton url={url} />
+                                </Paper>
+                                <MapView
+                                    key={refresh}
+                                    style={styles.mapFix}
+                                    provider={PROVIDER_GOOGLE}
+                                    region={region}
+                                >
+                                    <Marker coordinate={{latitude: 33.18624068627443, longitude: -94.86102794051021}} />
+                                </MapView>
                             </View>
-                            <View style={styles.divider}>
-                                <Text
-                                    style={{fontSize: theme.hp('2%'), color: '#bc245c', paddingBottom: theme.hp('1%'), textAlign:'center'}}>
-                                    Find Deals on In-store Purchase and Deli and Save on Gas
-                                </Text>
+                            <View style={styles.gpCon}>
+                                <Text style={styles.gasText}>Gas Price</Text>
+                                <FontAwesome5 name="gas-pump" color="black" size={theme.hp('5%')} style={{marginVertical: 2}} />
+                                <Text style={styles.dateText}>{moment().format('MM/DD/YYYY')}</Text>
                             </View>
-                        </View>
-                    </View>
-                    <Paper onPress={resetMap} style={styles.getCurrentLocation}>
-                        <Feather name={'send'} size={20} />
-                    </Paper>
-                    <Paper style={styles.address}>
-                        <Text style={styles.dealsText}>6262 US HWY 67 E Cookville, TX 75558</Text>
-                        <OpenURLButton url={url}>Open Maps</OpenURLButton>
-                    </Paper>
-                    <View style={styles.footerPanel}>
-                        <FlatList
-                            ListHeaderComponent = {()=>(
-                                <>
-                                    <View style={styles.mapContainer}>
-                                        <MapView
-                                            key={refresh}
-                                            style={styles.mapFix}
-                                            provider={PROVIDER_GOOGLE}
-                                            region={region}
-                                        >
-                                            <Marker coordinate={{latitude: 33.18624068627443, longitude: -94.86102794051021}} />
-                                        </MapView>
-                                    </View>
-                                    <View style={styles.gpCon}>
-                                        <Text style={styles.gasText}>Gas Price</Text>
-                                        <FontAwesome5 name="gas-pump" color="black" size={50} style={{marginVertical: 2}} />
-                                        <Text style={styles.dateText}>{moment().format('MM/DD/YYYY')}</Text>
-                                    </View>
-                                    <View style={styles.priceContainer}>
-                                        <View style={styles.priceItem}>
-                                            <Text style={styles.paragraph}>REGULAR{'\n'}{gasPrice.regular || 0}/gal</Text>
-                                        </View>
-                                        <View style={styles.priceItem}>
-                                            <Text style={styles.paragraph}>PLUS{'\n'}{gasPrice.plus || 0}/gal</Text>
-                                        </View>
-                                        <View style={styles.priceItem}>
-                                            <Text style={styles.paragraph}>SUPER{'\n'}{gasPrice.super || 0}/gal</Text>
-                                        </View>
-                                        <View  style={styles.priceItem}>
-                                            <Text style={styles.paragraph}>DIESEL{'\n'}{gasPrice.diesel || 0}/gal</Text>
-                                        </View>
-                                    </View>
-                                </>
-                            )}
-                            style={{flex: 1, width:'100%', padding: theme.wp('2%')}}
-                            data={authUser.role === 'admin'?[...homeDeals,'add']: homeDeals}
-                            renderItem={renderItem}
-                            showsVerticalScrollIndicator={false}
-                            keyExtractor={item => JSON.stringify(item)}
-                        />
-                    </View>
-                    <ImageView
-                        images={images}
-                        imageIndex={0}
-                        isVisible={fullImage}
-                        onClose={handleClose}
-                        animationType={'none'}
-                    />
-                </View>
+                            <View style={styles.priceContainer}>
+                                <View style={styles.priceItem}>
+                                    <Text style={styles.paragraph}>REGULAR{'\n'}{gasPrice.regular || 0}/gal</Text>
+                                </View>
+                                <View style={styles.priceItem}>
+                                    <Text style={styles.paragraph}>PLUS{'\n'}{gasPrice.plus || 0}/gal</Text>
+                                </View>
+                                <View style={styles.priceItem}>
+                                    <Text style={styles.paragraph}>SUPER{'\n'}{gasPrice.super || 0}/gal</Text>
+                                </View>
+                                <View  style={styles.priceItem}>
+                                    <Text style={styles.paragraph}>DIESEL{'\n'}{gasPrice.diesel || 0}/gal</Text>
+                                </View>
+                            </View>
+                        </>
+                    )}
+                    style={{flex: 1, width:'100%'}}
+                    data={authUser.role === 'admin'?[...homeDeals,'add']: homeDeals}
+                    renderItem={renderItem}
+                    showsVerticalScrollIndicator={false}
+                    keyExtractor={item => JSON.stringify(item)}
+                />
+                <ImageView
+                    images={images}
+                    imageIndex={0}
+                    isVisible={fullImage}
+                    onClose={handleClose}
+                    animationType={'none'}
+                />
             </SafeAreaView>
         </>
     );
@@ -331,7 +326,6 @@ const useStyles = theme => StyleSheet.create({
     },
     homeDealItem:{
         position:'relative',
-        width: '100%',
         height: theme.hp('30%'),
         justifyContent:'center',
         alignItems:'center',
@@ -342,7 +336,9 @@ const useStyles = theme => StyleSheet.create({
         zIndex: 2,
         borderWidth: 0.5,
         borderStyle: 'solid',
-        borderColor: '#afafaf'
+        borderColor: '#afafaf',
+        marginHorizontal: theme.wp('2%'),
+        marginTop: theme.wp('1.5%'),
     },
     homeDealRemove:{
         position:'absolute',
@@ -411,7 +407,7 @@ const useStyles = theme => StyleSheet.create({
     },
     mapContainer:{
         width: theme.wp('100%'),
-        height: theme.hp('30%'),
+        height: theme.hp('45%'),
         position:'relative',
         flex: 1,
     },
@@ -424,17 +420,16 @@ const useStyles = theme => StyleSheet.create({
     address:{
         opacity: 0.9,
         position:'absolute',
-        left: 5,
-        top: 140,
+        left: theme.wp('5%'),
+        top: theme.hp('16%'),
         flexDirection:'column',
-        width: 150,
-        fontSize: theme.hp('1%')
+        width: theme.wp('35%'),
     },
     getCurrentLocation:{
-        width: 40,
-        height: 40,
+        width: theme.wp('7%'),
+        height: theme.wp('7%'),
         position: 'absolute',
-        top: 140,
+        top: theme.hp('16%'),
         right: theme.wp('5%'),
         justifyContent: 'center',
         alignItems: 'center',

@@ -5,23 +5,24 @@ import {
     Image,
     TouchableOpacity,
     SafeAreaView,
-    StatusBar,
+    View,
     FlatList
 } from 'react-native';
 import {useFirestoreConnect} from "react-redux-firebase";
 import {useSelector} from "react-redux";
 import {AddButton, Paper} from "../../components";
 import {useTheme} from "react-native-paper";
-import ImageView from 'react-native-image-view';
+import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 
 export const DealsScreen = ({navigation}) => {
     
     useFirestoreConnect([{collection:'deals'}]);
     
     const theme = useTheme();
+    const styles = useStyles(theme);
     const deals = useSelector(state=>state.firestore.ordered.deals || []);
     const authUser = useSelector(state=>state.firebase.profile);
-    const [images, setImages] = useState([]);
+    const [image, setImage] = useState(null);
     const [visible, setVisible] = useState(false);
     
     const addDeal = () => {
@@ -40,14 +41,7 @@ export const DealsScreen = ({navigation}) => {
     
     const handleBarcodeClick = (deal)=>{
         setVisible(true);
-        setImages([
-            {
-                source: {uri: deal.barcode,},
-                title: deal.title,
-                width: theme.wp('100%'),
-                height: theme.hp('100%'),
-            }
-        ])
+        setImage({uri: deal.barcode})
     }
     
     const renderItem = ({item}) => {
@@ -75,18 +69,21 @@ export const DealsScreen = ({navigation}) => {
                 keyExtractor={(item)=>item.id}
             />
             <AddButton show={authUser.role === 'admin'} onPress={addDeal} />
-            <ImageView
-                images={images}
-                imageIndex={0}
-                isVisible={visible}
-                onClose={handleClose}
-                animationType={'none'}
-            />
+            {
+                visible &&
+                <View style={styles.fullScreenView}>
+                    <TouchableOpacity style={styles.closeFullScreen} onPress={()=>{setVisible(false)}}>
+                        <SimpleLineIcons name={'close'} size={theme.wp('6%')} color={theme.colors.danger}/>
+                    </TouchableOpacity>
+                    <Image source={image} style={styles.fullImage}/>
+                </View>
+            }
         </SafeAreaView>
     );
 };
 
-const styles = StyleSheet.create({
+
+const useStyles = theme => StyleSheet.create({
     root: {
         flex: 1,
         position: 'relative',
@@ -95,6 +92,33 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    fullScreenView:{
+        position: 'absolute',
+        width: theme.wp('100%'),
+        height: theme.hp('100%'),
+        backgroundColor:'white',
+        justifyContent: 'center',
+        alignItems: 'center',
+        top: 0,
+        left: 0,
+        zIndex: 2000,
+        elevation: 10,
+    },
+    fullImage:{
+        width:'100%',
+        height: theme.hp('20%'),
+        resizeMode:'contain',
+    },
+    closeFullScreen:{
+        position:'absolute',
+        top: 0,
+        right: 0,
+        width: theme.wp('10%'),
+        height: theme.wp('10%'),
+        zIndex: 5,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     headText: {
         fontSize: 20,

@@ -32,5 +32,6 @@ const useStyles = (theme) =>
             justifyContent: 'center',
             alignItems: 'center',
             ...theme.styles.shadow,
+            zIndex: 10500,
         },
     });

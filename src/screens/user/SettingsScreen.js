@@ -16,31 +16,31 @@ const INITIAL_STATE = {
 }
 
 export const SettingsScreen = ({navigation}) => {
-    
+
     useFirestoreConnect([{collection:'settings', doc: 'gasPrice', storeAs: 'gasPrice'}])
-    
+
     const theme = useTheme();
     const firestore = useFirestore();
     const dispatch = useDispatch();
     const authUser = useSelector(state=>state.firebase.profile);
     const [muteNotifications, setMuteNotifications] = React.useState(authUser.muteNotification || false);
     const [price, setPrice] = useState(useSelector(state=>state.firestore.data.gasPrice || INITIAL_STATE))
-    
+
     const signOut = () => {
         dispatch(userLogout()).then(()=>{
             navigation.reset({index:0, routes:[{name:'SignIn'}]});
         });
     };
-    
+
     const handleMuteNotifications = async () => {
         setMuteNotifications(!muteNotifications);
         await firestore.collection('users').doc(authUser.uid).update({muteNotifications: !muteNotifications});
     }
-    
+
     const handleChange = (name, value) => {
         setPrice({...price, [name]: value});
     }
-    
+
     const submitGasPrice = () => {
         firestore.collection('settings').doc('gasPrice').set(price).then(()=>{
             showMessage({
@@ -114,7 +114,7 @@ export const SettingsScreen = ({navigation}) => {
                             </View>
                         </View>
                     }
-                    <View style={{paddingHorizontal: 30}}>
+                    <View style={{paddingHorizontal: 30, backgroundColor:'white'}}>
                         <Button title="Sign Out" onPress={signOut} />
                         <Text style={styles.text}> Once signed out, requires password to login again</Text>
                     </View>

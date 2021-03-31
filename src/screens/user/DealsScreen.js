@@ -15,37 +15,37 @@ import {useTheme} from "react-native-paper";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 
 export const DealsScreen = ({navigation}) => {
-    
+
     useFirestoreConnect([{collection:'deals'}]);
-    
+
     const theme = useTheme();
     const styles = useStyles(theme);
     const deals = useSelector(state=>state.firestore.ordered.deals || []);
     const authUser = useSelector(state=>state.firebase.profile);
     const [image, setImage] = useState(null);
     const [visible, setVisible] = useState(false);
-    
+
     const addDeal = () => {
         navigation.navigate('AddDeal');
     }
-    
+
     const viewDeal = (deal) => {
         if(authUser.role === 'admin'){
             navigation.navigate('AddDeal', {deal})
         }
     }
-    
+
     const handleClose = () => {
         setVisible(false);
     }
-    
+
     const handleBarcodeClick = (deal)=>{
         setVisible(true);
         setImage({uri: deal.barcode})
     }
-    
+
     const renderItem = ({item}) => {
-        
+
         return (
             <Paper style={styles.saCon}>
                 <TouchableOpacity activeOpacity={0.8} style={styles.Btn} onPress={()=>{viewDeal(item)}}>
@@ -59,7 +59,7 @@ export const DealsScreen = ({navigation}) => {
             </Paper>
         )
     }
-    
+
     return (
         <SafeAreaView style={styles.root}>
             <Text style={styles.headText}>OnGoing Deals</Text>
@@ -112,8 +112,8 @@ const useStyles = theme => StyleSheet.create({
     },
     closeFullScreen:{
         position:'absolute',
-        top: 0,
-        right: 0,
+        top: theme.hp('5%'),
+        right: theme.wp('2.5%'),
         width: theme.wp('10%'),
         height: theme.wp('10%'),
         zIndex: 5,

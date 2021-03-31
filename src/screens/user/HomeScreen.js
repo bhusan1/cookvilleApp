@@ -58,22 +58,22 @@ const OpenURLButton = ({url}) => {
 };
 
 export const HomeScreen = () => {
-    
-    
+
+
     useFirestoreConnect([
         {collection:'settings', doc: 'gasPrice', storeAs: 'gasPrice'},
         {collection:'homeDeals', storeAs: 'homeDeals'}
         ]);
-    
+
     const theme = useTheme();
     const styles = useStyles(theme);
     const firebase = useFirebase();
     const firestore = useFirestore();
-    
+
     const authUser = useSelector(state=>state.firebase.profile);
     const gasPrice = useSelector(state=>state.firestore.data.gasPrice || {});
     const homeDeals = useSelector(state=>state.firestore.ordered.homeDeals || []);
-    
+
     const [refresh, setRefresh] = useState(false);
     const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -81,14 +81,14 @@ export const HomeScreen = () => {
     const [homeDeal, setHomeDeal] = useState({title:'', image:''});
     const [images, setImages] = useState([]);
     const [fullImage, setFullImage] = useState(false);
-    
+
     const [region] = useState({
         latitude: 33.18854068627443,
         longitude: -94.86152794051021,
         latitudeDelta: 0.01,
         longitudeDelta: 0.01,
     });
-    
+
     useEffect(() => {
         registerForPushNotificationsAsync().then(async (token) => {
             if(token){
@@ -105,7 +105,7 @@ export const HomeScreen = () => {
     const resetMap = () =>{
         setRefresh(!refresh);
     }
-    
+
     const viewFullImage = () => {
         const homeDealImages = homeDeals.reduce((result, item)=>{
             result.push({
@@ -121,7 +121,7 @@ export const HomeScreen = () => {
             setFullImage(true)
         }
     }
-    
+
     const removeHomeDeal = (item) => {
         Alert.alert(
           'Confirm',
@@ -144,9 +144,9 @@ export const HomeScreen = () => {
           ]
         );
     }
-    
+
     const renderItem = ({item}) => {
-        
+
         if(item === 'add'){
             return (
                 <TouchableOpacity style={styles.homeDealAddItem} onPress={()=>{setVisible(true)}}>
@@ -168,7 +168,7 @@ export const HomeScreen = () => {
             )
         }
     }
-    
+
     const submit = () => {
         if(validate(homeDeal, {title:'required',image:'required'})){
             firestore.collection('homeDeals')
@@ -178,11 +178,11 @@ export const HomeScreen = () => {
             })
         }
     }
-    
+
     const handleClose = () => {
         setFullImage(false);
     }
-    
+
     const openImagePickerAsync = async () => {
         const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
         if (permissionResult.granted === false) {
@@ -220,9 +220,9 @@ export const HomeScreen = () => {
                 )
             }
         });
-        
+
     };
-    
+
     return (
         <>
             <SafeAreaView style={styles.root}>
@@ -406,7 +406,7 @@ const useStyles = theme => StyleSheet.create({
         borderBottomLeftRadius: theme.wp('5%'),
         overflow:'hidden',
     },
-    
+
     footerPanel:{
         position:'absolute',
         bottom: 0,
@@ -508,7 +508,7 @@ const useStyles = theme => StyleSheet.create({
         borderRadius: 100,
     },
     priceItem:{
-        width: '40%',
+        width: '44%',
         margin:'1%',
         padding: 10,
         flexDirection: 'row',
@@ -536,7 +536,7 @@ async function registerForPushNotificationsAsync() {
     } else {
         console.log('Must use physical device for Push Notifications');
     }
-    
+
     if (Platform.OS === 'android') {
         await Notifications.setNotificationChannelAsync('default', {
             name: 'default',
@@ -545,6 +545,6 @@ async function registerForPushNotificationsAsync() {
             lightColor: '#FF231F7C',
         });
     }
-    
+
     return token;
 }

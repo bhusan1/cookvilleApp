@@ -27,6 +27,7 @@ import {validate} from "../../commons/helper";
 import ImageView from "react-native-image-view";
 import { v4 as uuid } from 'uuid'
 import {imgIcon} from "../../commons/images";
+import MarqueeText from "react-native-marquee";
 
 const scheme = Platform.select({ios: 'maps:0,0?q=', android: 'geo:0,0?q='});
 const latLng = `${33.18624068627443},${-94.86102794051021}`;
@@ -225,96 +226,104 @@ export const HomeScreen = () => {
 
     return (
         <>
-            <SafeAreaView style={styles.root}>
-                <Overlay isVisible={visible} onBackdropPress={()=>{setVisible(false)}}>
-                    <Spinner visible={loading} textContent={`Uploading (${progress}%)`} textStyle={{color: 'white'}} />
-                    <View style={{width: theme.wp('70%')}}>
-                        <Text>Title</Text>
-                        <Input value={homeDeal.title} style={styles.inputStyle} placeholder={'Title'} onChangeText={(name, value)=>{setHomeDeal({...homeDeal, title: value})}} />
-                        <View style={{flexDirection:'row', marginVertical: 10,}}>
-                            <Text>Image</Text>
-                            <TouchableOpacity
-                                style={{width: 20, height: 20, ...theme.styles.center, backgroundColor: theme.colors.success, marginLeft: 5, borderRadius: 10,}}
-                                onPress={openImagePickerAsync}
-                            >
-                                <Feather name={'plus'} size={16} color={'white'}/>
-                            </TouchableOpacity>
-                        </View>
-                        <Button title={'submit'} onPress={submit}/>
-                    </View>
-                </Overlay>
-                <View style={styles.topPanel}>
-                    <View style={styles.topPanelContent}>
-                        <View style={styles.saCon}>
-                            <Image source={imgIcon} style={styles.logoStyle}/>
-                            <Text style={styles.gasText}>Cookville #1 Stop</Text>
-                        </View>
-                        <View style={styles.divider}>
-                            <Text
-                                style={{fontSize: theme.hp('2%'), color: '#bc245c', paddingBottom: theme.hp('1%'), textAlign:'center'}}>
-                                Find Deals on In-store Purchase and Deli and Save on Gas
-                            </Text>
-                        </View>
-                    </View>
-                </View>
-                <FlatList
-                    ListHeaderComponent = {()=>(
-                        <>
-                            <View style={styles.mapContainer}>
-                                <Paper onPress={resetMap} style={styles.getCurrentLocation}>
-                                    <Feather name={'send'} size={theme.wp('4%')} />
-                                </Paper>
-                                <Paper style={styles.address}>
-                                    <Text style={styles.dealsText}>6262 US HWY 67 E Cookville, TX 75558</Text>
-                                    <OpenURLButton url={url} />
-                                </Paper>
-                                <MapView
-                                    key={refresh}
-                                    style={styles.mapFix}
-                                    provider={PROVIDER_GOOGLE}
-                                    region={region}
+            <SafeAreaView style={{flex: 1}}>
+                <View style={styles.root}>
+                    <Overlay isVisible={visible} onBackdropPress={()=>{setVisible(false)}}>
+                        <Spinner visible={loading} textContent={`Uploading (${progress}%)`} textStyle={{color: 'white'}} />
+                        <View style={{width: theme.wp('70%')}}>
+                            <Text>Title</Text>
+                            <Input value={homeDeal.title} style={styles.inputStyle} placeholder={'Title'} onChangeText={(name, value)=>{setHomeDeal({...homeDeal, title: value})}} />
+                            <View style={{flexDirection:'row', marginVertical: 10,}}>
+                                <Text>Image</Text>
+                                <TouchableOpacity
+                                    style={{width: 20, height: 20, ...theme.styles.center, backgroundColor: theme.colors.success, marginLeft: 5, borderRadius: 10,}}
+                                    onPress={openImagePickerAsync}
                                 >
-                                    <Marker coordinate={{latitude: 33.18624068627443, longitude: -94.86102794051021}} />
-                                </MapView>
+                                    <Feather name={'plus'} size={16} color={'white'}/>
+                                </TouchableOpacity>
                             </View>
-                            <View style={styles.gpCon}>
-                                <Text style={styles.gasText}>Gas Price</Text>
-                                <FontAwesome5 name="gas-pump" color="black" size={theme.hp('5%')} style={{marginVertical: 2}} />
-                                <Text style={styles.dateText}>{moment().format('MM/DD/YYYY')}</Text>
+                            <Button title={'submit'} onPress={submit}/>
+                        </View>
+                    </Overlay>
+                    <View style={styles.topPanel}>
+                        <View style={styles.topPanelContent}>
+                            <View style={styles.saCon}>
+                                <Image source={imgIcon} style={styles.logoStyle}/>
+                                <Text style={styles.gasText}>Cookville #1 Stop</Text>
                             </View>
-                            <View style={styles.priceContainer}>
-                                <View style={[styles.priceItem, {backgroundColor:'#e28e16'}]}>
-                                    <Text style={styles.paragraph}>REGULAR</Text>
-                                    <Text style={[styles.paragraph2,{color:'#e28e16'}]}>{gasPrice.regular || 0}/gal</Text>
-                                </View>
-                                <View style={[styles.priceItem, {backgroundColor:'#0b234b'}]}>
-                                    <Text style={styles.paragraph}>PLUS</Text>
-                                    <Text style={[styles.paragraph2, {color:'#0b234b'}]}>{gasPrice.plus || 0}/gal</Text>
-                                </View>
-                                <View style={[styles.priceItem, {backgroundColor:'#079e43'}]}>
-                                    <Text style={styles.paragraph}>SUPER</Text>
-                                    <Text style={[styles.paragraph2,{color:'#079e43'}]}>{gasPrice.super || 0}/gal</Text>
-                                </View>
-                                <View  style={[styles.priceItem, {backgroundColor:'#d10019'}]}>
-                                    <Text style={styles.paragraph}>DIESEL</Text>
-                                    <Text style={[styles.paragraph2,{color:'#d10019'}]}>{gasPrice.diesel || 0}/gal</Text>
-                                </View>
+                            <View style={styles.divider}>
+                                <MarqueeText
+                                    style={{fontSize: theme.hp('2%'), color: '#bc245c', paddingBottom: theme.hp('1%'), textAlign:'center'}}
+                                    duration={3000}
+                                    marqueeOnStart
+                                    loop={true}
+                                    marqueeDelay={1000}
+                                    marqueeResetDelay={500}
+                                >
+                                    Find Deals on In-store Purchase and Deli and Save on Gas
+                                </MarqueeText>
                             </View>
-                        </>
-                    )}
-                    style={{flex: 1, width:'100%'}}
-                    data={authUser.role === 'admin'?[...homeDeals,'add']: homeDeals}
-                    renderItem={renderItem}
-                    showsVerticalScrollIndicator={false}
-                    keyExtractor={item => JSON.stringify(item)}
-                />
-                <ImageView
-                    images={images}
-                    imageIndex={0}
-                    isVisible={fullImage}
-                    onClose={handleClose}
-                    animationType={'none'}
-                />
+                        </View>
+                    </View>
+                    <FlatList
+                        ListHeaderComponent = {()=>(
+                            <>
+                                <View style={styles.mapContainer}>
+                                    <Paper onPress={resetMap} style={styles.getCurrentLocation}>
+                                        <Feather name={'send'} size={theme.wp('4%')} />
+                                    </Paper>
+                                    <Paper style={styles.address}>
+                                        <Text style={styles.dealsText}>6262 US HWY 67 E Cookville, TX 75558</Text>
+                                        <OpenURLButton url={url} />
+                                    </Paper>
+                                    <MapView
+                                        key={refresh}
+                                        style={styles.mapFix}
+                                        provider={PROVIDER_GOOGLE}
+                                        region={region}
+                                    >
+                                        <Marker coordinate={{latitude: 33.18624068627443, longitude: -94.86102794051021}} />
+                                    </MapView>
+                                </View>
+                                <View style={styles.gpCon}>
+                                    <Text style={styles.gasText}>Gas Price</Text>
+                                    <FontAwesome5 name="gas-pump" color="black" size={theme.hp('5%')} style={{marginVertical: 2}} />
+                                    <Text style={styles.dateText}>{moment().format('MM/DD/YYYY')}</Text>
+                                </View>
+                                <View style={styles.priceContainer}>
+                                    <View style={[styles.priceItem, {backgroundColor:'#e28e16'}]}>
+                                        <Text style={styles.paragraph}>REGULAR</Text>
+                                        <Text style={[styles.paragraph2,{color:'#e28e16'}]}>{gasPrice.regular || 0}/gal</Text>
+                                    </View>
+                                    <View style={[styles.priceItem, {backgroundColor:'#0b234b'}]}>
+                                        <Text style={styles.paragraph}>PLUS</Text>
+                                        <Text style={[styles.paragraph2, {color:'#0b234b'}]}>{gasPrice.plus || 0}/gal</Text>
+                                    </View>
+                                    <View style={[styles.priceItem, {backgroundColor:'#079e43'}]}>
+                                        <Text style={styles.paragraph}>SUPER</Text>
+                                        <Text style={[styles.paragraph2,{color:'#079e43'}]}>{gasPrice.super || 0}/gal</Text>
+                                    </View>
+                                    <View  style={[styles.priceItem, {backgroundColor:'#d10019'}]}>
+                                        <Text style={styles.paragraph}>DIESEL</Text>
+                                        <Text style={[styles.paragraph2,{color:'#d10019'}]}>{gasPrice.diesel || 0}/gal</Text>
+                                    </View>
+                                </View>
+                            </>
+                        )}
+                        style={{flex: 1, width:'100%'}}
+                        data={authUser.role === 'admin'?[...homeDeals,'add']: homeDeals}
+                        renderItem={renderItem}
+                        showsVerticalScrollIndicator={false}
+                        keyExtractor={item => JSON.stringify(item)}
+                    />
+                    <ImageView
+                        images={images}
+                        imageIndex={0}
+                        isVisible={fullImage}
+                        onClose={handleClose}
+                        animationType={'none'}
+                    />
+                </View>
             </SafeAreaView>
         </>
     );
@@ -325,6 +334,7 @@ const useStyles = theme => StyleSheet.create({
         flex: 1,
         width:'100%',
         zIndex: 0,
+        position:'relative'
     },
     inputStyle:{
         height: 30,
@@ -477,7 +487,7 @@ const useStyles = theme => StyleSheet.create({
     },
     saCon: {
         paddingTop: theme.hp('1%'),
-        backgroundColor: '#fff',
+        backgroundColor: 'white',
         alignItems: 'center',
     },
     gpCon: {

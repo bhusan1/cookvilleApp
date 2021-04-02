@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>599155764226-mr9gaoc7g2ouv6s0cf031b34dsh98jcr.apps.googleusercontent.com</string>
+	<string>599155764226-op0r1v5quapdrbcrmu1c873gghvtj89q.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.599155764226-mr9gaoc7g2ouv6s0cf031b34dsh98jcr</string>
+	<string>com.googleusercontent.apps.599155764226-op0r1v5quapdrbcrmu1c873gghvtj89q</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>599155764226-66ecoo1ae8ooja53uoda7rq8a3lmhi8f.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.ssp.cookville1stop</string>
+	<string>com.ssp.cookvillestop</string>
 	<key>PROJECT_ID</key>
 	<string>cookville1stop-22333</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:599155764226:ios:19fceab198fd559c690b1b</string>
+	<string>1:599155764226:ios:300ba5f9ec66fd74690b1b</string>
 	<key>DATABASE_URL</key>
 	<string>https://cookville1stop-22333-default-rtdb.firebaseio.com</string>
 </dict>

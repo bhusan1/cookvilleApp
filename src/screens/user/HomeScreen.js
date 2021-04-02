@@ -7,7 +7,7 @@ import {
     Linking,
     SafeAreaView,
     FlatList,
-    Image, TouchableOpacity,
+    Image, TouchableOpacity, StatusBar,
 } from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Constants from 'expo-constants';
@@ -227,6 +227,7 @@ export const HomeScreen = () => {
     return (
         <>
             <SafeAreaView style={{flex: 1}}>
+                <StatusBar barStyle={'dark-content'} backgroundColor={'#fff'}/>
                 <View style={styles.root}>
                     <Overlay isVisible={visible} onBackdropPress={()=>{setVisible(false)}}>
                         <Spinner visible={loading} textContent={`Uploading (${progress}%)`} textStyle={{color: 'white'}} />

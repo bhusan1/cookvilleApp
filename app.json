@@ -21,7 +21,7 @@
       "bundleIdentifier": "com.ssp.cookvillestop",
       "buildNumber": "1.0.3",
       "config": {
-        "googleMapsApiKey": "AIzaSyAWzsPglgq6rpHO_EuEtSVzWFcStAR9txM"
+        "googleMapsApiKey": "AIzaSyBQblwHOUCf8u1TakHd0yIqs6U2DYLNxmU"
       },
       "googleServicesFile": "./GoogleService-Info.plist"
     },
@@ -34,7 +34,7 @@
       "versionCode": 2,
       "config": {
         "googleMaps": {
-          "apiKey" : "AIzaSyAWzsPglgq6rpHO_EuEtSVzWFcStAR9txM"
+          "apiKey" : "AIzaSyCPf_MxL1i8PPiADocz0wTMfiBauasso20"
         }
       },
       "googleServicesFile": "./google-services.json",

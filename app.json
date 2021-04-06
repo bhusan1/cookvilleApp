@@ -41,7 +41,6 @@
       "googleServicesFile": "./google-services.json",
       "useNextNotificationsApi": true,
       "permissions": [
-        "CAMERA",
         "READ_CONTACTS",
         "READ_CALENDAR",
         "WRITE_CALENDAR",

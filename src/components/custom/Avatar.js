@@ -15,12 +15,6 @@ export const Avatar = ({size = 80, noEdit, style={}, disabled}) => {
     const authUser = useSelector((state) => state.firebase.profile);
     
     const openImagePickerAsync = async () => {
-        const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-        if (permissionResult.granted === false) {
-            alert("Permission to access camera roll is required!");
-            return;
-        }
-        
         ImagePicker.launchImageLibraryAsync().then(async (res)=>{
             if(!res.cancelled){
                 const {uri} = res;

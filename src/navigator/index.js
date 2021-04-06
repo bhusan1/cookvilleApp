@@ -1,77 +1,36 @@
 import 'react-native-gesture-handler';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useTheme} from 'react-native-paper';
 
 import {TabNavigator} from './TabNavigator';
-import {SignInScreen, SignUpScreen, ResetPasswordScreen, AddRecipeScreen, AddDealScreen, AllowNotificationScreen} from '../screens';
-import {BackHandler, Platform} from "react-native";
-import * as SplashScreen from "expo-splash-screen";
-import * as Font from "expo-font";
-import {authCheck} from "../store/actions";
-import {useDispatch, useSelector} from "react-redux";
+import {SignInScreen, SignUpScreen, ResetPasswordScreen, AddRecipeScreen, AddDealScreen, AllowNotificationScreen, SplashScreen} from '../screens';
+import * as ExpoSplashScreen from "expo-splash-screen";
 const Stack = createStackNavigator();
 export const navigationRef = React.createRef();
 export const AppNavigator = () => {
-    
+
     const theme = useTheme();
-    const dispatch = useDispatch();
-    
-    const authUser = useSelector(state=>state.firebase.profile);
-    
-    const [appIsReady, setAppIsReady] = useState(false);
-    const [initialScreen, setInitialScreen] = useState(null);
-    
+
     useEffect(() => {
             (async () => {
-                await SplashScreen.preventAutoHideAsync();
-                
-                await Font.loadAsync({
-                    OpenSans: require('../assets/fonts/OpenSans-Regular.ttf'),
-                    OpenSansBold: require('../assets/fonts/OpenSans-Bold.ttf'),
-                });
-                
-                setAppIsReady(true);
+                await ExpoSplashScreen.preventAutoHideAsync();
             })();
-            
-        if (Platform.OS === 'android') {
-            BackHandler.addEventListener('hardwareBackPress', () => {
-                return true;
-            });
-        }
-    
     }, []);
-    
-    useEffect(() => {
-        if(appIsReady && authUser.isLoaded){
-            (async () => {
-                const isLoggedIn = await dispatch(authCheck());
-        
-                if(isLoggedIn){
-                    if(authUser.muteNotifications){
-                        setInitialScreen('AllowNotification')
-                    }else {
-                        setInitialScreen('UserBoard');
-                    }
-                }else {
-                    setInitialScreen('SignIn')
-                }
-        
-                await SplashScreen.hideAsync();
-            })();
-        }
-    }, [authUser, appIsReady]);
-    
-    if(!initialScreen){
-        return  null;
-    }
-    
+
     return (
         <NavigationContainer ref={navigationRef}>
             <Stack.Navigator
-                initialRouteName={initialScreen}
+                initialRouteName={'Splash'}
             >
+                <Stack.Screen
+                    name="Splash"
+                    component={SplashScreen}
+                    options={{
+                        header: () => null,
+                    }}
+                />
                 <Stack.Screen
                     name="SignIn"
                     component={SignInScreen}

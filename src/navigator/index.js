@@ -5,32 +5,18 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {useTheme} from 'react-native-paper';
 
 import {TabNavigator} from './TabNavigator';
-import {SignInScreen, SignUpScreen, ResetPasswordScreen, AddRecipeScreen, AddDealScreen, AllowNotificationScreen, SplashScreen} from '../screens';
-import * as ExpoSplashScreen from "expo-splash-screen";
+import {SignInScreen, SignUpScreen, ResetPasswordScreen, AddRecipeScreen, AddDealScreen, AllowNotificationScreen} from '../screens';
 const Stack = createStackNavigator();
 export const navigationRef = React.createRef();
 export const AppNavigator = () => {
 
     const theme = useTheme();
 
-    useEffect(() => {
-            (async () => {
-                await ExpoSplashScreen.preventAutoHideAsync();
-            })();
-    }, []);
-
     return (
         <NavigationContainer ref={navigationRef}>
             <Stack.Navigator
-                initialRouteName={'Splash'}
+                initialRouteName={'Home'}
             >
-                <Stack.Screen
-                    name="Splash"
-                    component={SplashScreen}
-                    options={{
-                        header: () => null,
-                    }}
-                />
                 <Stack.Screen
                     name="SignIn"
                     component={SignInScreen}

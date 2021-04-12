@@ -17,9 +17,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
       "bundleIdentifier": "com.ssp.cookvillestop",
-      "buildNumber": "1.0.5",
+      "buildNumber": "1.0.6",
       "usesIcloudStorage": true,
       "config": {
         "googleMapsApiKey": "AIzaSyBQblwHOUCf8u1TakHd0yIqs6U2DYLNxmU"

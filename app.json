@@ -26,7 +26,7 @@
       "googleServicesFile": "./GoogleService-Info.plist",
       "infoPlist": {
         "NSCalendarsUsageDescription": "CookeVille requires to enable Calendar usage"
-      },
+      }
     },
     "android": {
       "adaptiveIcon": {

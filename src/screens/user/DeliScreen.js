@@ -7,17 +7,19 @@ import {
     StyleSheet,
     SafeAreaView,
     Alert,
-    TouchableOpacity
+    TouchableOpacity, StatusBar
 } from 'react-native';
 import {useTheme} from 'react-native-paper';
 import {useFirestore, useFirestoreConnect} from 'react-redux-firebase';
 import {useSelector} from 'react-redux';
 import {AddButton, Paper} from '../../components';
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 export const DeliScreen = ({navigation}) => {
-    
+
     useFirestoreConnect([{collection: 'recipes'}]);
+    const insets = useSafeAreaInsets();
 
     const theme = useTheme();
     const styles = useStyles(theme);
@@ -42,7 +44,7 @@ export const DeliScreen = ({navigation}) => {
             <Text style={styles.title}>{item.title}</Text>
         </Paper>
     );
-    
+
     const removeDeal = (dealId) => {
         Alert.alert(
             'Confirm',
@@ -64,6 +66,11 @@ export const DeliScreen = ({navigation}) => {
 
     return (
         <SafeAreaView style={styles.root}>
+            <StatusBar barStyle={'light-content'}/>
+            <View style={[styles.statusBar, {height: insets.top}]}/>
+            <View style={styles.header}>
+                <Text style={styles.headText}>Today's Special Menu</Text>
+            </View>
             <View style={styles.content}>
                 <FlatList
                     showsVerticalScrollIndicator={false}
@@ -83,6 +90,26 @@ const useStyles = (theme) =>
         root: {
             flex: 1,
             position: 'relative',
+        },
+        statusBar:{
+            position:'absolute',
+            top: 0,
+            width:'100%',
+            backgroundColor:'#6e012a'
+        },
+        headText: {
+            fontSize: theme.hp('2.8%'),
+            fontWeight: 'bold',
+            textAlign: 'center',
+            padding: 20,
+            color:'white',
+        },
+        header:{
+            width:'100%',
+            height: theme.hp('10%'),
+            backgroundColor:'#87ceeb',
+            justifyContent:'center',
+            alignItems:'center',
         },
         content:{
             flex: 1,

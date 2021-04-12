@@ -281,6 +281,12 @@ export const HomeScreen = () => {
                                         <Marker coordinate={{latitude: 33.18624068627443, longitude: -94.86102794051021}} />
                                     </MapView>
                                 </View>
+                                <View style={styles.businessHours}>
+                                    <Text style={[styles.gasText,{marginBottom: theme.hp('1%')}]}>Business Hours</Text>
+                                    <Text style={styles.businessHourText}>Mon-Fri = 06:00 AM to 09:00 PM</Text>
+                                    <Text style={styles.businessHourText}>Sat = 07:00 AM to 09:00 PM</Text>
+                                    <Text style={styles.businessHourText}>Sun = 08:00 AM to 09:00 PM</Text>
+                                </View>
                                 <View style={styles.gpCon}>
                                     <Text style={styles.gasText}>Gas Price</Text>
                                     <FontAwesome5 name="gas-pump" color="black" size={theme.hp('5%')} style={{marginVertical: 2}} />
@@ -334,6 +340,15 @@ const useStyles = theme => StyleSheet.create({
     },
     inputStyle:{
         height: 30,
+    },
+    businessHours:{
+      backgroundColor:'#87ceeb',
+        paddingVertical: theme.hp('2%'),
+        alignItems:'center',
+    },
+    businessHourText:{
+        color: 'black',
+        fontSize: theme.hp('2%')
     },
     homeDealItem:{
         position:'relative',

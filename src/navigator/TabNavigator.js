@@ -7,6 +7,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {HomeScreen, DealsScreen, DeliScreen, SettingsScreen} from '../screens';
+import {TabBar} from "./TabBar";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,28 +20,13 @@ export const TabNavigator = () => {
             <StatusBar style="light" backgroundColor={theme.colors.secondary} />
             <Tab.Navigator
                 initialRouteName={'Home'}
-                tabBarOptions={{
-                    activeTintColor: theme.colors.primary,
-                    inactiveTintColor: theme.colors.boarder,
-                    style: {
-                        backgroundColor: '#6e012a',
-                        shadowColor: '#000',
-                        shadowOpacity: 0.1,
-                        shadowRadius: 20,
-                        shadowOffset: {width: 0, height: 0},
-                    },
-                    labelStyle: {
-                        fontSize: 12,
-                        fontWeight: '400',
-                        paddingBottom: theme.hp('0.5%'),
-                    },
-                }}>
+                tabBar={(props)=><TabBar {...props} />}
+            >
                 <Tab.Screen
                     name="Home"
                     component={HomeScreen}
                     options={{
                         tabBarLabel: 'Home',
-                        tabBarIcon: ({color}) => <Icon name="ios-home" color={color} size={20} />,
                     }}
                 />
                 <Tab.Screen
@@ -48,7 +34,6 @@ export const TabNavigator = () => {
                     component={DealsScreen}
                     options={{
                         tabBarLabel: 'Deals',
-                        tabBarIcon: ({color}) => <Icon name="ios-notifications" color={color} size={20} />,
                     }}
                 />
                 <Tab.Screen
@@ -56,7 +41,6 @@ export const TabNavigator = () => {
                     component={DeliScreen}
                     options={{
                         tabBarLabel: 'Deli',
-                        tabBarIcon: ({color}) => <Icon name="fast-food" color={color} size={20} />,
                     }}
                 />
                 <Tab.Screen
@@ -64,7 +48,6 @@ export const TabNavigator = () => {
                     component={SettingsScreen}
                     options={{
                         tabBarLabel: 'Settings',
-                        tabBarIcon: ({color}) => <Icon name="ios-aperture" color={color} size={20} />,
                     }}
                 />
             </Tab.Navigator>

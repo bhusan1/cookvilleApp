@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {useTheme} from 'react-native-paper';
@@ -15,28 +15,22 @@ export const AppNavigator = () => {
     return (
         <NavigationContainer ref={navigationRef}>
             <Stack.Navigator
-                initialRouteName={'Home'}
+                initialRouteName={'UserBoard'}
             >
                 <Stack.Screen
                     name="SignIn"
                     component={SignInScreen}
                     options={{
-                        header: () => null,
+                        headerBackTitle:'Home'
                     }}
                 />
                 <Stack.Screen
                     name="SignUp"
                     component={SignUpScreen}
-                    options={{
-                        header: () => null,
-                    }}
                 />
                 <Stack.Screen
                     name="ResetPassword"
                     component={ResetPasswordScreen}
-                    options={{
-                        header: () => null,
-                    }}
                 />
                 <Stack.Screen
                     name="UserBoard"

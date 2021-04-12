@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     Text,
     StyleSheet,
@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     SafeAreaView,
     View,
-    FlatList
+    FlatList,
+    Alert, StatusBar,
 } from 'react-native';
 import {useFirestoreConnect} from "react-redux-firebase";
 import {useSelector} from "react-redux";
@@ -14,9 +15,11 @@ import {AddButton, Paper} from "../../components";
 import {useTheme} from "react-native-paper";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export const DealsScreen = ({navigation}) => {
 
     useFirestoreConnect([{collection:'deals'}]);
+    const insets = useSafeAreaInsets();
 
     const theme = useTheme();
     const styles = useStyles(theme);
@@ -60,9 +63,17 @@ export const DealsScreen = ({navigation}) => {
         )
     }
 
+    if(authUser.isEmpty){
+        return  null;
+    }
+
     return (
         <SafeAreaView style={styles.root}>
-            <Text style={styles.headText}>OnGoing Deals</Text>
+            <StatusBar barStyle={'light-content'}/>
+            <View style={[styles.statusBar, {height: insets.top}]}/>
+            <View style={styles.header}>
+                <Text style={styles.headText}>Deals & Discounts</Text>
+            </View>
             <FlatList
                 data={deals}
                 renderItem={renderItem}
@@ -87,6 +98,19 @@ const useStyles = theme => StyleSheet.create({
     root: {
         flex: 1,
         position: 'relative',
+    },
+    statusBar:{
+      position:'absolute',
+      top: 0,
+      width:'100%',
+        backgroundColor:'#6e012a'
+    },
+    header:{
+      width:'100%',
+      height: theme.hp('10%'),
+        backgroundColor:'#87ceeb',
+        justifyContent:'center',
+        alignItems:'center',
     },
     container: {
         flex: 1,
@@ -121,10 +145,11 @@ const useStyles = theme => StyleSheet.create({
         alignItems: 'center',
     },
     headText: {
-        fontSize: 20,
+        fontSize: theme.hp('2.8%'),
         fontWeight: 'bold',
         textAlign: 'center',
         padding: 20,
+        color:'white',
     },
     divider: {
         paddingTop: 2,

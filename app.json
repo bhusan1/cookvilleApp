@@ -23,7 +23,10 @@
       "config": {
         "googleMapsApiKey": "AIzaSyBQblwHOUCf8u1TakHd0yIqs6U2DYLNxmU"
       },
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {
+        "NSCalendarsUsageDescription": "CookeVille requires to enable Calendar usage"
+      },
     },
     "android": {
       "adaptiveIcon": {
@@ -40,7 +43,6 @@
       "googleServicesFile": "./google-services.json",
       "useNextNotificationsApi": true,
       "permissions": [
-        "CAMERA",
         "READ_CONTACTS",
         "READ_CALENDAR",
         "WRITE_CALENDAR",

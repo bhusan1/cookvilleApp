@@ -49,11 +49,6 @@ export const AddRecipeScreen = () => {
     }
     
     const openImagePickerAsync = async () => {
-        const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-        if (permissionResult.granted === false) {
-            alert("Permission to access camera roll is required!");
-            return;
-        }
         
         ImagePicker.launchImageLibraryAsync().then(async (res)=>{
             if(!res.cancelled){

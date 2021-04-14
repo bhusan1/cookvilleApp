@@ -4,9 +4,9 @@
     "slug": "cookvilleApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,17 +17,49 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.ssp.cookvillestop",
+      "buildNumber": "1.0.7",
+      "usesIcloudStorage": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyBQblwHOUCf8u1TakHd0yIqs6U2DYLNxmU"
+      },
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {
+        "NSCalendarsUsageDescription": "CookeVille requires to enable Calendar usage"
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "io.expo.client"
+      "package": "com.ssp.cookville1stop",
+      "versionCode": 2,
+      "config": {
+        "googleMaps": {
+          "apiKey" : "AIzaSyCPf_MxL1i8PPiADocz0wTMfiBauasso20"
+        }
+      },
+      "googleServicesFile": "./google-services.json",
+      "useNextNotificationsApi": true,
+      "permissions": [
+        "READ_CONTACTS",
+        "READ_CALENDAR",
+        "WRITE_CALENDAR",
+        "READ_EXTERNAL_STORAGE",
+        "VIBRATE",
+        "WAKE_LOCK",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./src/assets/favicon.png"
+    },
+    "notification": {
+      "icon": "./src/assets/icon.png",
+      "iosDisplayInForeground": true,
+      "androidMode": "default",
+      "androidCollapsedTitle": "Unread Notifications"
     }
   }
 }

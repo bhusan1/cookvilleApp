@@ -76,7 +76,10 @@ export const DeliScreen = ({navigation}) => {
                 </TouchableOpacity>
             }
             <Image style={styles.photo} source={{uri: item.image}} />
-            <Text style={styles.title}>{item.title}</Text>
+            <View style={{position:'relative', flexDirection:'row', width:'100%'}}>
+                <Text style={styles.title}>{item.title}</Text>
+                <Text style={{position:'absolute', right: 10, top: 6}}>${item.price || 50}</Text>
+            </View>
         </Paper>
     );
 
@@ -128,7 +131,7 @@ export const DeliScreen = ({navigation}) => {
                 {
                     cart.totalCount > 0 &&
                     <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckoutPress}>
-                        <Text style={{color:'white', fontSize: 24, fontWeight:'700'}}>CHECKOUT</Text>
+                        <Text style={{color:'white', fontSize: 24, fontWeight:'700'}}>Pay at Store</Text>
                     </TouchableOpacity>
                 }
             </View>
@@ -253,6 +256,6 @@ const useStyles = (theme) =>
             marginLeft: 5,
             borderStyle:'solid',
             borderTopWidth: 0.5,
-            height:'15%'
+            paddingTop: 4,
         },
     });

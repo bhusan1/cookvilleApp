@@ -2,6 +2,7 @@ import {USER_ADD_CART, USER_CHECKOUT, USER_CLEAR_CART} from "../actions";
 
 const INITIAL_STATE = {
     cart:{
+        totalPrice: 0,
         totalCount: 0,
         items:[],
     },
@@ -22,6 +23,7 @@ export const authReducer = (state = INITIAL_STATE, action) => {
         case USER_CHECKOUT: {
             return {
                 cart:{
+                    totalPrice: 0,
                     totalCount: 0,
                     items:[],
                 },

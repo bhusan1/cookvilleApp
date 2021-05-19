@@ -53,9 +53,14 @@ export const DeliDetailModal = ({deli, open, onClose}) => {
                             <AntDesign name={'pluscircle'} color={'#87ceeb'} size={35}/>
                         </TouchableOpacity>
                     </View>
-                    <TouchableOpacity style={styles.addCartBtn} onPress={handlePress}>
-                        <Text style={{color:'white', fontSize: 24, fontWeight:'bold'}}>Add to cart</Text>
-                    </TouchableOpacity>
+                    <View style={{width:'100%', flexDirection:'row', alignItems:'center', justifyContent:'center', marginTop: theme.hp('5%')}}>
+                        <View style={styles.priceBox}>
+                            <Text style={{fontSize: 18}}>${(deli.price || 50) * amount}</Text>
+                        </View>
+                        <TouchableOpacity style={styles.addCartBtn} onPress={handlePress}>
+                            <Text style={{color:'white', fontSize: 24, fontWeight:'bold'}}>Add to cart</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </Modal>
@@ -109,11 +114,20 @@ const useStyles = (theme) =>
         },
         addCartBtn:{
             width: '50%',
+            paddingHorizontal: theme.wp('8%'),
             height: 45,
             borderRadius: 4,
-            marginTop: theme.hp('5%'),
             backgroundColor: '#87ceeb',
             justifyContent: 'center',
             alignItems: 'center',
+        },
+        priceBox: {
+            ...theme.styles.center,
+            borderWidth: 1,
+            borderRadius: theme.wp('1%'),
+            height: 45,
+            borderColor: '#8080807f',
+            width: 80,
+            marginRight: theme.wp('3%')
         }
     });

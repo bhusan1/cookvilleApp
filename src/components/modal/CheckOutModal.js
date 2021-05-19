@@ -1,21 +1,45 @@
 import React from "react";
-import {Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Alert, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import {useDispatch, useSelector} from "react-redux";
 import {useTheme} from "react-native-paper";
 import {USER_CHECKOUT} from "../../store/actions";
+import {useNavigation} from "@react-navigation/native";
 
 export const CheckOutModal = ({open, onClose}) => {
 
     const theme = useTheme();
     const styles = useStyles(theme);
     const dispatch = useDispatch();
+    const authUser = useSelector(state=>state.firebase.profile);
+    const navigation = useNavigation();
 
     const cart = useSelector((state)=>state.auth.cart);
 
     const handlePress = async () => {
-        await dispatch({ type: USER_CHECKOUT})
-        onClose();
+        if(authUser.isEmpty){
+            Alert.alert(
+                'Don\'t miss out on deals and discounts',
+                'Get discounts on in-store purchases and daily update in deli menu',
+                [
+                    {
+                        style:'cancel',
+                        text:'Cancel'
+                    },
+                    {
+                        text:'LogIn Now',
+                        onPress:()=>{
+                            navigation.navigate('SignIn');
+                            onClose();
+                        }
+                    }
+                ]
+            )
+        } else {
+            await dispatch({ type: USER_CHECKOUT})
+            alert("Your order has been placed");
+            onClose();
+        }
     }
 
     if(!open){
@@ -36,12 +60,16 @@ export const CheckOutModal = ({open, onClose}) => {
                                    <Text style={{color:'#87ceeb', fontSize: 16}}>{item.amount}</Text>
                                </View>
                                <Text style={{paddingLeft: theme.wp('5%'), fontSize: 16}}>{item.deli.title}</Text>
-                               <Text style={styles.priceText}>${item.amount * 50}.00</Text>
+                               <Text style={styles.priceText}>${item.amount * (item.deli.price ||  50)}.00</Text>
                            </View>
                         ))
                     }
+                    <View style={styles.cartItem}>
+                        <Text style={{paddingLeft: theme.wp('5%'), fontSize: 16}}>Total</Text>
+                        <Text style={styles.priceText}>${cart.totalPrice}</Text>
+                    </View>
                     <TouchableOpacity style={styles.addCartBtn} onPress={handlePress}>
-                        <Text style={{color:'white', fontSize: 24, fontWeight:'bold'}}>CHECKOUT</Text>
+                        <Text style={{color:'white', fontSize: 24, fontWeight:'bold'}}>Pay at Store</Text>
                     </TouchableOpacity>
                 </View>
             </View>

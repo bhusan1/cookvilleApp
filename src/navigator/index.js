@@ -5,7 +5,14 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {useTheme} from 'react-native-paper';
 
 import {TabNavigator} from './TabNavigator';
-import {SignInScreen, SignUpScreen, ResetPasswordScreen, AddRecipeScreen, AddDealScreen, AllowNotificationScreen} from '../screens';
+import {
+    SignInScreen,
+    SignUpScreen,
+    ResetPasswordScreen,
+    AddRecipeScreen,
+    AddDealScreen,
+    AllowNotificationScreen,
+} from '../screens';
 const Stack = createStackNavigator();
 export const navigationRef = React.createRef();
 export const AppNavigator = () => {

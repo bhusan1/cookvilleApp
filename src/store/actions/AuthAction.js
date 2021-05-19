@@ -1,12 +1,29 @@
 import {showMessage} from 'react-native-flash-message';
 
 export const USER_LOG_OUT = 'USER_LOG_OUT';
-
+export const USER_ADD_CART = 'USER_ADD_CART';
+export const USER_CLEAR_CART = 'USER_CLEAR_CART';
+export const USER_CHECKOUT = 'USER_CHECKOUT';
 /**
  * Redux Action To Signup User In Firebase
  */
 
 let unsubscribes = [];
+
+export const addCart = ({deli, amount}) => async (dispatch, getState) => {
+    let oldCart = getState().auth.cart;
+    oldCart.totalCount += amount;
+    let index = oldCart.items.findIndex(item=>item.deli.title === deli.title)
+    if(index > -1){
+        oldCart.items[index].amount += amount;
+    }else {
+        oldCart.items.push({deli: deli, amount:amount});
+    }
+    dispatch({
+        type: USER_ADD_CART,
+        payload: oldCart,
+    });
+}
 
 export const authCheck = () => async (dispatch, getState, {getFirebase}) => {
     return new Promise((resolve) => {
@@ -35,7 +52,6 @@ export const signUpUserInFirebase = (user) => async (dispatch, getState, {getFir
                     .doc(success.user.uid)
                     .set({
                         fullName: user.fullName,
-                        phoneNumber: user.phoneNumber,
                         email: user.email,
                         role: 'customer',
                         uid: success.user.uid,

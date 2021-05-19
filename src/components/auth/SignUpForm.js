@@ -7,6 +7,7 @@ import {signUpUserInFirebase} from '../../store/actions';
 import {validate} from '../../commons/helper';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {useNavigation} from "@react-navigation/native";
+import {useFirebase} from "react-redux-firebase";
 
 const INITIAL_STATE = {
     fullName: null,
@@ -15,13 +16,13 @@ const INITIAL_STATE = {
     password: null,
     confirmPassword: null,
 };
-
+let mounted = false;
 export const SignUpForm = forwardRef((props, ref) => {
     const theme = useTheme();
     const styles = useStyles(theme);
     const dispatch = useDispatch();
+    const firebase = useFirebase();
     const navigation = useNavigation();
-    const authUser = useSelector(state=>state.firebase.profile);
 
     const [user, setUser] = useState(INITIAL_STATE);
     const [loading, setLoading] = useState(false);
@@ -35,36 +36,45 @@ export const SignUpForm = forwardRef((props, ref) => {
             if (
                 validate(user, {
                     fullName: 'required',
-                    phoneNumber: 'required',
                     email: 'required|email',
                     password: 'required|min:8|same:confirmPassword',
                 })
             ) {
                 setLoading(true);
                 dispatch(signUpUserInFirebase(user)).then(() => {
-                    setLoading(false);
+                    if(mounted){
+                        setLoading(false);
+                    }
                 });
             }
         },
     }));
-    
+
     useEffect(()=>{
-        if (authUser.isLoaded && !authUser.isEmpty){
-            navigation.reset({index:0,routes:[{name:'UserBoard'}]});
+        mounted = true;
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                navigation.reset({index:0,routes:[{name:'UserBoard'}]});
+            } else {
+                // No user is signed in.
+            }
+        });
+        return ()=>{
+            mounted = false;
         }
-    }, [authUser])
+    }, [])
 
     return (
         <View style={styles.root}>
             <Spinner visible={loading} textContent={'Loading...'} textStyle={{color: 'white'}} />
             <Input name={'fullName'} value={user.fullName} placeholder="Full Name" onChangeText={handleChange} />
             <Input name={'email'} value={user.email} placeholder="Email" onChangeText={handleChange} />
-            <Input
-                name={'phoneNumber'}
-                value={user.phoneNumber}
-                placeholder="Phone Number"
-                onChangeText={handleChange}
-            />
+            {/*<Input*/}
+            {/*    name={'phoneNumber'}*/}
+            {/*    value={user.phoneNumber}*/}
+            {/*    placeholder="Phone Number"*/}
+            {/*    onChangeText={handleChange}*/}
+            {/*/>*/}
             <Input
                 name={'password'}
                 secureTextEntry

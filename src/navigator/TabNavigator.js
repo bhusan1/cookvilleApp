@@ -30,17 +30,17 @@ export const TabNavigator = () => {
                     }}
                 />
                 <Tab.Screen
-                    name="Deals"
-                    component={DealsScreen}
-                    options={{
-                        tabBarLabel: 'Deals',
-                    }}
-                />
-                <Tab.Screen
                     name="Deli"
                     component={DeliScreen}
                     options={{
                         tabBarLabel: 'Deli',
+                    }}
+                />
+                <Tab.Screen
+                    name="Deals"
+                    component={DealsScreen}
+                    options={{
+                        tabBarLabel: 'Deals',
                     }}
                 />
                 <Tab.Screen

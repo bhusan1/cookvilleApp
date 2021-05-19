@@ -7,18 +7,19 @@ import {signInWithFirebase} from '../../store/actions';
 import {validate} from '../../commons/helper';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {useNavigation} from '@react-navigation/native';
+import {useFirebase} from "react-redux-firebase";
 
 const INITIAL_STATE = {
     email: null,
     password: null,
 };
-
+let mounted = false;
 export const SignInForm = forwardRef((props, ref) => {
     const theme = useTheme();
     const styles = useStyles(theme);
     const dispatch = useDispatch();
     const navigation = useNavigation();
-    const authUser = useSelector(state=>state.firebase.profile);
+    const firebase = useFirebase();
 
     const [user, setUser] = useState(INITIAL_STATE);
     const [loading, setLoading] = useState(false);
@@ -32,17 +33,27 @@ export const SignInForm = forwardRef((props, ref) => {
             if (validate(user, {email: 'required|email', password: 'required|min:8'})) {
                 setLoading(true);
                 dispatch(signInWithFirebase(user)).then(() => {
-                    setLoading(false);
+                    if(mounted){
+                        setLoading(false);
+                    }
                 });
             }
         },
     }));
-    
+
     useEffect(()=>{
-        if(authUser.isLoaded && !authUser.isEmpty){
-            navigation.reset({index:0,routes:[{name:'UserBoard'}]});
+        mounted = true;
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                navigation.reset({index:0,routes:[{name:'UserBoard'}]});
+            } else {
+                // No user is signed in.
+            }
+        });
+        return ()=>{
+            mounted = false;
         }
-    }, [authUser]);
+    }, [])
 
     return (
         <View style={styles.root}>

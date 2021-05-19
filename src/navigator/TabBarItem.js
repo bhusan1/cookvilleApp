@@ -16,7 +16,7 @@ export const TabBarItem = ({navigation, route, descriptors, state, index}) => {
     const isFocused = state.index === index;
 
     const onPress = () => {
-        if(index > 0 && authUser.isEmpty){
+        if(index  > 1 && authUser.isEmpty){
             Alert.alert(
                 'Don\'t miss out on deals and discounts',
                 'Get discounts on in-store purchases and daily update in deli menu',

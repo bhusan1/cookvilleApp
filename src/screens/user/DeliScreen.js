@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     FlatList,
     View,
@@ -9,12 +9,15 @@ import {
     Alert,
     TouchableOpacity, StatusBar
 } from 'react-native';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useTheme} from 'react-native-paper';
 import {useFirestore, useFirestoreConnect} from 'react-redux-firebase';
 import {useSelector} from 'react-redux';
 import {AddButton, Paper} from '../../components';
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import {useSafeAreaInsets} from "react-native-safe-area-context";
+import {DeliDetailModal} from "../../components/modal/DeliDetailModal";
+import {CheckOutModal} from "../../components/modal/CheckOutModal";
 
 export const DeliScreen = ({navigation}) => {
 
@@ -24,16 +27,48 @@ export const DeliScreen = ({navigation}) => {
     const theme = useTheme();
     const styles = useStyles(theme);
     const firestore = useFirestore();
+    const [selectedDeli, setSelectedDeli] = useState(null);
+    const [openDetailModal, setOpenDetailModal] = useState(false);
+    const [openCheckoutModal, setOpenCheckoutModal] = useState(false);
+    const [currentTime, setCurrentTime] = useState(new Date().getTime());
 
     const authUser = useSelector((state) => state.firebase.profile);
     const recipes = useSelector((state) => state.firestore.ordered.recipes || []);
+    const cart = useSelector(state=>state.auth.cart);
+    const readyTime = useSelector((state)=>state.auth.readyTime);
+
+    useEffect(()=>{
+        setTimeout(()=>{
+            setCurrentTime(new Date().getTime());
+        }, 1000)
+    },[currentTime])
 
     const addDeal = () => {
         navigation.navigate('AddRecipe');
     };
 
+    const onCloseDetailModal = () => {
+        setOpenDetailModal(false);
+    }
+
+    const onCloseCheckoutModal = () => {
+        setOpenCheckoutModal(false);
+    }
+
+    const handleCheckoutPress = () => {
+        if(cart.totalCount){
+            setOpenCheckoutModal(true);
+        }
+    }
+
     const renderItem = ({item}) => (
-        <Paper style={styles.itemContainer}>
+        <Paper
+            style={styles.itemContainer}
+            onPress={()=>{
+                setSelectedDeli(item);
+                setOpenDetailModal(true);
+            }}
+        >
             {
                 authUser.role === 'admin' &&
                 <TouchableOpacity style={styles.dealRemove} onPress={()=>{removeDeal(item.id)}}>
@@ -70,6 +105,17 @@ export const DeliScreen = ({navigation}) => {
             <View style={[styles.statusBar, {height: insets.top}]}/>
             <View style={styles.header}>
                 <Text style={styles.headText}>Today's Special Menu</Text>
+                <TouchableOpacity style={styles.cartIcon} onPress={handleCheckoutPress}>
+                    <View style={{position:'relative'}}>
+                        {
+                            cart.totalCount > 0 &&
+                            <View style={styles.totalCount}>
+                                <Text style={{color:'white', fontSize:12, fontWeight:'600'}}>{cart.totalCount}</Text>
+                            </View>
+                        }
+                        <MaterialIcons name={'shopping-cart'} color={'white'} size={theme.hp('3%')}/>
+                    </View>
+                </TouchableOpacity>
             </View>
             <View style={styles.content}>
                 <FlatList
@@ -79,8 +125,22 @@ export const DeliScreen = ({navigation}) => {
                     renderItem={renderItem}
                     keyExtractor={(item) => `${item.id}`}
                 />
+                {
+                    cart.totalCount > 0 &&
+                    <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckoutPress}>
+                        <Text style={{color:'white', fontSize: 24, fontWeight:'700'}}>CHECKOUT</Text>
+                    </TouchableOpacity>
+                }
             </View>
             <AddButton show={authUser.role === 'admin'} onPress={addDeal} />
+            <DeliDetailModal deli={selectedDeli} open={openDetailModal} onClose={onCloseDetailModal}/>
+            <CheckOutModal open={openCheckoutModal} onClose={onCloseCheckoutModal} />
+            {
+                readyTime && (readyTime > currentTime) &&
+                <View style={styles.orderPreparing}>
+                    <Text style={{color:'white', fontSize: 18}}>Your order is being prepared - {new Date(readyTime - currentTime).getMinutes()} min</Text>
+                </View>
+            }
         </SafeAreaView>
     );
 };
@@ -97,6 +157,18 @@ const useStyles = (theme) =>
             width:'100%',
             backgroundColor:'#6e012a'
         },
+        totalCount:{
+            position:'absolute',
+            top: -10,
+            right: -4,
+            zIndex: 10,
+            backgroundColor:'#6e012a',
+            width: 16,
+            height: 16,
+            borderRadius: 8,
+            justifyContent:'center',
+            alignItems:'center'
+        },
         headText: {
             fontSize: theme.hp('2.8%'),
             fontWeight: 'bold',
@@ -110,10 +182,17 @@ const useStyles = (theme) =>
             backgroundColor:'#87ceeb',
             justifyContent:'center',
             alignItems:'center',
+            position:'relative',
+        },
+        cartIcon: {
+            position:'absolute',
+            right: theme.wp('5%'),
+            top: theme.hp('3.7%'),
         },
         content:{
             flex: 1,
-            padding: theme.wp('2.5%')
+            padding: theme.wp('2.5%'),
+            position:'relative'
         },
         dealRemove:{
             position:'absolute',
@@ -138,6 +217,23 @@ const useStyles = (theme) =>
             borderRadius: 15,
             overflow: 'hidden',
             position: 'relative',
+        },
+        checkoutButton:{
+            width: theme.wp('90%'),
+            height: 50,
+            backgroundColor:'#87ceeb',
+            borderRadius: 4,
+            alignSelf:'center',
+            justifyContent:'center',
+            alignItems:'center',
+            marginTop: theme.hp('2%'),
+        },
+        orderPreparing:{
+            backgroundColor:'#87ceeb',
+            width:'100%',
+            padding: theme.wp('5%'),
+            alignItems:'center',
+            justifyContent:'center',
         },
         photo: {
             width: '100%',

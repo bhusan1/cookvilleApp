@@ -78,7 +78,9 @@ export const SettingsScreen = ({navigation}) => {
                             />
                         </View>
                     </View>
-                    <View style={styles.settingItem}>
+                    
+                    {/*need to add functions for Track Order and Order History */}
+                    <View style={styles.settingItem}> 
                         <TouchableOpacity>
                         <Text style={styles.settingItemContent}> Track Order</Text>
                         </TouchableOpacity>

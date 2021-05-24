@@ -339,7 +339,7 @@ const useStyles = theme => StyleSheet.create({
         color: 'black',
         fontSize: theme.hp('2%')
     },
-    homeDealItem:{
+    /* homeDealItem:{
         position:'relative',
         height: theme.hp('30%'),
         justifyContent:'center',
@@ -392,7 +392,7 @@ const useStyles = theme => StyleSheet.create({
       width: '100%',
       height: '100%',
       resizeMode:'cover',
-    },
+    }, */
     container: {
         justifyContent: 'center',
     },

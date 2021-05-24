@@ -76,10 +76,10 @@ export const HomeScreen = () => {
     /* const homeDeals = useSelector(state=>state.firestore.ordered.homeDeals || []); */
 
     const [refresh, setRefresh] = useState(false);
-    /* const [visible, setVisible] = useState(false);
+    const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [homeDeal, setHomeDeal] = useState({title:'', image:''});
+    /* const [homeDeal, setHomeDeal] = useState({title:'', image:''});
     const [images, setImages] = useState([]);
     const [fullImage, setFullImage] = useState(false); */
 

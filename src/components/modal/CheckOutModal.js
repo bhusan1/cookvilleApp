@@ -60,7 +60,7 @@ export const CheckOutModal = ({open, onClose}) => {
                                    <Text style={{color:'#87ceeb', fontSize: 16}}>{item.amount}</Text>
                                </View>
                                <Text style={{paddingLeft: theme.wp('5%'), fontSize: 16}}>{item.deli.title}</Text>
-                               <Text style={styles.priceText}>${item.amount * (item.deli.price ||  50)}.00</Text>
+                               <Text style={styles.priceText}>${item.amount * (item.deli.price ||  5)}.00</Text>
                            </View>
                         ))
                     }

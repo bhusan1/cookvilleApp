@@ -63,7 +63,7 @@ export const HomeScreen = () => {
 
     useFirestoreConnect([
         {collection:'settings', doc: 'gasPrice', storeAs: 'gasPrice'},
-        {collection:'homeDeals', storeAs: 'homeDeals'}
+        /* {collection:'homeDeals', storeAs: 'homeDeals'} */
         ]);
 
     const theme = useTheme();
@@ -73,15 +73,15 @@ export const HomeScreen = () => {
 
     const authUser = useSelector(state=>state.firebase.profile);
     const gasPrice = useSelector(state=>state.firestore.data.gasPrice || {});
-    const homeDeals = useSelector(state=>state.firestore.ordered.homeDeals || []);
+    /* const homeDeals = useSelector(state=>state.firestore.ordered.homeDeals || []); */
 
     const [refresh, setRefresh] = useState(false);
-    const [visible, setVisible] = useState(false);
+    /* const [visible, setVisible] = useState(false);
     const [loading, setLoading] = useState(false);
     const [progress, setProgress] = useState(0);
     const [homeDeal, setHomeDeal] = useState({title:'', image:''});
     const [images, setImages] = useState([]);
-    const [fullImage, setFullImage] = useState(false);
+    const [fullImage, setFullImage] = useState(false); */
 
     const [region] = useState({
         latitude: 33.18854068627443,
@@ -107,7 +107,7 @@ export const HomeScreen = () => {
         setRefresh(!refresh);
     }
 
-    const viewFullImage = () => {
+   /*  const viewFullImage = () => {
         const homeDealImages = homeDeals.reduce((result, item)=>{
             result.push({
                 source: {uri: item.image,},
@@ -121,9 +121,9 @@ export const HomeScreen = () => {
             setImages(homeDealImages);
             setFullImage(true)
         }
-    }
+    } */
 
-    const removeHomeDeal = (item) => {
+  /*   const removeHomeDeal = (item) => {
         Alert.alert(
           'Confirm',
           'Are you really want to remove it?',
@@ -144,9 +144,9 @@ export const HomeScreen = () => {
               }
           ]
         );
-    }
+    } */
 
-    const renderItem = ({item}) => {
+    /* const renderItem = ({item}) => {
 
         if(item === 'add'){
             return (
@@ -168,9 +168,9 @@ export const HomeScreen = () => {
                 </TouchableOpacity>
             )
         }
-    }
+    } */
 
-    const submit = () => {
+  /*   const submit = () => {
         if(validate(homeDeal, {title:'required',image:'required'})){
             firestore.collection('homeDeals')
                 .add(homeDeal).then(res=>{
@@ -178,9 +178,9 @@ export const HomeScreen = () => {
                     setVisible(false);
             })
         }
-    }
+    } */
 
-    const handleClose = () => {
+    /* const handleClose = () => {
         setFullImage(false);
     }
 
@@ -217,14 +217,14 @@ export const HomeScreen = () => {
             }
         });
 
-    };
+    }; */
 
     return (
         <>
             <SafeAreaView style={{flex: 1}}>
                 <StatusBar barStyle={'dark-content'} backgroundColor={'#fff'}/>
                 <View style={styles.root}>
-                    <Overlay isVisible={visible} onBackdropPress={()=>{setVisible(false)}}>
+                    {/* <Overlay isVisible={visible} onBackdropPress={()=>{setVisible(false)}}>
                         <Spinner visible={loading} textContent={`Uploading (${progress}%)`} textStyle={{color: 'white'}} />
                         <View style={{width: theme.wp('70%')}}>
                             <Text>Title</Text>
@@ -240,25 +240,14 @@ export const HomeScreen = () => {
                             </View>
                             <Button title={'submit'} onPress={submit}/>
                         </View>
-                    </Overlay>
+                    </Overlay> */}
                     <View style={styles.topPanel}>
                         <View style={styles.topPanelContent}>
                             <View style={styles.saCon}>
                                 <Image source={imgIcon} style={styles.logoStyle}/>
                                 <Text style={styles.gasText}>Cookville #1 Stop</Text>
                             </View>
-                            <View style={styles.divider}>
-                                <MarqueeText
-                                    style={{fontSize: theme.hp('2%'), color: '#bc245c', paddingBottom: theme.hp('1%'), textAlign:'center'}}
-                                    duration={3000}
-                                    marqueeOnStart
-                                    loop={true}
-                                    marqueeDelay={1000}
-                                    marqueeResetDelay={500}
-                                >
-                                    Find Deals on In-store Purchase and Deli and Save on Gas
-                                </MarqueeText>
-                            </View>
+                            <View style={styles.divider}></View>
                         </View>
                     </View>
                     <FlatList
@@ -313,18 +302,18 @@ export const HomeScreen = () => {
                             </>
                         )}
                         style={{flex: 1, width:'100%'}}
-                        data={authUser.role === 'admin'?[...homeDeals,'add']: homeDeals}
-                        renderItem={renderItem}
+                        /*data={authUser.role === 'admin'?[...homeDeals,'add']: homeDeals}*/
+                       /* renderItem={renderItem}*/
                         showsVerticalScrollIndicator={false}
                         keyExtractor={item => JSON.stringify(item)}
                     />
-                    <ImageView
+                    {/* <ImageView
                         images={images}
                         imageIndex={0}
                         isVisible={fullImage}
                         onClose={handleClose}
                         animationType={'none'}
-                    />
+                    /> */}
                 </View>
             </SafeAreaView>
         </>

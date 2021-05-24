@@ -13,7 +13,7 @@ let unsubscribes = [];
 export const addCart = ({deli, amount}) => async (dispatch, getState) => {
     let oldCart = getState().auth.cart;
     oldCart.totalCount += amount;
-    oldCart.totalPrice += (deli.price || 50) * amount;
+    oldCart.totalPrice += (deli.price || 5) * amount;
     let index = oldCart.items.findIndex(item=>item.deli.title === deli.title)
     if(index > -1){
         oldCart.items[index].amount += amount;

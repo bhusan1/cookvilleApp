@@ -78,7 +78,7 @@ export const DeliScreen = ({navigation}) => {
             <Image style={styles.photo} source={{uri: item.image}} />
             <View style={{position:'relative', flexDirection:'row', width:'100%'}}>
                 <Text style={styles.title}>{item.title}</Text>
-                <Text style={{position:'absolute', right: 10, top: 6}}>${item.price || 50}</Text>
+                <Text style={{position:'absolute', right: 10, top: 6}}>${item.price || 5}</Text>
             </View>
         </Paper>
     );
@@ -107,7 +107,7 @@ export const DeliScreen = ({navigation}) => {
             <StatusBar barStyle={'light-content'}/>
             <View style={[styles.statusBar, {height: insets.top}]}/>
             <View style={styles.header}>
-                <Text style={styles.headText}>Today's Special Menu</Text>
+                <Text style={styles.headText}>Today's Special</Text>
                 <TouchableOpacity style={styles.cartIcon} onPress={handleCheckoutPress}>
                     <View style={{position:'relative'}}>
                         {
@@ -182,6 +182,14 @@ const useStyles = (theme) =>
         header:{
             width:'100%',
             height: theme.hp('10%'),
+            backgroundColor:'#87ceeb',
+            justifyContent:'center',
+            alignItems:'center',
+            position:'relative',
+        },
+        header2:{
+            width:'100%',
+            height: theme.hp('40%'),
             backgroundColor:'#87ceeb',
             justifyContent:'center',
             alignItems:'center',

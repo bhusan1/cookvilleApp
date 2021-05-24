@@ -7,6 +7,7 @@ import {userLogout} from '../../store/actions';
 import {useFirestore, useFirestoreConnect} from "react-redux-firebase";
 import {useTheme} from "react-native-paper";
 import {showMessage} from "react-native-flash-message";
+import { TouchableOpacity } from 'react-native';
 
 const INITIAL_STATE = {
     regular: 0,
@@ -77,6 +78,16 @@ export const SettingsScreen = ({navigation}) => {
                             />
                         </View>
                     </View>
+                    <View style={styles.settingItem}>
+                        <TouchableOpacity>
+                        <Text style={styles.settingItemContent}> Track Order</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.settingItem}>
+                        <TouchableOpacity>
+                        <Text style={styles.settingItemContent}> Order History</Text>
+                        </TouchableOpacity>
+                    </View>
                     {
                         authUser.role === 'admin' &&
                         <View style={styles.settingItem}>
@@ -114,6 +125,7 @@ export const SettingsScreen = ({navigation}) => {
                             </View>
                         </View>
                     }
+                    
                     <View style={{paddingHorizontal: 30, backgroundColor:'white'}}>
                         <Button title="Sign Out" onPress={signOut} />
                         <Text style={styles.text}> Once signed out, requires password to login again</Text>

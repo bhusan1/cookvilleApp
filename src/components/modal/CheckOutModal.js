@@ -69,7 +69,7 @@ export const CheckOutModal = ({open, onClose}) => {
                         <Text style={styles.priceText}>${cart.totalPrice}</Text>
                     </View>
                     <TouchableOpacity style={styles.addCartBtn} onPress={handlePress}>
-                        <Text style={{color:'white', fontSize: 24, fontWeight:'bold'}}>Pay at Store</Text>
+                        <Text style={{color:'white', fontSize: 24, fontWeight:'bold'}}>Place Order</Text>
                     </TouchableOpacity>
                 </View>
             </View>

@@ -6,7 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {HomeScreen, DealsScreen, DeliScreen, SettingsScreen} from '../screens';
+import {HomeScreen, DealsScreen, DeliScreen, SettingsScreen, SpDealsScreen} from '../screens';
 import {TabBar} from "./TabBar";
 
 const Tab = createBottomTabNavigator();
@@ -34,6 +34,13 @@ export const TabNavigator = () => {
                     component={DeliScreen}
                     options={{
                         tabBarLabel: 'Deli',
+                    }}
+                />
+                <Tab.Screen
+                    name="Sp Deals"
+                    component={SpDealsScreen}
+                    options={{
+                        tabBarLabel: 'Monthly Deals',
                     }}
                 />
                 <Tab.Screen

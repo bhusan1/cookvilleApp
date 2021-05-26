@@ -55,8 +55,9 @@ export const TabBarItem = ({navigation, route, descriptors, state, index}) => {
 
     const tabBarIcons = [
         <Icon name="ios-home" color={'white'} size={theme.hp(isFocused? '4%':'2.8%')} />,
-        <Icon name="ios-notifications" color={'white'} size={theme.hp(isFocused? '4%':'2.8%')} />,
         <Icon name="fast-food" color={'white'} size={theme.hp(isFocused? '4%':'2.8%')} />,
+        <Icon name="color-filter" color={'white'} size={theme.hp(isFocused? '4%':'2.8%')} />,
+        <Icon name="ios-notifications" color={'white'} size={theme.hp(isFocused? '4%':'2.8%')} />,
         <Icon name="ios-aperture" color={'white'} size={theme.hp(isFocused? '4%':'2.8%')} />
     ];
 

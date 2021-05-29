@@ -78,15 +78,15 @@ export const SettingsScreen = ({navigation}) => {
                             />
                         </View>
                     </View>
-                    
+
                     {/*need to add functions for Track Order and Order History */}
-                    <View style={styles.settingItem}> 
-                        <TouchableOpacity>
+                    <View style={styles.settingItem}>
+                        <TouchableOpacity onPress={()=>{navigation.navigate('TrackOrder')}}>
                         <Text style={styles.settingItemContent}> Track Order</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.settingItem}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={()=>{navigation.navigate('OrderHistory')}}>
                         <Text style={styles.settingItemContent}> Order History</Text>
                         </TouchableOpacity>
                     </View>
@@ -127,7 +127,7 @@ export const SettingsScreen = ({navigation}) => {
                             </View>
                         </View>
                     }
-                    
+
                     <View style={{paddingHorizontal: 30, backgroundColor:'white'}}>
                         <Button title="Sign Out" onPress={signOut} />
                         <Text style={styles.text}> Once signed out, requires password to login again</Text>

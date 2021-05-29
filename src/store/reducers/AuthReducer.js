@@ -18,15 +18,18 @@ export const authReducer = (state = INITIAL_STATE, action) => {
             }
         }
         case USER_CLEAR_CART: {
-            return INITIAL_STATE;
-        }
-        case USER_CHECKOUT: {
             return {
+                ...state,
                 cart:{
                     totalPrice: 0,
                     totalCount: 0,
                     items:[],
                 },
+            }
+        }
+        case USER_CHECKOUT: {
+            return {
+                ...state,
                 readyTime: new Date().setMinutes(new Date().getMinutes() + 6),
             }
         }

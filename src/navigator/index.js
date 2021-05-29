@@ -12,6 +12,9 @@ import {
     AddRecipeScreen,
     AddDealScreen,
     AllowNotificationScreen,
+    ThankYouOrderScreen,
+    TrackOrder,
+    OrderHistoryScreen,
 } from '../screens';
 const Stack = createStackNavigator();
 export const navigationRef = React.createRef();
@@ -29,6 +32,29 @@ export const AppNavigator = () => {
                     component={SignInScreen}
                     options={{
                         headerBackTitle:'Home'
+                    }}
+                />
+                <Stack.Screen
+                    name="ThankYou"
+                    component={ThankYouOrderScreen}
+                    options={{
+                        header: () => null,
+                    }}
+                />
+                <Stack.Screen
+                    name="OrderHistory"
+                    component={OrderHistoryScreen}
+                    options={{
+                        headerBackTitle:'Back',
+                        headerTitle:'Order History'
+                    }}
+                />
+                <Stack.Screen
+                    name="TrackOrder"
+                    component={TrackOrder}
+                    options={{
+                        headerBackTitle:'Back',
+                        headerTitle:'Track Order'
                     }}
                 />
                 <Stack.Screen

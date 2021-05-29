@@ -5,3 +5,5 @@ export * from './DealsScreen';
 export * from './AllowNotificationScreen';
 export * from './SpDealsScreen';
 export * from './TrackOrder';
+export * from './ThankYouOrderScreen';
+export * from './OrderHistoryScreen';

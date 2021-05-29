@@ -325,7 +325,8 @@ const useStyles = theme => StyleSheet.create({
         flex: 1,
         width:'100%',
         zIndex: 0,
-        position:'relative'
+        position:'relative',
+        backgroundColor:'white',
     },
     inputStyle:{
         height: 30,
@@ -430,7 +431,7 @@ const useStyles = theme => StyleSheet.create({
         height: theme.hp('45%'),
         position:'relative',
         flex: 1,
-        marginTop: theme.hp('5%'),
+        marginTop: theme.hp('7%'),
     },
     mapFix: {
         width: theme.wp('100%'),

@@ -22,6 +22,7 @@ import {CheckOutModal} from "../../components/modal/CheckOutModal";
 export const DeliScreen = ({navigation}) => {
 
     useFirestoreConnect([{collection: 'recipes'}]);
+
     const insets = useSafeAreaInsets();
 
     const theme = useTheme();
@@ -65,8 +66,14 @@ export const DeliScreen = ({navigation}) => {
         <Paper
             style={styles.itemContainer}
             onPress={()=>{
-                setSelectedDeli(item);
-                setOpenDetailModal(true);
+                if(authUser.role === 'admin'){
+                    navigation.navigate('AddRecipe',{deli: item});
+                } else {
+                    if(!(readyTime && (readyTime > currentTime))){
+                        setSelectedDeli(item);
+                        setOpenDetailModal(true);
+                    }
+                }
             }}
         >
             {
@@ -141,7 +148,11 @@ export const DeliScreen = ({navigation}) => {
             {
                 readyTime && (readyTime > currentTime) &&
                 <View style={styles.orderPreparing}>
-                    <Text style={{color:'white', fontSize: 18}}>Your order is being prepared - {new Date(readyTime - currentTime).getMinutes()} min</Text>
+                    <Text style={{color:'white', fontSize: 14}}>
+                        Your order is being prepared -
+                        {new Date(readyTime - currentTime).getMinutes()} min
+                        {new Date(readyTime - currentTime).getSeconds()} sec
+                    </Text>
                 </View>
             }
         </SafeAreaView>

@@ -5,14 +5,17 @@ import {useDispatch, useSelector} from "react-redux";
 import {useTheme} from "react-native-paper";
 import {USER_CHECKOUT} from "../../store/actions";
 import {useNavigation} from "@react-navigation/native";
+import * as MailComposer from 'expo-mail-composer';
+import {useFirestore} from "react-redux-firebase";
 
 export const CheckOutModal = ({open, onClose}) => {
 
     const theme = useTheme();
+    const navigation = useNavigation();
     const styles = useStyles(theme);
     const dispatch = useDispatch();
     const authUser = useSelector(state=>state.firebase.profile);
-    const navigation = useNavigation();
+    const firestore = useFirestore();
 
     const cart = useSelector((state)=>state.auth.cart);
 
@@ -36,10 +39,54 @@ export const CheckOutModal = ({open, onClose}) => {
                 ]
             )
         } else {
-            await dispatch({ type: USER_CHECKOUT})
-            alert("Your order has been placed");
-            onClose();
+            if(await sendEmail()){
+                await firestore.collection('orders').add({
+                    customerId: authUser.uid,
+                    orderTime: new Date().getTime(),
+                    order: cart,
+                });
+                await dispatch({ type: USER_CHECKOUT})
+                onClose();
+                navigation.navigate('ThankYou');
+            }else {
+                Alert.alert('Canceled','Please send the email to make your order!')
+            }
         }
+    }
+
+    const sendEmail = async () => {
+        return new Promise(resolve => {
+            let body = '<html><body>';
+            body += '<h1>Your order Summary</h1>';
+            body += '<table width="350" style="border-collapse: collapse">';
+            cart.items.forEach((item, index)=>{
+                body += `<tr>
+                        <td style="border: solid 1px #555555;">${index + 1}</td>
+                        <td style="border: solid 1px #555555;">${item.deli.title}</td>
+                        <td style="border: solid 1px #555555;">$${item.amount * (item.deli.price ||  5)}.00</td>
+                    </tr>`;
+            });
+            body += `<tr><td colspan="2" style="border: solid 1px #555555;">Total</td><td style="border: solid 1px #555555;">$${cart.totalPrice}</td></tr>`;
+            body += '</table>';
+            body += '</body></html>';
+
+            MailComposer.composeAsync({
+                subject:'Order Deli',
+                recipients:['ordercookville@gmail.com','thomas19891230@outlook.com'],
+                isHtml: true,
+                body: body,
+            }).then(res=>{
+                if(res.status === 'cancelled'){
+                    resolve(false)
+                }else {
+                    resolve(true);
+                }
+            }).catch(err=>{
+                console.log(err);
+                resolve(false);
+            })
+        })
+
     }
 
     if(!open){

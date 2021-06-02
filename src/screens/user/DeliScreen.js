@@ -39,9 +39,15 @@ export const DeliScreen = ({navigation}) => {
     const readyTime = useSelector((state)=>state.auth.readyTime);
 
     useEffect(()=>{
+        let mounted = true;
         setTimeout(()=>{
-            setCurrentTime(new Date().getTime());
+            if(mounted){
+                setCurrentTime(new Date().getTime());
+            }
         }, 1000)
+        return ()=>{
+            mounted = false;
+        }
     },[currentTime])
 
     const addDeal = () => {

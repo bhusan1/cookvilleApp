@@ -7,7 +7,7 @@ import {
     Linking,
     SafeAreaView,
     FlatList,
-    Image, TouchableOpacity, StatusBar,
+    Image, StatusBar,
 } from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Constants from 'expo-constants';
@@ -19,15 +19,7 @@ import {Button, Input, Paper} from "../../components";
 import Feather from 'react-native-vector-icons/Feather';
 import {useTheme} from "react-native-paper";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
-import {Overlay} from "react-native-elements";
-import * as ImagePicker from "expo-image-picker";
-import Spinner from "react-native-loading-spinner-overlay";
-import {validate} from "../../commons/helper";
-import ImageView from "react-native-image-view";
-import { v4 as uuid } from 'uuid'
 import {imgIcon} from "../../commons/images";
-import MarqueeText from "react-native-marquee";
 
 const scheme = Platform.select({ios: 'maps:0,0?q=', android: 'geo:0,0?q='});
 const latLng = `${33.18624068627443},${-94.86102794051021}`;
@@ -92,7 +84,7 @@ export const HomeScreen = () => {
 
     useEffect(() => {
         registerForPushNotificationsAsync().then(async (token) => {
-            if(token){
+            if(token && authUser.uid){
                 const tokenRef = firestore.collection('tokens').doc(token);
                 if (authUser.muteNotifications){
                     await tokenRef.delete();
@@ -107,140 +99,11 @@ export const HomeScreen = () => {
         setRefresh(!refresh);
     }
 
-   /*  const viewFullImage = () => {
-        const homeDealImages = homeDeals.reduce((result, item)=>{
-            result.push({
-                source: {uri: item.image,},
-                title: item.title,
-                width: theme.wp('100%'),
-                height: theme.hp('100%'),
-            })
-            return result;
-        }, [])
-        if(homeDealImages.length > 0){
-            setImages(homeDealImages);
-            setFullImage(true)
-        }
-    } */
-
-  /*   const removeHomeDeal = (item) => {
-        Alert.alert(
-          'Confirm',
-          'Are you really want to remove it?',
-          [
-              {
-                  text:'Cancel',
-                  style:'cancel'
-              },
-              {
-                  text: 'Delete',
-                  onPress:()=>{
-                      console.log(item)
-                      firestore.collection('homeDeals')
-                          .doc(item.id).delete().then(res=>{
-                          console.log(res);
-                      })
-                  }
-              }
-          ]
-        );
-    } */
-
-    /* const renderItem = ({item}) => {
-
-        if(item === 'add'){
-            return (
-                <TouchableOpacity style={styles.homeDealAddItem} onPress={()=>{setVisible(true)}}>
-                    <Feather name={'plus'} size={theme.wp('12%')}/>
-                </TouchableOpacity>
-            )
-        }else {
-            return (
-                <TouchableOpacity style={styles.homeDealItem} onPress={viewFullImage}>
-                    {
-                        authUser.role === 'admin' &&
-                        <TouchableOpacity style={styles.homeDealRemove} onPress={()=>{removeHomeDeal(item)}}>
-                            <SimpleLineIcons name={'close'} size={16} color={theme.colors.danger}/>
-                        </TouchableOpacity>
-                    }
-                    <Image source={{uri: item.image}} style={styles.homeDealImage}/>
-                    <Text style={styles.homeDealTitle}>{item.title}</Text>
-                </TouchableOpacity>
-            )
-        }
-    } */
-
-  /*   const submit = () => {
-        if(validate(homeDeal, {title:'required',image:'required'})){
-            firestore.collection('homeDeals')
-                .add(homeDeal).then(res=>{
-                    setHomeDeal({title: '', image: ''});
-                    setVisible(false);
-            })
-        }
-    } */
-
-    /* const handleClose = () => {
-        setFullImage(false);
-    }
-
-    const openImagePickerAsync = async () => {
-        ImagePicker.launchImageLibraryAsync().then(async (res)=>{
-            if(!res.cancelled){
-                const {uri} = res;
-                const response = await fetch(uri);
-                const blob = await response.blob();
-                const fileName = uuid() + '.' + uri.split('.').pop();
-                setLoading(true);
-                firebase.storage().ref(`/homeDeals/${fileName}`)
-                    .put(blob).on(
-                    "state_changed",
-                    (snapshot )=> {
-                        const progress = Math.floor(snapshot.bytesTransferred/snapshot.totalBytes * 100);
-                        setProgress(progress);
-                    },
-                    (error) => {
-                        console.log(error);
-                    },
-                    ()=>{
-                        firebase.storage()
-                            .ref("homeDeals/")
-                            .child(fileName)
-                            .getDownloadURL()
-                            .then((url) => {
-                                console.log(url)
-                                setHomeDeal({...homeDeal, image: url})
-                                setLoading(false);
-                            })
-                    }
-                )
-            }
-        });
-
-    }; */
-
     return (
         <>
             <SafeAreaView style={{flex: 1}}>
                 <StatusBar barStyle={'dark-content'} backgroundColor={'#fff'}/>
                 <View style={styles.root}>
-                    {/* <Overlay isVisible={visible} onBackdropPress={()=>{setVisible(false)}}>
-                        <Spinner visible={loading} textContent={`Uploading (${progress}%)`} textStyle={{color: 'white'}} />
-                        <View style={{width: theme.wp('70%')}}>
-                            <Text>Title</Text>
-                            <Input value={homeDeal.title} style={styles.inputStyle} placeholder={'Title'} onChangeText={(name, value)=>{setHomeDeal({...homeDeal, title: value})}} />
-                            <View style={{flexDirection:'row', marginVertical: 10,}}>
-                                <Text>Image</Text>
-                                <TouchableOpacity
-                                    style={{width: 20, height: 20, ...theme.styles.center, backgroundColor: theme.colors.success, marginLeft: 5, borderRadius: 10,}}
-                                    onPress={openImagePickerAsync}
-                                >
-                                    <Feather name={'plus'} size={16} color={'white'}/>
-                                </TouchableOpacity>
-                            </View>
-                            <Button title={'submit'} onPress={submit}/>
-                        </View>
-                    </Overlay> */}
                     <View style={styles.topPanel}>
                         <View style={styles.topPanelContent}>
                             <View style={styles.saCon}>
@@ -540,7 +403,22 @@ async function registerForPushNotificationsAsync() {
             finalStatus = status;
         }
         if (finalStatus !== 'granted') {
-            alert('Failed to get push token for push notification!');
+            Alert.alert(
+                'Warning',
+                'Please enable the permission to get push notification',
+                [
+                    {
+                        style:'cancel',
+                        text:'Cancel'
+                    },
+                    {
+                        text:'Setting',
+                        onPress:()=>{
+                            Linking.openSettings();
+                        }
+                    }
+                ]
+            )
             return;
         }
         token = (await Notifications.getExpoPushTokenAsync()).data;

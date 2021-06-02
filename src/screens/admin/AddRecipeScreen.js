@@ -19,7 +19,7 @@ const INITIAL_SATE = {
 
 export const AddRecipeScreen = ({route, navigation}) => {
 
-    const deli = route.params.deli;
+    const deli = route.params?.deli;
 
     useFirestoreConnect([{collection:'tokens'}]);
 

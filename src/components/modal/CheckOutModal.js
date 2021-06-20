@@ -1,12 +1,15 @@
-import React from "react";
-import {Alert, Modal, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import React, {useState} from "react";
+import {Alert, Modal, StyleSheet, Text, TouchableOpacity, View, FlatList} from "react-native";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import {useDispatch, useSelector} from "react-redux";
 import {useTheme} from "react-native-paper";
-import {USER_CHECKOUT} from "../../store/actions";
+import {decreaseCartItem, increaseCartItem, USER_CHECKOUT} from "../../store/actions";
 import {useNavigation} from "@react-navigation/native";
 import * as MailComposer from 'expo-mail-composer';
 import {useFirestore} from "react-redux-firebase";
+import SwipeOut from 'react-native-swipeout';
+import {deleteCartItem} from "../../store/actions";
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 export const CheckOutModal = ({open, onClose}) => {
 
@@ -16,6 +19,8 @@ export const CheckOutModal = ({open, onClose}) => {
     const dispatch = useDispatch();
     const authUser = useSelector(state=>state.firebase.profile);
     const firestore = useFirestore();
+    const [itemToDelete, setItemToDelete] = useState(null);
+    const [refresh, setRefresh] = useState(false);
 
     const cart = useSelector((state)=>state.auth.cart);
 
@@ -89,6 +94,25 @@ export const CheckOutModal = ({open, onClose}) => {
 
     }
 
+    const swipeOutButtons = [
+        {
+            text: 'Delete',
+            backgroundColor:'red',
+            onPress: () => {
+                dispatch(deleteCartItem({deli: itemToDelete.deli}));
+                setRefresh(!refresh);
+            }
+        }
+    ]
+
+    const handleMinus = (deli) => {
+        dispatch(decreaseCartItem({deli}))
+    }
+
+    const handlePlus = (deli) => {
+        dispatch(increaseCartItem({deli}))
+    }
+
     if(!open){
         return  null;
     }
@@ -100,24 +124,43 @@ export const CheckOutModal = ({open, onClose}) => {
                     <TouchableOpacity style={styles.closeIcon} onPress={onClose}>
                         <EvilIcons name={'close'} size={36} style={{fontSize: 24, fontWeight:'900'}} />
                     </TouchableOpacity>
-                    {
-                        cart.items.map((item, index)=>(
-                           <View key={index} style={styles.cartItem}>
-                               <View style={styles.itemAmount}>
-                                   <Text style={{color:'#87ceeb', fontSize: 16}}>{item.amount}</Text>
-                               </View>
-                               <Text style={{paddingLeft: theme.wp('5%'), fontSize: 16}}>{item.deli.title}</Text>
-                               <Text style={styles.priceText}>${item.amount * (item.deli.price ||  5)}.00</Text>
-                           </View>
-                        ))
-                    }
-                    <View style={styles.cartItem}>
-                        <Text style={{paddingLeft: theme.wp('5%'), fontSize: 16}}>Total</Text>
-                        <Text style={styles.priceText}>${cart.totalPrice}</Text>
-                    </View>
-                    <TouchableOpacity style={styles.addCartBtn} onPress={handlePress}>
-                        <Text style={{color:'white', fontSize: 24, fontWeight:'bold'}}>Place Order</Text>
-                    </TouchableOpacity>
+                    <FlatList
+                        data={cart.items}
+                        extraData={refresh}
+                        renderItem={({item})=>(
+                            <SwipeOut
+                                onOpen={()=>{ setItemToDelete(item) }}
+                                autoClose
+                                right={swipeOutButtons}
+                            >
+                                <View style={styles.cartItem}>
+                                    <Text style={{fontSize: 16}}>{item.deli.title}</Text>
+                                    <View style={styles.itemAmountControl}>
+                                        <TouchableOpacity style={styles.itemAmount} onPress={()=>{handleMinus(item.deli)}}>
+                                            <AntDesign name={'minus'} size={16} color={'#87ceeb'}/>
+                                        </TouchableOpacity>
+                                        <Text style={{color:'#87ceeb', fontSize: 16, paddingHorizontal: theme.wp('2%')}}>{item.amount}</Text>
+                                        <TouchableOpacity style={styles.itemAmount} onPress={()=>{handlePlus(item.deli)}}>
+                                            <AntDesign name={'plus'} size={16} color={'#87ceeb'}/>
+                                        </TouchableOpacity>
+                                    </View>
+                                    <Text style={styles.priceText}>${item.amount * (item.deli.price ||  5)}.00</Text>
+                                </View>
+                            </SwipeOut>
+                        )}
+                        keyExtractor={(item)=>item.deli.id}
+                        ListFooterComponent={()=>(
+                            <View style={{alignItems:'center'}}>
+                                <View style={[styles.cartItem,{borderBottomWidth: 0.5}]}>
+                                    <Text style={{fontSize: 16}}>Total</Text>
+                                    <Text style={[styles.priceText,{marginLeft:'auto'}]}>${cart.totalPrice}</Text>
+                                </View>
+                                <TouchableOpacity style={styles.addCartBtn} onPress={handlePress}>
+                                    <Text style={{color:'white', fontSize: 24, fontWeight:'bold'}}>Place Order</Text>
+                                </TouchableOpacity>
+                            </View>
+                        )}
+                    />
                 </View>
             </View>
         </Modal>
@@ -153,9 +196,15 @@ const useStyles = (theme) =>
             width:'100%',
             height: theme.hp('6%'),
             alignItems:'center',
-            borderBottomWidth: 0.5,
-            borderBottomColor: '#8080807f',
-            flexDirection:'row'
+            borderTopWidth: 0.5,
+            flexDirection:'row',
+            backgroundColor:'white',
+        },
+        itemAmountControl:{
+            flexDirection: 'row',
+            alignItems: 'center',
+            marginLeft: 'auto',
+            marginRight: theme.wp('1%'),
         },
         itemAmount:{
             width: theme.wp('7%'),
@@ -167,8 +216,9 @@ const useStyles = (theme) =>
             alignItems:'center'
         },
         priceText:{
-            marginLeft:'auto',
-            fontSize: 16
+            fontSize: 16,
+            width: theme.wp('20%'),
+            textAlign:'right'
         },
         addCartBtn:{
             width: '50%',

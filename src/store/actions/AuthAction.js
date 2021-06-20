@@ -13,14 +13,52 @@ let unsubscribes = [];
 export const addCart = ({deli, amount}) => async (dispatch, getState) => {
     let oldCart = getState().auth.cart;
     oldCart.totalCount += amount;
-    oldCart.totalPrice += (deli.price || 5) * amount;
-    let index = oldCart.items.findIndex(item=>item.deli.title === deli.title)
+    oldCart.totalPrice += parseFloat(deli.price || 5) * amount;
+    let index = oldCart.items.findIndex(item=>item.deli.id === deli.id)
     if(index > -1){
         oldCart.items[index].amount += amount;
     }else {
         oldCart.items.push({deli: deli, amount:amount});
     }
-    console.log(oldCart)
+    dispatch({
+        type: USER_ADD_CART,
+        payload: oldCart,
+    });
+}
+
+export const increaseCartItem = ({deli}) => (dispatch, getState) => {
+    let oldCart = getState().auth.cart;
+    let index = oldCart.items.findIndex(item=>item.deli.id === deli.id);
+    oldCart.totalCount++;
+    oldCart.totalPrice += parseFloat(deli.price || 5);
+    oldCart.items[index].amount++;
+    dispatch({
+        type: USER_ADD_CART,
+        payload: oldCart,
+    });
+}
+
+export const decreaseCartItem = ({deli}) => (dispatch, getState) => {
+    let oldCart = getState().auth.cart;
+    let index = oldCart.items.findIndex(item=>item.deli.id === deli.id);
+    if(oldCart.items[index].amount > 1){
+        oldCart.totalCount--;
+        oldCart.totalPrice -= parseFloat(deli.price || 5);
+        oldCart.items[index].amount--;
+        dispatch({
+            type: USER_ADD_CART,
+            payload: oldCart,
+        });
+    }
+}
+
+export const deleteCartItem = ({deli}) => (dispatch, getState) => {
+    let oldCart = getState().auth.cart;
+    let index = oldCart.items.findIndex(item=>item.deli.id === deli.id);
+    let item = oldCart.items[index];
+    oldCart.totalCount -= item.amount;
+    oldCart.totalPrice -= item.amount * parseFloat(item.deli.price || 5);
+    oldCart.items.splice(index, 1);
     dispatch({
         type: USER_ADD_CART,
         payload: oldCart,

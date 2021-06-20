@@ -58,7 +58,7 @@ export const DeliDetailModal = ({deli, open, onClose}) => {
                             <Text style={{fontSize: 18}}>${(deli.price || 5) * amount}</Text>
                         </View>
                         <TouchableOpacity style={styles.addCartBtn} onPress={handlePress}>
-                            <Text style={{color:'white', fontSize: 24, fontWeight:'bold'}}>Add to cart</Text>
+                            <Text style={{color:'white', fontSize: 18, fontWeight:'bold'}}>Add to cart</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

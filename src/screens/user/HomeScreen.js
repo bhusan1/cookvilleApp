@@ -7,7 +7,7 @@ import {
     Linking,
     SafeAreaView,
     FlatList,
-    Image, StatusBar,
+    Image, StatusBar, TouchableOpacity,
 } from 'react-native';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
 import Constants from 'expo-constants';
@@ -20,6 +20,8 @@ import Feather from 'react-native-vector-icons/Feather';
 import {useTheme} from "react-native-paper";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import {imgIcon} from "../../commons/images";
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import call from 'react-native-phone-call';
 
 const scheme = Platform.select({ios: 'maps:0,0?q=', android: 'geo:0,0?q='});
 const latLng = `${33.18624068627443},${-94.86102794051021}`;
@@ -99,6 +101,14 @@ export const HomeScreen = () => {
         setRefresh(!refresh);
     }
 
+    const phoneCall = () => {
+        const args = {
+            number: '9033805116',
+            prompt: true,
+        };
+        call(args).catch(console.error);
+    }
+
     return (
         <>
             <SafeAreaView style={{flex: 1}}>
@@ -132,6 +142,12 @@ export const HomeScreen = () => {
                                     >
                                         <Marker coordinate={{latitude: 33.18624068627443, longitude: -94.86102794051021}} />
                                     </MapView>
+                                </View>
+                                <View style={styles.phoneArea}>
+                                    <TouchableOpacity style={styles.phoneNumberWrapper} onPress={phoneCall}>
+                                        <FontAwesome name={'phone'} size={20} color={theme.colors.secondary} />
+                                        <Text style={styles.phoneNumber}>903-380-5116</Text>
+                                    </TouchableOpacity>
                                 </View>
                                 <View style={styles.businessHours}>
                                     <Text style={[styles.gasText,{marginBottom: theme.hp('1%')}]}>Business Hours</Text>
@@ -194,6 +210,24 @@ const useStyles = theme => StyleSheet.create({
     inputStyle:{
         height: 30,
     },
+    phoneArea:{
+        backgroundColor:'white',
+        justifyContent:'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        padding: theme.wp('6%')
+    },
+    phoneNumberWrapper:{
+        flexDirection: 'row',
+        justifyContent:'center',
+        alignItems:'center',
+    },
+    phoneNumber:{
+        fontSize: theme.hp('2%'),
+        fontWeight:'bold',
+        color: theme.colors.secondary,
+        paddingLeft: theme.wp('3%')
+    },
     businessHours:{
       backgroundColor:'#87ceeb',
         paddingVertical: theme.hp('2%'),
@@ -203,60 +237,7 @@ const useStyles = theme => StyleSheet.create({
         color: 'black',
         fontSize: theme.hp('2%')
     },
-    /* homeDealItem:{
-        position:'relative',
-        height: theme.hp('30%'),
-        justifyContent:'center',
-        alignItems:'center',
-        backgroundColor: 'white',
-        marginVertical: 2.5,
-        borderRadius: 10,
-        overflow:'hidden',
-        zIndex: 2,
-        borderWidth: 0.5,
-        borderStyle: 'solid',
-        borderColor: '#afafaf',
-        marginHorizontal: theme.wp('2%'),
-        marginTop: theme.wp('1.5%'),
-    },
-    homeDealRemove:{
-        position:'absolute',
-        top: 0,
-        right: 0,
-        width: 30,
-        height: 30,
-        zIndex: 5,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    homeDealTitle:{
-        backgroundColor:'white',
-        textAlign:'center',
-        position:'absolute',
-        bottom: 0,
-        padding: 5,
-        width:'100%'
-    },
-    homeDealAddItem:{
-        position:'relative',
-        height: 50,
-        justifyContent:'center',
-        alignItems:'center',
-        backgroundColor: 'white',
-        borderRadius: 15,
-        marginVertical: 5,
-        overflow:'hidden',
-        ...theme.styles.shadow,
-        borderWidth: 0.5,
-        borderStyle: 'solid',
-        borderColor: '#afafaf',
-        zIndex: 2,
-    },
-    homeDealImage:{
-      width: '100%',
-      height: '100%',
-      resizeMode:'cover',
-    }, */
+
     container: {
         justifyContent: 'center',
     },

@@ -7,7 +7,7 @@ import {
     SafeAreaView,
     View,
     FlatList,
-    Alert, StatusBar,
+    StatusBar,
 } from 'react-native';
 import {useFirestoreConnect} from "react-redux-firebase";
 import {useSelector} from "react-redux";

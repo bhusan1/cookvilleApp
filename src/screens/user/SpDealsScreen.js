@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect,} from 'react';
+import React, {useState} from 'react';
 import {
     FlatList,
     View,
@@ -7,15 +7,14 @@ import {
     StyleSheet,
     SafeAreaView,
     Alert,
-    TouchableOpacity, StatusBar
+    TouchableOpacity
 } from 'react-native';
 import {useSelector} from 'react-redux';
 import {useFirebase, useFirestore, useFirestoreConnect} from "react-redux-firebase";
-import {Button, Input} from "../../components";
+import {Button, Input, Overlay} from "../../components";
 import Feather from 'react-native-vector-icons/Feather';
 import {useTheme} from "react-native-paper";
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons'
-import {Overlay} from "react-native-elements";
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import * as ImagePicker from "expo-image-picker";
 import Spinner from "react-native-loading-spinner-overlay";
 import {validate} from "../../commons/helper";
@@ -160,30 +159,29 @@ export const SpDealsScreen = ({navigation}) => {
     };
 
     return (
-        <>
         <SafeAreaView style={{flex: 1}}>
-            <StatusBar barStyle={'dark-content'} backgroundColor={'#fff'}/>
+            <Overlay isVisible={visible} onBackdropPress={()=>{setVisible(false)}}>
+                <Spinner visible={loading} textContent={`Uploading (${progress}%)`} textStyle={{color: 'white'}} />
+                <View style={{width: theme.wp('70%')}}>
+                    <TouchableOpacity style={[styles.homeDealRemove,{top: -8, right: -8}]} onPress={()=>{setVisible(false)}}>
+                        <SimpleLineIcons name={'close'} size={16} color={theme.colors.danger}/>
+                    </TouchableOpacity>
+                    <Text>Title</Text>
+                    <Input value={homeDeal.title} style={styles.inputStyle} placeholder={'Title'} onChangeText={(name, value)=>{setHomeDeal({...homeDeal, title: value})}} />
+                    <View style={{flexDirection:'row', marginVertical: 10,}}>
+                        <Text>Image</Text>
+                        <TouchableOpacity
+                            style={{width: 20, height: 20, ...theme.styles.center, backgroundColor: theme.colors.success, marginLeft: 5, borderRadius: 10,}}
+                            onPress={openImagePickerAsync}
+                        >
+                            <Feather name={'plus'} size={16} color={'white'}/>
+                        </TouchableOpacity>
+                    </View>
+                    <Button title={'submit'} onPress={submit}/>
+                </View>
+            </Overlay>
             <View style={styles.header}>
                 <Text style={styles.headText}>Monthly Special</Text>
-            </View>
-            <View style={styles.root}>
-                <Overlay isVisible={visible} onBackdropPress={()=>{setVisible(false)}}>
-                    <Spinner visible={loading} textContent={`Uploading (${progress}%)`} textStyle={{color: 'white'}} />
-                    <View style={{width: theme.wp('70%')}}>
-                        <Text>Title</Text>
-                        <Input value={homeDeal.title} style={styles.inputStyle} placeholder={'Title'} onChangeText={(name, value)=>{setHomeDeal({...homeDeal, title: value})}} />
-                        <View style={{flexDirection:'row', marginVertical: 10,}}>
-                            <Text>Image</Text>
-                            <TouchableOpacity
-                                style={{width: 20, height: 20, ...theme.styles.center, backgroundColor: theme.colors.success, marginLeft: 5, borderRadius: 10,}}
-                                onPress={openImagePickerAsync}
-                            >
-                                <Feather name={'plus'} size={16} color={'white'}/>
-                            </TouchableOpacity>
-                        </View>
-                        <Button title={'submit'} onPress={submit}/>
-                    </View>
-                </Overlay>
             </View>
             <FlatList
                     style={{flex: 1, width:'100%'}}
@@ -191,7 +189,7 @@ export const SpDealsScreen = ({navigation}) => {
                     renderItem={renderItem}
                     showsVerticalScrollIndicator={false}
                     keyExtractor={item => JSON.stringify(item)}
-                /> 
+                />
             <ImageView
                     images={images}
                     imageIndex={0}
@@ -200,7 +198,6 @@ export const SpDealsScreen = ({navigation}) => {
                     animationType={'none'}
             />
         </SafeAreaView>
-    </>  
     );
 };
 

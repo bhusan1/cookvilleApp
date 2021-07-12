@@ -18,7 +18,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.ssp.cookvillestop",
-      "buildNumber": "3",
+      "buildNumber": "4",
       "usesIcloudStorage": true,
       "config": {
         "googleMapsApiKey": "AIzaSyBQblwHOUCf8u1TakHd0yIqs6U2DYLNxmU"

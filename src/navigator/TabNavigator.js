@@ -41,6 +41,7 @@ export const TabNavigator = () => {
                     component={SpDealsScreen}
                     options={{
                         tabBarLabel: 'Monthly Deals',
+                        stackPresentation: "containedTransparentModal"
                     }}
                 />
                 <Tab.Screen

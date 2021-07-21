@@ -117,10 +117,9 @@ export const DeliScreen = ({navigation}) => {
 
     return (
         <SafeAreaView style={styles.root}>
-            <StatusBar barStyle={'light-content'}/>
             <View style={[styles.statusBar, {height: insets.top}]}/>
             <View style={styles.header}>
-                <Text style={styles.headText}>Today's Special</Text>
+                <Text style={styles.headText}>Menu</Text>
                 <TouchableOpacity style={styles.cartIcon} onPress={handleCheckoutPress}>
                     <View style={{position:'relative'}}>
                         {
@@ -129,7 +128,7 @@ export const DeliScreen = ({navigation}) => {
                                 <Text style={{color:'white', fontSize:12, fontWeight:'600'}}>{cart.totalCount}</Text>
                             </View>
                         }
-                        <MaterialIcons name={'shopping-cart'} color={'white'} size={theme.hp('3%')}/>
+                        <MaterialIcons name={'shopping-cart'} color={'black'} size={theme.hp('3%')}/>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -175,7 +174,7 @@ const useStyles = (theme) =>
             position:'absolute',
             top: 0,
             width:'100%',
-            backgroundColor:'#6e012a'
+            backgroundColor:theme.colors.main,
         },
         totalCount:{
             position:'absolute',
@@ -194,15 +193,19 @@ const useStyles = (theme) =>
             fontWeight: 'bold',
             textAlign: 'center',
             padding: 20,
-            color:'white',
+            color:'black',
         },
         header:{
             width:'100%',
             height: theme.hp('10%'),
-            backgroundColor:'#87ceeb',
+            backgroundColor:'white',
             justifyContent:'center',
             alignItems:'center',
             position:'relative',
+            borderColor: theme.colors.main,
+            borderWidth: 10,
+            borderBottomRightRadius: theme.wp('5%'),
+            borderBottomLeftRadius: theme.wp('5%'),
         },
         header2:{
             width:'100%',
@@ -215,7 +218,7 @@ const useStyles = (theme) =>
         cartIcon: {
             position:'absolute',
             right: theme.wp('5%'),
-            top: theme.hp('3.7%'),
+            top: theme.hp('2.7%'),
         },
         content:{
             flex: 1,

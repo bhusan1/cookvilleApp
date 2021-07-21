@@ -93,6 +93,7 @@ export const signUpUserInFirebase = (user) => async (dispatch, getState, {getFir
                     .set({
                         fullName: user.fullName,
                         email: user.email,
+                        phoneNumber: user.phoneNumber,
                         role: 'customer',
                         uid: success.user.uid,
                         createdAt: firestore.FieldValue.serverTimestamp(),

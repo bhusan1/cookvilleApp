@@ -100,17 +100,21 @@ const useStyles = theme => StyleSheet.create({
         position: 'relative',
     },
     statusBar:{
-      position:'absolute',
-      top: 0,
-      width:'100%',
-        backgroundColor:'#6e012a'
+        position:'absolute',
+        top: 0,
+        width:'100%',
+        backgroundColor:theme.colors.main,
     },
     header:{
-      width:'100%',
-      height: theme.hp('10%'),
-        backgroundColor:'#87ceeb',
+        width:'100%',
+        height: theme.hp('10%'),
+        backgroundColor:'#fff',
         justifyContent:'center',
         alignItems:'center',
+        borderColor: theme.colors.main,
+        borderWidth: 10,
+        borderBottomRightRadius: theme.wp('5%'),
+        borderBottomLeftRadius: theme.wp('5%'),
     },
     container: {
         flex: 1,
@@ -149,7 +153,7 @@ const useStyles = theme => StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         padding: 20,
-        color:'white',
+        color:'black',
     },
     divider: {
         paddingTop: 2,

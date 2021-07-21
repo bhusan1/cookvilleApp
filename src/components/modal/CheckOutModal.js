@@ -27,7 +27,7 @@ export const CheckOutModal = ({open, onClose}) => {
     const handlePress = async () => {
         if(authUser.isEmpty){
             Alert.alert(
-                'Don\'t miss out on deals and discounts',
+                'You are missing out on deals and discounts!!!',
                 'Get discounts on in-store purchases and daily update in deli menu',
                 [
                     {
@@ -35,7 +35,7 @@ export const CheckOutModal = ({open, onClose}) => {
                         text:'Cancel'
                     },
                     {
-                        text:'LogIn Now',
+                        text:'Login Now',
                         onPress:()=>{
                             navigation.navigate('SignIn');
                             onClose();

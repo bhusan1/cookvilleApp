@@ -23,6 +23,6 @@ const useStyles = theme =>
             width: '100%',
             flexDirection:'row',
             justifyContent:'space-around',
-            backgroundColor:'#6e012a'
+            backgroundColor:theme.colors.main,
         },
     });

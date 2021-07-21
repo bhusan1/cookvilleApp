@@ -6,7 +6,7 @@ export const useStyles = theme =>
             width: '100%',
         },
         tabMenuItem:{
-            backgroundColor:'#6e012a',
+            backgroundColor:theme.colors.main,
             justifyContent:'center',
             alignItems:'center'
         },

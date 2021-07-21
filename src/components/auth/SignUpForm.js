@@ -37,6 +37,7 @@ export const SignUpForm = forwardRef((props, ref) => {
                 validate(user, {
                     fullName: 'required',
                     email: 'required|email',
+                    phoneNumber: 'optional',
                     password: 'required|min:8|same:confirmPassword',
                 })
             ) {
@@ -69,12 +70,7 @@ export const SignUpForm = forwardRef((props, ref) => {
             <Spinner visible={loading} textContent={'Loading...'} textStyle={{color: 'white'}} />
             <Input name={'fullName'} value={user.fullName} placeholder="Full Name" onChangeText={handleChange} />
             <Input name={'email'} value={user.email} placeholder="Email" onChangeText={handleChange} />
-            {/*<Input*/}
-            {/*    name={'phoneNumber'}*/}
-            {/*    value={user.phoneNumber}*/}
-            {/*    placeholder="Phone Number"*/}
-            {/*    onChangeText={handleChange}*/}
-            {/*/>*/}
+            <Input name={'phoneNumber'} value={user.phoneNumber} placeholder="Phone Number (optional)" onChangeText={handleChange}/>
             <Input
                 name={'password'}
                 secureTextEntry

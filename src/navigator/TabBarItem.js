@@ -18,7 +18,7 @@ export const TabBarItem = ({navigation, route, descriptors, state, index}) => {
     const onPress = () => {
         if(index  > 1 && authUser.isEmpty){
             Alert.alert(
-                'Don\'t miss out on deals and discounts',
+                'You are missing out on deals and discounts!!!',
                 'Get discounts on in-store purchases and daily update in deli menu',
                 [
                     {
@@ -26,7 +26,7 @@ export const TabBarItem = ({navigation, route, descriptors, state, index}) => {
                         text:'Cancel'
                     },
                     {
-                        text:'LogIn Now',
+                        text:'Login Now',
                         onPress:()=>{
                             navigation.navigate('SignIn');
                         }

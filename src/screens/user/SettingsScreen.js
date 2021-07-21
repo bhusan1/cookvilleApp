@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, StyleSheet, SafeAreaView, View, Switch, ScrollView} from 'react-native';
+import {Text, StyleSheet, SafeAreaView, View, Switch, ScrollView, StatusBar} from 'react-native';
 
 import {Avatar, Button, Input} from '../../components';
 import {useDispatch, useSelector} from 'react-redux';
@@ -8,6 +8,8 @@ import {useFirestore, useFirestoreConnect} from "react-redux-firebase";
 import {useTheme} from "react-native-paper";
 import {showMessage} from "react-native-flash-message";
 import { TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import theme from '../../theme';
 
 const INITIAL_STATE = {
     regular: 0,
@@ -19,6 +21,8 @@ const INITIAL_STATE = {
 export const SettingsScreen = ({navigation}) => {
 
     useFirestoreConnect([{collection:'settings', doc: 'gasPrice', storeAs: 'gasPrice'}])
+
+    const insets = useSafeAreaInsets();
 
     const theme = useTheme();
     const firestore = useFirestore();
@@ -54,6 +58,8 @@ export const SettingsScreen = ({navigation}) => {
 
     return (
         <SafeAreaView style={styles.root}>
+            <StatusBar barStyle={'light-content'}/>
+            <View style={[styles.statusBar, {height: insets.top}]}/>
             <ScrollView>
                 <View style={styles.content}>
                     <View style={styles.settingItem}>
@@ -151,6 +157,12 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 14,
         textAlign: 'center',
+    },
+    statusBar:{
+        position:'absolute',
+        top: 0,
+        width:'100%',
+        backgroundColor:theme.colors.main,
     },
     settingItem:{
         paddingBottom: 15,

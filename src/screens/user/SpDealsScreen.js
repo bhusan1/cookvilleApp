@@ -16,6 +16,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import {useTheme} from "react-native-paper";
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 import * as ImagePicker from "expo-image-picker";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 import Spinner from "react-native-loading-spinner-overlay";
 import {validate} from "../../commons/helper";
 import ImageView from "react-native-image-view";
@@ -28,6 +29,8 @@ export const SpDealsScreen = ({navigation}) => {
         {collection:'homeDeals', storeAs: 'homeDeals'}
         ]);
 
+
+    const insets = useSafeAreaInsets();
     const theme = useTheme();
     const styles = useStyles(theme);
     const firebase = useFirebase();
@@ -160,6 +163,7 @@ export const SpDealsScreen = ({navigation}) => {
 
     return (
         <SafeAreaView style={{flex: 1}}>
+            <View style={[styles.statusBar, {height: insets.top}]}/>
             <Overlay isVisible={visible} onBackdropPress={()=>{setVisible(false)}}>
                 <Spinner visible={loading} textContent={`Uploading (${progress}%)`} textStyle={{color: 'white'}} />
                 <View style={{width: theme.wp('70%')}}>
@@ -209,6 +213,12 @@ const useStyles = theme => StyleSheet.create({
         zIndex: 0,
         position:'absolute'
     },
+    statusBar:{
+        position:'absolute',
+        top: 0,
+        width:'100%',
+        backgroundColor:theme.colors.main,
+    },
     inputStyle:{
         height: 30,
     },
@@ -217,15 +227,19 @@ const useStyles = theme => StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         padding: 20,
-        color:'white',
+        color:'black',
     },
     header:{
         width:'100%',
         height: theme.hp('10%'),
-        backgroundColor:'#87ceeb',
+        backgroundColor:'white',
         justifyContent:'center',
         alignItems:'center',
         position:'relative',
+        borderColor: theme.colors.main,
+        borderWidth: 10,
+        borderBottomRightRadius: theme.wp('5%'),
+        borderBottomLeftRadius: theme.wp('5%'),
     },
     homeDealItem:{
         position:'relative',

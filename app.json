@@ -2,7 +2,7 @@
   "expo": {
     "name": "cookvilleApp",
     "slug": "cookvilleApp",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "splash": {
@@ -18,7 +18,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.ssp.cookvillestop",
-      "buildNumber": "4",
+      "buildNumber": "6",
       "usesIcloudStorage": true,
       "config": {
         "googleMapsApiKey": "AIzaSyBQblwHOUCf8u1TakHd0yIqs6U2DYLNxmU"
@@ -34,7 +34,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.ssp.cookville1stop",
-      "versionCode": 2,
+      "versionCode": 3,
       "config": {
         "googleMaps": {
           "apiKey" : "AIzaSyCPf_MxL1i8PPiADocz0wTMfiBauasso20"
